@@ -1,3 +1,4 @@
+import { translateSystemText } from './utils/displayText';
 import { Component, Suspense, type ReactNode, type ErrorInfo } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -65,7 +66,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
     if (this.state.error) {
       return (
         <div style={{ padding: 24, color: '#ef4444', backgroundColor: '#18181b', minHeight: '100vh', fontFamily: 'monospace' }}>
-          <h1 style={{ fontSize: 20, marginBottom: 12 }}>UI Crash</h1>
+          <h1 style={{ fontSize: 20, marginBottom: 12 }}>{translateSystemText("UI Crash")}</h1>
           <pre style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>{this.state.error.message}</pre>
           <pre style={{ whiteSpace: 'pre-wrap', fontSize: 12, color: '#a1a1aa', marginTop: 12 }}>
             {this.state.error.stack}
@@ -74,8 +75,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
             onClick={() => { this.setState({ error: null, errorInfo: null }); }}
             style={{ marginTop: 16, padding: '8px 16px', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer' }}
           >
-            Retry
-          </button>
+            {translateSystemText("Retry")}</button>
         </div>
       );
     }
@@ -108,7 +108,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">{translateSystemText("Loading...")}</div>;
   }
 
   // A stored sign-in the server couldn't check yet: wait here, so a kiosk
@@ -134,7 +134,7 @@ export function PermissionRoute({ permission, children }: { permission: string |
   const location = useLocation();
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">{translateSystemText("Loading...")}</div>;
   }
 
   if (authUnconfirmed) {
@@ -163,7 +163,7 @@ function SetupRoute({ children }: { children: React.ReactNode }) {
   const { authEnabled, loading } = useAuth();
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">{translateSystemText("Loading...")}</div>;
   }
 
   // If auth is already enabled, redirect to login

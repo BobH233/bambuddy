@@ -1,3 +1,4 @@
+import { CameraMedia } from '../components/CameraMedia';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -182,16 +183,18 @@ function CameraView({ onPoppedIn }: { onPoppedIn: () => void }) {
     };
   }, [id, viewerId]);
 
+  const [transport, setTransport] = useState<'hls' | 'mjpeg' | null>(null);
+
   // Auto-hide loading after timeout
   useEffect(() => {
-    if (streamLoading && !transitioning) {
+    if (streamLoading && !transitioning && (streamMode !== 'stream' || transport === 'mjpeg')) {
       const timeout = streamMode === 'stream' ? 3000 : 20000;
       const timer = setTimeout(() => {
         setStreamLoading(false);
       }, timeout);
       return () => clearTimeout(timer);
     }
-  }, [streamMode, streamLoading, imageKey, transitioning]);
+  }, [streamMode, streamLoading, imageKey, transitioning, transport]);
 
   // Fullscreen change listener - refresh stream after fullscreen transition
   useEffect(() => {
@@ -308,7 +311,7 @@ function CameraView({ onPoppedIn }: { onPoppedIn: () => void }) {
   useEffect(() => {
     // Only skip stall check during initial load, reconnecting, or transitioning
     // Continue checking even during streamError to detect recovery
-    if (streamMode !== 'stream' || streamLoading || isReconnecting || transitioning) {
+    if (streamMode !== 'stream' || streamLoading || isReconnecting || transitioning || transport === 'hls') {
       if (stallCheckIntervalRef.current) {
         clearInterval(stallCheckIntervalRef.current);
         stallCheckIntervalRef.current = null;
@@ -354,11 +357,11 @@ function CameraView({ onPoppedIn }: { onPoppedIn: () => void }) {
         stallCheckIntervalRef.current = null;
       }
     };
-  }, [streamMode, streamLoading, streamError, isReconnecting, transitioning, id, attemptReconnect]);
+  }, [streamMode, streamLoading, streamError, isReconnecting, transitioning, id, attemptReconnect, transport]);
 
-  const handleStreamError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleStreamError = (e?: React.SyntheticEvent<HTMLImageElement>) => {
     // Clearing the src (reconnect, restart, mode switch) fires error with an empty src.
-    if (!e.currentTarget.getAttribute('src')) return;
+    if (e && !e.currentTarget.getAttribute('src')) return;
     setStreamLoading(false);
 
     // Only auto-reconnect for live stream mode
@@ -903,7 +906,8 @@ function CameraView({ onPoppedIn }: { onPoppedIn: () => void }) {
               </div>
             </div>
           )}
-          <img
+          <CameraMedia onTransport={setTransport} onMouseDown={handleImageMouseDown} src={streamMode === 'stream' ? currentUrl : undefined} onLoad={handleStreamLoad} onError={() => handleStreamError()} image={
+            <img
             ref={attachImg}
             key={imageKey}
             alt={t('camera.cameraStream')}
@@ -922,6 +926,7 @@ function CameraView({ onPoppedIn }: { onPoppedIn: () => void }) {
             onMouseDown={handleImageMouseDown}
             draggable={false}
           />
+          } />
 
           {/* Zoom controls */}
           <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-black/60 rounded-lg px-2 py-1.5">

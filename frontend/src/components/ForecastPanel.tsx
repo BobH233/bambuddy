@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -1327,7 +1328,7 @@ function SafetyMarginField({
           />
           {/* Unit toggle */}
           <div className="flex bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded overflow-hidden text-xs">
-            <button type="button" onClick={() => onUnitChange('days')} className={`px-2 py-1 transition-colors ${unit === 'days' ? 'bg-bambu-green text-white' : 'text-bambu-gray hover:text-white'}`}>days</button>
+            <button type="button" onClick={() => onUnitChange('days')} className={`px-2 py-1 transition-colors ${unit === 'days' ? 'bg-bambu-green text-white' : 'text-bambu-gray hover:text-white'}`}>{translateSystemText("days")}</button>
             <button type="button" onClick={() => onUnitChange('g')} className={`px-2 py-1 transition-colors ${unit === 'g' ? 'bg-bambu-green text-white' : 'text-bambu-gray hover:text-white'}`}>g</button>
           </div>
           <button type="submit" disabled={isPending} className="px-2 py-1 bg-bambu-green text-white text-xs rounded hover:bg-bambu-green/80 disabled:opacity-50">{saveLabel}</button>
@@ -1729,7 +1730,7 @@ function CartLogisticsRow({
             : <Check className="w-4 h-4 text-bambu-green/60 flex-shrink-0" />
           }
           <span className="text-sm font-medium text-white truncate">{label}</span>
-          <span className="text-xs text-bambu-gray flex-shrink-0">{t('forecast.spoolCount', { count: item.quantity_spools })} ordered</span>
+          <span className="text-xs text-bambu-gray flex-shrink-0">{t('forecast.spoolCount', { count: item.quantity_spools })} {translateSystemText(" ordered")}</span>
         </div>
         {canWrite && (
           <button onClick={onRemove} className="p-1 text-bambu-gray hover:text-red-600 dark:hover:text-red-400 transition-colors flex-shrink-0">
@@ -1768,7 +1769,7 @@ function CartLogisticsRow({
             <div className="bg-bambu-dark-tertiary/40 rounded-lg px-2.5 py-2 text-center">
               <div className="text-xs text-bambu-gray mb-0.5">{t('forecast.leadTime')}</div>
               <div className="text-sm font-semibold text-white">{f.effectiveLeadTimeDays}d</div>
-              <div className="text-[10px] text-bambu-gray/60">max(g:{globalLeadTime}, sku:{f.settings?.lead_time_days ?? 0})</div>
+              <div className="text-[10px] text-bambu-gray/60">{translateSystemText("max(g:")}{globalLeadTime}{translateSystemText(", sku:")}{f.settings?.lead_time_days ?? 0})</div>
             </div>
             <div className="bg-bambu-dark-tertiary/40 rounded-lg px-2.5 py-2 text-center">
               <div className="text-xs text-bambu-gray mb-0.5">{t('forecast.safetyMarginLabel')}</div>
@@ -1984,7 +1985,7 @@ function AddToCartModal({
                 <div className="flex items-center gap-2 px-3 py-2 bg-bambu-dark-tertiary/50 rounded-lg">
                   <span className="text-xs text-bambu-gray">≈</span>
                   <span className="text-sm font-semibold text-bambu-green">{t('forecast.spoolCount', { count: spoolsForDuration ?? 0 })}</span>
-                  <span className="text-xs text-bambu-gray">at {f.dailyRateG.toFixed(1)}g/day</span>
+                  <span className="text-xs text-bambu-gray">at {f.dailyRateG.toFixed(1)}{translateSystemText("g/day")}</span>
                 </div>
               ) : (
                 <div className="text-xs text-yellow-700 dark:text-yellow-400 px-1">{t('forecast.noUsageQty')}</div>

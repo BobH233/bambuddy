@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, Download, Trash2 } from 'lucide-react';
 import { api } from '../api/client';
@@ -97,14 +98,13 @@ export function PhotoGalleryModal(props: PhotoGalleryModalProps) {
           <div>
             <h2 className="text-lg font-semibold text-white">{archiveName}</h2>
             <p className="text-sm text-bambu-gray">
-              Photo {currentIndex + 1} of {photos.length}
+              {translateSystemText("Photo ")}{currentIndex + 1} {translateSystemText(" of ")}{photos.length}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="secondary" size="sm" onClick={handleDownload}>
               <Download className="w-4 h-4" />
-              Download
-            </Button>
+              {translateSystemText("Download")}</Button>
             {onDelete && (
               <Button variant="secondary" size="sm" onClick={handleDelete} className="text-red-400 hover:text-red-300">
                 <Trash2 className="w-4 h-4" />
@@ -181,7 +181,7 @@ export function PhotoGalleryModal(props: PhotoGalleryModalProps) {
       {showDeleteConfirm && (
         <div onClick={(e) => e.stopPropagation()}>
           <ConfirmModal
-            title="Delete Photo"
+            title={translateSystemText("Delete Photo")}
             message="Delete this photo? This cannot be undone."
             confirmText="Delete"
             variant="danger"

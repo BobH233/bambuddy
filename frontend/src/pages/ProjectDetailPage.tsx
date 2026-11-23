@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useMemo } from 'react';
 import DOMPurify from 'dompurify';
 import { useParams, useNavigate, Link } from 'react-router-dom';
@@ -850,7 +851,7 @@ export function ProjectDetailPage() {
                       child.status === 'archived' ? 'bg-bambu-gray/20 text-bambu-gray' :
                       'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400'
                     }`}>
-                      {child.status}
+                      {translateSystemText(child.status)}
                     </span>
                     {/* A branch of its own, so its figures cover more than the
                         one project named on this row (#1264). */}

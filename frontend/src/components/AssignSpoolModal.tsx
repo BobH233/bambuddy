@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -542,9 +543,8 @@ export function AssignSpoolModal({ isOpen, onClose, printerId, amsId, trayId, tr
                     spool and the toggle is the right escape hatch. */}
                 {spools && (
                   <p className="text-[10px] mt-2 opacity-60">
-                    {spools.length} fetched · {spools.filter(s => s.archived_at).length} archived ·{' '}
-                    {spools.filter(s => assignedSpoolIds.has(s.id)).length} assigned to other slots
-                  </p>
+                    {spools.length} {translateSystemText(" fetched · ")}{spools.filter(s => s.archived_at).length} {translateSystemText(" archived ·")}{' '}
+                    {spools.filter(s => assignedSpoolIds.has(s.id)).length} {translateSystemText(" assigned to other slots")}</p>
                 )}
               </div>
             ) : (
@@ -552,8 +552,7 @@ export function AssignSpoolModal({ isOpen, onClose, printerId, amsId, trayId, tr
                 <p>{t('inventory.noSpoolsMatch')}</p>
                 {availableSpools && (
                   <p className="text-[10px] mt-2 opacity-60">
-                    {availableSpools.length} unassigned spools — {(availableSpools.length) - (filteredSpools?.length ?? 0)} filtered by tray match. Try "Show all spools".
-                  </p>
+                    {availableSpools.length} {translateSystemText(" unassigned spools — ")}{(availableSpools.length) - (filteredSpools?.length ?? 0)} {translateSystemText(" filtered by tray match. Try \"Show all spools\".")}</p>
                 )}
               </div>
             ))}

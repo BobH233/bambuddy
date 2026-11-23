@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -266,7 +267,7 @@ export function NotificationProviderCard({ provider, onEdit }: NotificationProvi
               ) : (
                 <XCircle className="w-4 h-4" />
               )}
-              <span>{testResult.message}</span>
+              <span>{translateSystemText(testResult.message)}</span>
             </div>
           )}
 

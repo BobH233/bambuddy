@@ -1,3 +1,4 @@
+import { CameraMedia } from './CameraMedia';
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, VideoOff, WifiOff } from 'lucide-react';
@@ -290,7 +291,8 @@ export function CameraTile({
           <span className="text-xs">{t('printers.camWall.noSignal')}</span>
         </div>
       ) : (
-        <img
+        <CameraMedia src={reopening || mode !== 'live' ? undefined : liveUrl} onLoad={() => { clearFirstFrameTimer(); renewalRef.current = 'none'; snapshotRetriedRef.current = false; }} onError={streamFailed} image={
+            <img
           ref={attachImg}
           key={`${mode}-${bust}`}
           alt={printerName}
@@ -313,6 +315,7 @@ export function CameraTile({
             streamFailed();
           }}
         />
+          } />
       )}
 
       {/* Status chip (top-left) */}

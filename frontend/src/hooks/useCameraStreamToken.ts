@@ -121,11 +121,12 @@ export function useStreamTokenSync() {
       rewriteMediaSrcWithToken(document, mediaTokenValue, cameraTokenValue);
     }
 
-    return () => {
-      setMediaToken(null);
-      setStreamToken(null);
-    };
   }, [mediaTokenValue, cameraTokenValue]);
+
+  useEffect(() => () => {
+    setMediaToken(null);
+    setStreamToken(null);
+  }, []);
 
   // Listen for image/video load errors on token-protected URLs.
   // When the backend restarts, in-memory tokens are lost and all

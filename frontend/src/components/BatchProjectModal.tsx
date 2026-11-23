@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -98,8 +99,7 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
             <div className="flex items-center gap-2">
               <FolderKanban className="w-5 h-5 text-bambu-green" />
               <h2 className="text-xl font-semibold text-white">
-                Assign to Project
-              </h2>
+                {translateSystemText("Assign to Project")}</h2>
             </div>
             <button
               onClick={onClose}
@@ -113,8 +113,7 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
           {/* Content */}
           <div className="p-4 space-y-3 overflow-y-auto min-h-0">
             <p className="text-sm text-bambu-gray">
-              Assign {selectedIds.length} selected archive{selectedIds.length !== 1 ? 's' : ''} to a project
-            </p>
+              {translateSystemText("Assign ")}{selectedIds.length} {translateSystemText(" selected archive")}{selectedIds.length !== 1 ? 's' : ''} {translateSystemText(" to a project")}</p>
 
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
@@ -132,8 +131,8 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
                     <XCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-white font-medium">Remove from project</p>
-                    <p className="text-sm text-bambu-gray truncate">Clear project assignment</p>
+                    <p className="text-white font-medium">{translateSystemText("Remove from project")}</p>
+                    <p className="text-sm text-bambu-gray truncate">{translateSystemText("Clear project assignment")}</p>
                   </div>
                   {removeMutation.isPending && (
                     <Loader2 className="w-4 h-4 animate-spin text-bambu-gray shrink-0" />
@@ -144,7 +143,7 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
                 {sortedProjects && sortedProjects.length > 0 && (
                   <div className="flex items-center gap-2 py-2">
                     <div className="flex-1 h-px bg-bambu-dark-tertiary" />
-                    <span className="text-xs text-bambu-gray">or assign to</span>
+                    <span className="text-xs text-bambu-gray">{translateSystemText("or assign to")}</span>
                     <div className="flex-1 h-px bg-bambu-dark-tertiary" />
                   </div>
                 )}
@@ -183,7 +182,7 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
                     <div className="min-w-0 flex-1">
                       <p className="text-white font-medium truncate">{project.name}</p>
                       <p className="text-sm text-bambu-gray truncate">
-                        {project.archive_count} archive{project.archive_count !== 1 ? 's' : ''}
+                        {project.archive_count} {translateSystemText(" archive")}{project.archive_count !== 1 ? 's' : ''}
                         {project.status && ` • ${project.status}`}
                       </p>
                     </div>
@@ -195,8 +194,7 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
 
                 {(!sortedProjects || sortedProjects.length === 0) && (
                   <p className="text-center text-bambu-gray py-4">
-                    No projects yet. Create one from the Projects page.
-                  </p>
+                    {translateSystemText("No projects yet. Create one from the Projects page.")}</p>
                 )}
 
                 {sortedProjects && sortedProjects.length > 0 && visibleProjects?.length === 0 && (
@@ -209,8 +207,7 @@ export function BatchProjectModal({ selectedIds, onClose }: BatchProjectModalPro
           {/* Footer */}
           <div className="flex gap-3 p-4 border-t border-bambu-dark-tertiary shrink-0">
             <Button variant="secondary" onClick={onClose} className="flex-1" disabled={isPending}>
-              Cancel
-            </Button>
+              {translateSystemText("Cancel")}</Button>
           </div>
         </CardContent>
       </Card>

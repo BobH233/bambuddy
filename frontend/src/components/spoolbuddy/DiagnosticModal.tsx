@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useState, useEffect, useCallback } from 'react';
 import { X, Play, RotateCw } from 'lucide-react';
 import { spoolbuddyApi } from '../../api/client';
@@ -97,7 +98,7 @@ export function DiagnosticModal({ type, deviceId, onClose }: DiagnosticModalProp
           <button
             onClick={onClose}
             className="text-zinc-400 hover:text-white transition-colors"
-            aria-label="Close"
+            aria-label={translateSystemText("Close")}
           >
             <X size={20} />
           </button>
@@ -123,7 +124,7 @@ export function DiagnosticModal({ type, deviceId, onClose }: DiagnosticModalProp
           ) : hasRun ? (
             <div>
               {error ? (
-                <div className="text-red-400">ERROR: {error}</div>
+                <div className="text-red-400">{translateSystemText("ERROR: ")}{error}</div>
               ) : (
                 <span className="text-green-400">{t('spoolbuddy.diagnostic.completed', 'Diagnostic completed successfully.')}</span>
               )}

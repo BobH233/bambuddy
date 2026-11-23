@@ -1,3 +1,5 @@
+import { CameraMedia } from '../components/CameraMedia';
+import { translateSystemText } from '../utils/displayText';
 import { useEffect, useMemo, useRef } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -92,7 +94,7 @@ function parseConfig(params: URLSearchParams): OverlayConfig {
 // Accepts the minimal shape shared by PrinterStatus (logged-in path) and the
 // token-authed OverlayStatus (kiosk path) — both carry state + stg_cur_name.
 function getStatusText(status: { state: string | null; stg_cur_name?: string | null }, t: TFunction): string {
-  if (status.stg_cur_name) return status.stg_cur_name;
+  if (status.stg_cur_name) return translateSystemText(status.stg_cur_name);
 
   switch (status.state) {
     case 'RUNNING': return t('streamOverlay.status.printing');
@@ -100,6 +102,7 @@ function getStatusText(status: { state: string | null; stg_cur_name?: string | n
     case 'FINISH': return t('streamOverlay.status.finished');
     case 'FAILED': return t('streamOverlay.status.failed');
     case 'IDLE': return t('streamOverlay.status.idle');
+    case 'PREPARE': return translateSystemText('Preparing');
     default: return status.state || t('streamOverlay.status.unknown');
   }
 }
@@ -455,6 +458,7 @@ export function StreamOverlayPage() {
     <div ref={artworkRef} className="classic-overlay min-h-screen bg-black relative overflow-hidden" data-layout={config.layout ?? undefined} data-size={config.size}>
       {/* Camera feed - fullscreen background (optional) */}
       {config.showCamera && (
+        <CameraMedia src={closing ? undefined : streamUrl} onError={() => handleStreamError()} image={
         <img
           ref={attachImg}
           key={imageKey}
@@ -473,6 +477,7 @@ export function StreamOverlayPage() {
           } : rotation ? { transform: `rotate(${rotation}deg)` } : undefined}
           onError={handleStreamError}
         />
+        } />
       )}
 
       {/* Channel branding above the Bambuddy mark. */}

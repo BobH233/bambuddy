@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -80,7 +81,7 @@ export function LinkSpoolModal({ isOpen, onClose, tagUid, trayUuid, printerId, a
               {t('spoolman.selectSpool')}
             </h3>
             <p className="text-xs text-bambu-gray mt-1">
-              AMS {amsId} T{trayId} &middot; Printer #{printerId}
+              AMS {amsId} T{trayId} {translateSystemText(" &middot; Printer #")}{printerId}
             </p>
           </div>
           <button onClick={onClose} className="p-1 text-bambu-gray hover:text-white rounded transition-colors">
@@ -102,7 +103,7 @@ export function LinkSpoolModal({ isOpen, onClose, tagUid, trayUuid, printerId, a
           </div>
           {(trayUuid || tagUid) && (
             <p className="text-xs text-bambu-gray mt-2 font-mono truncate" title={trayUuid || tagUid}>
-              Tag: {trayUuid || tagUid}
+              {translateSystemText("Tag: ")}{trayUuid || tagUid}
             </p>
           )}
         </div>

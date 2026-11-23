@@ -36,8 +36,8 @@ export function useOverlayCameraRecovery(enabled: boolean) {
     if (!enabled) return;
     // Start a fresh deadline after each retry so a newly opened connection
     // isn't immediately replaced by the previous connection's renewal timer.
-    const closeTimer = setTimeout(close, STREAM_RENEWAL_MS - RENEWAL_GAP_MS);
-    const renewalTimer = setTimeout(renew, STREAM_RENEWAL_MS);
+    const closeTimer = setTimeout(() => { if (imgRef.current) close(); }, STREAM_RENEWAL_MS - RENEWAL_GAP_MS);
+    const renewalTimer = setTimeout(() => { if (imgRef.current) renew(); }, STREAM_RENEWAL_MS);
     return () => {
       clearTimeout(closeTimer);
       clearTimeout(renewalTimer);

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -105,8 +106,7 @@ function PrinterFileViewerModal({ printerId, filePath, filename, onClose }: Prin
             }`}
           >
             <Box className="w-4 h-4" />
-            3D Model
-            {!hasModel && <span className="text-xs">(not available)</span>}
+            {translateSystemText("3D Model")}{!hasModel && <span className="text-xs">{translateSystemText("(not available)")}</span>}
           </button>
           <button
             onClick={() => hasGcode && setActiveTab('gcode')}
@@ -120,8 +120,7 @@ function PrinterFileViewerModal({ printerId, filePath, filename, onClose }: Prin
             }`}
           >
             <FileText className="w-4 h-4" />
-            G-code Preview
-            {!hasGcode && <span className="text-xs">(not sliced)</span>}
+            {translateSystemText("G-code Preview")}{!hasGcode && <span className="text-xs">{translateSystemText("(not sliced)")}</span>}
           </button>
         </div>
 
@@ -132,8 +131,7 @@ function PrinterFileViewerModal({ printerId, filePath, filename, onClose }: Prin
                 <div className="rounded-lg border border-bambu-dark-tertiary bg-bambu-dark p-3">
                   <div className="flex items-center gap-2 text-sm text-bambu-gray mb-2">
                     <Box className="w-4 h-4" />
-                    Plates
-                    {platesLoading && <Loader2 className="w-3 h-3 animate-spin" />}
+                    {translateSystemText("Plates")}{platesLoading && <Loader2 className="w-3 h-3 animate-spin" />}
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     <button
@@ -149,9 +147,9 @@ function PrinterFileViewerModal({ printerId, filePath, filename, onClose }: Prin
                         <Box className="w-5 h-5 text-bambu-gray" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm text-white font-medium truncate">All Plates</p>
+                        <p className="text-sm text-white font-medium truncate">{translateSystemText("All Plates")}</p>
                         <p className="text-xs text-bambu-gray truncate">
-                          {plates.length} plate{plates.length !== 1 ? 's' : ''}
+                          {plates.length} {translateSystemText(" plate")}{plates.length !== 1 ? 's' : ''}
                         </p>
                       </div>
                       {selectedPlateId == null && (
@@ -198,15 +196,15 @@ function PrinterFileViewerModal({ printerId, filePath, filename, onClose }: Prin
                   </div>
                   {selectedPlate && (
                     <div className="mt-3 text-xs text-bambu-gray flex flex-wrap gap-x-4 gap-y-1">
-                      <span>Plate {selectedPlate.index}</span>
+                      <span>{translateSystemText("Plate ")}{selectedPlate.index}</span>
                       {selectedPlate.print_time_seconds != null && (
-                        <span>ETA {Math.round(selectedPlate.print_time_seconds / 60)} min</span>
+                        <span>{translateSystemText("ETA ")}{Math.round(selectedPlate.print_time_seconds / 60)} {translateSystemText(" min")}</span>
                       )}
                       {selectedPlate.filament_used_grams != null && (
                         <span>{selectedPlate.filament_used_grams.toFixed(1)} g</span>
                       )}
                       {selectedPlate.filaments.length > 0 && (
-                        <span>{selectedPlate.filaments.length} filament{selectedPlate.filaments.length !== 1 ? 's' : ''}</span>
+                        <span>{selectedPlate.filaments.length} {translateSystemText(" filament")}{selectedPlate.filaments.length !== 1 ? 's' : ''}</span>
                       )}
                     </div>
                   )}
@@ -228,8 +226,7 @@ function PrinterFileViewerModal({ printerId, filePath, filename, onClose }: Prin
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-bambu-gray">
-              No preview available for this file
-            </div>
+              {translateSystemText("No preview available for this file")}</div>
           )}
         </div>
       </div>
@@ -493,10 +490,10 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
 
   // Quick navigation buttons for common directories
   const quickDirs = [
-    { path: '/', label: 'Root' },
+    { path: '/', label: translateSystemText("Root") },
     { path: '/cache', label: 'Cache' },
     { path: '/model', label: 'Models' },
-    { path: '/timelapse', label: 'Timelapse' },
+    { path: '/timelapse', label: translateSystemText("Timelapse") },
   ];
 
   return (
@@ -535,8 +532,8 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
               <button
                 onClick={onClose}
                 className="text-bambu-gray hover:text-white transition-colors"
-                title="Close file manager"
-                aria-label="Close file manager"
+                title={translateSystemText("Close file manager")}
+                aria-label={translateSystemText("Close file manager")}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -578,8 +575,8 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="appearance-none bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white text-sm py-1.5 pl-2 pr-6 focus:border-bambu-green focus:outline-none cursor-pointer"
-              title="Sort files"
-              aria-label="Sort files"
+              title={translateSystemText("Sort files")}
+              aria-label={translateSystemText("Sort files")}
             >
               {SORT_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -606,8 +603,8 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
               onClick={navigateUp}
               disabled={currentPath === '/'}
               className="p-1 rounded hover:bg-bambu-dark-tertiary disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Go to parent folder"
-              aria-label="Go to parent folder"
+              title={translateSystemText("Go to parent folder")}
+              aria-label={translateSystemText("Go to parent folder")}
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -689,7 +686,7 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
                                   setViewerFile({ path: file.path, name: file.name });
                                 }}
                                 className="p-1 rounded hover:bg-bambu-dark text-bambu-gray hover:text-bambu-green"
-                                title="3D View"
+                                title={translateSystemText("3D View")}
                               >
                                 <Box className="w-4 h-4" />
                               </button>
@@ -726,16 +723,14 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
                     className="flex items-center gap-1 text-xs text-bambu-gray hover:text-white transition-colors"
                   >
                     <MinusSquare className="w-4 h-4" />
-                    Deselect All
-                  </button>
+                    {translateSystemText("Deselect All")}</button>
                 ) : (
                   <button
                     onClick={selectAllFiles}
                     className="flex items-center gap-1 text-xs text-bambu-gray hover:text-white transition-colors"
                   >
                     <CheckSquare className="w-4 h-4" />
-                    Select All
-                  </button>
+                    {translateSystemText("Select All")}</button>
                 )}
               </div>
             )}
@@ -754,7 +749,7 @@ export function FileManagerModal({ printerId, printerName, onClose }: FileManage
               ) : (
                 <>
                   <Download className="w-4 h-4" />
-                  Download{selectedFiles.size > 1 ? ` (${selectedFiles.size})` : ''}
+                  {translateSystemText("Download")}{selectedFiles.size > 1 ? ` (${selectedFiles.size})` : ''}
                 </>
               )}
             </Button>

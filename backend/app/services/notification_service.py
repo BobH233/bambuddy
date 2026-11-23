@@ -346,6 +346,10 @@ class NotificationService:
         variables["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         variables["app_name"] = "Bambuddy"
 
+        from backend.app.services.localization import notification_values
+
+        notification_values(variables)
+
         template = await self._get_template(db, event_type)
         if not template:
             # Fallback to simple message
@@ -1195,7 +1199,9 @@ class NotificationService:
                         data[key] = value
 
         # Attach base64-encoded image when available (generic format only)
-        if image_data and payload_format != "slack":
+        if image_url and payload_format != "slack":
+            data["image_url"] = image_url
+        if image_data and payload_format != "slack" and not config.get("photo_as_url"):
             import base64
 
             data["image"] = base64.b64encode(image_data).decode("ascii")
@@ -1515,10 +1521,10 @@ class NotificationService:
             elif provider.provider_type == "discord":
                 return await self._send_discord(config, title, message, image_data=image_data)
             elif provider.provider_type == "webhook":
-                # Only Slack format needs a URL — generic format gets the
-                # base64 image field instead.
                 photo_url = None
-                if provider.attach_photo and (config.get("payload_format") or "generic").strip() == "slack":
+                if provider.attach_photo and (
+                    (config.get("payload_format") or "generic").strip() == "slack" or config.get("photo_as_url")
+                ):
                     photo_url = await self._get_or_build_photo_url(db, image_data, event_type, photo_cache)
                 return await self._send_webhook(
                     config,

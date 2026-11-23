@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertCircle, AlertTriangle, Layers, Loader2, Pencil, Printer, ThumbsUp, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -1852,7 +1853,7 @@ export function PrintModal({
           <form onSubmit={handleSubmit} className="p-4 space-y-4">
             {/* Archive name */}
             <p className="text-sm text-bambu-gray">
-              <span className="block text-bambu-gray mb-1">Print Job</span>
+              <span className="block text-bambu-gray mb-1">{translateSystemText("Print Job")}</span>
               <span className="text-white font-medium truncate block">{archiveName}</span>
             </p>
 
@@ -2018,7 +2019,7 @@ export function PrintModal({
                   <div className="p-3 mb-2 bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-300 dark:border-yellow-500/30 rounded-lg flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
                     <span className="text-sm text-yellow-700 dark:text-yellow-400">
-                      File was sliced for {slicedForModel}, but printing on {selectedPrinter.model}
+                      {translateSystemText("File was sliced for ")}{slicedForModel}{translateSystemText(", but printing on ")}{selectedPrinter.model}
                     </span>
                   </div>
                 );
@@ -2031,8 +2032,7 @@ export function PrintModal({
               <div className="flex items-start gap-2 p-3 mb-2 bg-orange-50 dark:bg-orange-500/10 border border-orange-300 dark:border-orange-500/30 rounded-lg text-sm">
                 <AlertCircle className="w-4 h-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
                 <p className="text-orange-700 dark:text-orange-400">
-                  Archive data unavailable. The source file may have been deleted. Filament mapping is disabled.
-                </p>
+                  {translateSystemText("Archive data unavailable. The source file may have been deleted. Filament mapping is disabled.")}</p>
               </div>
             )}
 
@@ -2232,8 +2232,7 @@ export function PrintModal({
             {/* Actions */}
             <div className="flex gap-3 pt-2">
               <Button type="button" variant="secondary" onClick={onClose} className="flex-1" disabled={isSubmitting}>
-                Cancel
-              </Button>
+                {translateSystemText("Cancel")}</Button>
               <Button
                 type="submit"
                 disabled={!canSubmit}

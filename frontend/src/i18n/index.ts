@@ -2,6 +2,7 @@ import i18n, { type BackendModule, type ResourceLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { recoverFromMissingChunk } from '../utils/lazyPage';
+import { withLabChinese } from './labChinese';
 
 // English is bundled: it is the fallback for every missing key. The other
 // languages are separate files, and only the one in use is loaded (#3175).
@@ -38,7 +39,7 @@ export const localeBackend: BackendModule = {
       return;
     }
     load().then(
-      (module) => callback(null, module.default),
+      (module) => callback(null, language === 'zh-CN' ? withLabChinese(module.default) : module.default),
       (error) => {
         // A tab from before an update asks for a file the update deleted.
         void recoverFromMissingChunk().then((reloading) => {
@@ -61,12 +62,12 @@ export const i18nReady = i18n
     resources: { en: { translation: en } },
     // Load every other language through localeBackend.
     partialBundledLanguages: true,
-    fallbackLng: 'en',
+    fallbackLng: 'zh-CN',
     supportedLngs: SUPPORTED_LNGS,
 
     detection: {
       // Order of detection methods
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ['localStorage', 'htmlTag', 'navigator'],
       // Key to use in localStorage
       lookupLocalStorage: 'bambutrack_language',
       // Cache user language

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { X, Check, AlertTriangle, Loader2 } from 'lucide-react';
@@ -31,7 +32,7 @@ export function CompareArchivesModal({ archiveIds, onClose }: CompareArchivesMod
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-bambu-dark-tertiary">
           <h3 className="text-lg font-semibold text-white">
-            Compare Archives ({archiveIds.length})
+            {translateSystemText("Compare Archives (")}{archiveIds.length})
           </h3>
           <button
             onClick={onClose}
@@ -50,9 +51,9 @@ export function CompareArchivesModal({ archiveIds, onClose }: CompareArchivesMod
           ) : error ? (
             <div className="text-center py-12 text-red-700 dark:text-red-400">
               <AlertTriangle className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Failed to load comparison</p>
+              <p>{translateSystemText("Failed to load comparison")}</p>
               <p className="text-sm text-bambu-gray mt-2">
-                {error instanceof Error ? error.message : 'Unknown error'}
+                {error instanceof Error ? error.message : translateSystemText("Unknown error")}
               </p>
             </div>
           ) : comparison ? (
@@ -63,8 +64,7 @@ export function CompareArchivesModal({ archiveIds, onClose }: CompareArchivesMod
         {/* Footer */}
         <div className="p-4 border-t border-bambu-dark-tertiary">
           <Button variant="secondary" onClick={onClose} className="w-full">
-            Close
-          </Button>
+            {translateSystemText("Close")}</Button>
         </div>
       </div>
     </div>
@@ -80,8 +80,7 @@ function ComparisonContent({ comparison }: { comparison: ArchiveComparison }) {
           <thead>
             <tr>
               <th className="text-left text-sm text-bambu-gray font-medium pb-2 pr-4 min-w-[150px]">
-                Setting
-              </th>
+                {translateSystemText("Setting")}</th>
               {comparison.archives.map((archive) => (
                 <th
                   key={archive.id}
@@ -135,8 +134,7 @@ function ComparisonContent({ comparison }: { comparison: ArchiveComparison }) {
         <div className="p-4 bg-yellow-50 border border-yellow-300 dark:bg-yellow-500/10 dark:border-yellow-500/30 rounded-lg">
           <h4 className="text-sm font-medium text-yellow-700 dark:text-yellow-400 mb-2 flex items-center gap-2">
             <AlertTriangle className="w-4 h-4" />
-            {comparison.differences.length} Difference{comparison.differences.length > 1 ? 's' : ''} Found
-          </h4>
+            {comparison.differences.length} {translateSystemText(" Difference")}{comparison.differences.length > 1 ? 's' : ''} {translateSystemText(" Found")}</h4>
           <ul className="text-sm text-white/80 space-y-1">
             {comparison.differences.slice(0, 5).map((diff) => (
               <li key={diff.field}>
@@ -145,8 +143,7 @@ function ComparisonContent({ comparison }: { comparison: ArchiveComparison }) {
             ))}
             {comparison.differences.length > 5 && (
               <li className="text-bambu-gray">
-                ...and {comparison.differences.length - 5} more
-              </li>
+                {translateSystemText("...and ")}{comparison.differences.length - 5} {translateSystemText(" more")}</li>
             )}
           </ul>
         </div>
@@ -157,15 +154,12 @@ function ComparisonContent({ comparison }: { comparison: ArchiveComparison }) {
         <div className="p-4 bg-bambu-dark rounded-lg">
           <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
             <Check className="w-4 h-4 text-bambu-green" />
-            Success/Failure Analysis
-          </h4>
+            {translateSystemText("Success/Failure Analysis")}</h4>
           <div className="flex items-center gap-4 text-sm mb-3">
             <span className="text-bambu-green">
-              {comparison.success_correlation.successful_count} successful
-            </span>
+              {comparison.success_correlation.successful_count} {translateSystemText(" successful")}</span>
             <span className="text-red-700 dark:text-red-400">
-              {comparison.success_correlation.failed_count} failed
-            </span>
+              {comparison.success_correlation.failed_count} {translateSystemText(" failed")}</span>
           </div>
           {comparison.success_correlation.insights && comparison.success_correlation.insights.length > 0 ? (
             <div className="space-y-2">
@@ -177,7 +171,7 @@ function ComparisonContent({ comparison }: { comparison: ArchiveComparison }) {
               ))}
             </div>
           ) : (
-            <p className="text-sm text-bambu-gray">No clear correlations found between settings and outcomes.</p>
+            <p className="text-sm text-bambu-gray">{translateSystemText("No clear correlations found between settings and outcomes.")}</p>
           )}
         </div>
       ) : (

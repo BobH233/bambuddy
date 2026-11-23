@@ -59,6 +59,8 @@ _db_path = _migrate_database() if not _external_db_url else None
 class Settings(BaseSettings):
     app_name: str = "Bambuddy"
     debug: bool = False  # Default to production mode
+    camera_hls_enabled: bool = False
+    updates_disabled: bool = False
 
     # Paths
     base_dir: Path = _data_dir  # For backwards compatibility

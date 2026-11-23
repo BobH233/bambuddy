@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useMemo, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -96,39 +97,39 @@ function materialNumberSortKey(value: string | null): string {
 
 const DEFAULT_COLUMNS: ColumnConfig[] = [
   { id: 'id', label: '#', visible: true },
-  { id: 'added_time', label: 'Added', visible: true },
+  { id: 'added_time', label: translateSystemText("Added"), visible: true },
   { id: 'encode_time', label: 'Encoded', visible: false },
   { id: 'last_used_time', label: 'Last Used', visible: false },
-  { id: 'rgba', label: 'Color', visible: true },
-  { id: 'material', label: 'Material', visible: true },
-  { id: 'subtype', label: 'Subtype', visible: true },
-  { id: 'color_name', label: 'Color Name', visible: false },
-  { id: 'brand', label: 'Brand', visible: true },
-  { id: 'slicer_filament', label: 'Slicer Filament', visible: false },
-  { id: 'location', label: 'Location', visible: true },
-  { id: 'storage_location', label: 'Storage Location', visible: false },
-  { id: 'temperature', label: 'Temperature', visible: false },
-  { id: 'humidity', label: 'Humidity', visible: false },
+  { id: 'rgba', label: translateSystemText("Color"), visible: true },
+  { id: 'material', label: translateSystemText("Material"), visible: true },
+  { id: 'subtype', label: translateSystemText("Subtype"), visible: true },
+  { id: 'color_name', label: translateSystemText("Color Name"), visible: false },
+  { id: 'brand', label: translateSystemText("Brand"), visible: true },
+  { id: 'slicer_filament', label: translateSystemText("Slicer Filament"), visible: false },
+  { id: 'location', label: translateSystemText("Location"), visible: true },
+  { id: 'storage_location', label: translateSystemText("Storage Location"), visible: false },
+  { id: 'temperature', label: translateSystemText("Temperature"), visible: false },
+  { id: 'humidity', label: translateSystemText("Humidity"), visible: false },
   { id: 'last_dried', label: 'Last Dried', visible: true },
-  { id: 'battery', label: 'Battery', visible: false },
-  { id: 'label_weight', label: 'Label', visible: true },
-  { id: 'net', label: 'Net', visible: true },
+  { id: 'battery', label: translateSystemText("Battery"), visible: false },
+  { id: 'label_weight', label: translateSystemText("Label"), visible: true },
+  { id: 'net', label: translateSystemText("Net"), visible: true },
   { id: 'gross', label: 'Gross', visible: false },
-  { id: 'used', label: 'Used', visible: false },
+  { id: 'used', label: translateSystemText("Used"), visible: false },
   { id: 'printed_total', label: 'Printed Total', visible: false },
   { id: 'printed_since_weight', label: 'Printed Since Weight', visible: false },
-  { id: 'note', label: 'Note', visible: false },
-  { id: 'material_number', label: 'Material No.', visible: false },
-  { id: 'suppliers', label: 'Suppliers', visible: false },
+  { id: 'note', label: translateSystemText("Note"), visible: false },
+  { id: 'material_number', label: translateSystemText("Material No."), visible: false },
+  { id: 'suppliers', label: translateSystemText("Suppliers"), visible: false },
   { id: 'pa_k', label: 'PA(K)', visible: true },
   { id: 'tag_id', label: 'Tag ID', visible: false },
   { id: 'data_origin', label: 'Data Origin', visible: false },
   { id: 'tag_type', label: 'Linked Tag Type', visible: false },
-  { id: 'stock', label: 'Stock', visible: false },
-  { id: 'remaining', label: 'Remaining', visible: true },
-  { id: 'spool_name', label: 'Spool', visible: false },
-  { id: 'cost_per_kg', label: 'Cost/kg', visible: false },
-  { id: 'weight_check', label: 'Weight Check', visible: false },
+  { id: 'stock', label: translateSystemText("Stock"), visible: false },
+  { id: 'remaining', label: translateSystemText("Remaining"), visible: true },
+  { id: 'spool_name', label: translateSystemText("Spool"), visible: false },
+  { id: 'cost_per_kg', label: translateSystemText("Cost/kg"), visible: false },
+  { id: 'weight_check', label: translateSystemText("Weight Check"), visible: false },
 ];
 
 function loadColumnConfig(): ColumnConfig[] {
@@ -440,8 +441,7 @@ const columnCells: Record<string, (ctx: CellCtx) => ReactNode> = {
     if (count === 0) return <span className="text-sm text-bambu-gray">-</span>;
     return (
       <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-bambu-green/20 text-bambu-green">
-        K
-      </span>
+        {translateSystemText("K")}</span>
     );
   },
   tag_id: ({ spool }) => {
@@ -497,7 +497,7 @@ const columnCells: Record<string, (ctx: CellCtx) => ReactNode> = {
   },
   weight_check: ({ spool, onSyncWeight }) => {
     const scaleWeight = spool.last_scale_weight;
-    if (scaleWeight == null) return <span className="text-sm text-bambu-gray/50" title="No scale measurement">-</span>;
+    if (scaleWeight == null) return <span className="text-sm text-bambu-gray/50" title={translateSystemText("No scale measurement")}>-</span>;
 
     const coreWeight = spool.core_weight || 0;
     const calculatedWeight = Math.max(0, spool.label_weight - spool.weight_used) + coreWeight;
@@ -538,7 +538,7 @@ const columnCells: Record<string, (ctx: CellCtx) => ReactNode> = {
                   onSyncWeight(spool);
                 }}
                 className="p-1 hover:bg-bambu-green/20 rounded transition-colors text-bambu-green"
-                title="Sync: trust scale weight and reset tracking"
+                title={translateSystemText("Sync: trust scale weight and reset tracking")}
               >
                 <RefreshCw className="w-3.5 h-3.5" />
               </button>
@@ -2555,7 +2555,7 @@ function InventoryPage({ spoolmanMode = false, spoolmanModeReady = true }: { spo
                       onClick={() => setPageIndex(0)}
                       disabled={safePageIndex === 0}
                       className="p-1.5 rounded text-bambu-gray hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      title="First page"
+                      title={translateSystemText("First page")}
                     >
                       <ChevronsLeft className="w-4 h-4" />
                     </button>
@@ -2580,7 +2580,7 @@ function InventoryPage({ spoolmanMode = false, spoolmanModeReady = true }: { spo
                       onClick={() => setPageIndex(totalPages - 1)}
                       disabled={safePageIndex >= totalPages - 1}
                       className="p-1.5 rounded text-bambu-gray hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      title="Last page"
+                      title={translateSystemText("Last page")}
                     >
                       <ChevronsRight className="w-4 h-4" />
                     </button>

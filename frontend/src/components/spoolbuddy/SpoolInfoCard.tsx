@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, AlertTriangle, RefreshCw, Unlink } from 'lucide-react';
@@ -272,7 +273,7 @@ export function UnknownTagCard({ tagUid, scaleWeight, coreWeight, tagData, onLin
         <div className="text-sm text-zinc-400">
           <span className="font-mono font-semibold">{grossWeight}g</span> {t('spoolbuddy.dashboard.onScale', 'on scale')}
           {estimatedRemaining !== null && estimatedRemaining > 0 && (
-            <span className="text-zinc-500"> &bull; ~{estimatedRemaining}g filament</span>
+            <span className="text-zinc-500"> &bull; ~{estimatedRemaining}{translateSystemText("g filament")}</span>
           )}
         </div>
       )}

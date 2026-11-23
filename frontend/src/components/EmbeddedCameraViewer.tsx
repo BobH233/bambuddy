@@ -1,3 +1,5 @@
+import { translateSystemText } from '../utils/displayText';
+import { CameraMedia } from './CameraMedia';
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -109,6 +111,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
   // Stream state
   const [streamError, setStreamError] = useState(false);
   const [streamLoading, setStreamLoading] = useState(true);
+  const [transport, setTransport] = useState<'hls' | 'mjpeg' | null>(null);
   const [imageKey, setImageKey] = useState(Date.now());
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const [isReconnecting, setIsReconnecting] = useState(false);
@@ -164,7 +167,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
       return { previousStatus };
     },
     onSuccess: (_, on) => {
-      showToast(`Chamber light ${on ? 'on' : 'off'}`);
+      showToast(translateSystemText(`Chamber light ${on ? 'on' : 'off'}`));
     },
     onError: (error: Error, _, context) => {
       if (context?.previousStatus) {
@@ -210,11 +213,11 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
 
   // Auto-hide loading after timeout
   useEffect(() => {
-    if (streamLoading) {
+    if (streamLoading && transport === 'mjpeg') {
       const timer = setTimeout(() => setStreamLoading(false), 3000);
       return () => clearTimeout(timer);
     }
-  }, [streamLoading, imageKey]);
+  }, [streamLoading, imageKey, transport]);
 
   // Auto-reconnect logic
   const attemptReconnect = useCallback(() => {
@@ -254,7 +257,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
 
   // Stall detection
   useEffect(() => {
-    if (streamLoading || isReconnecting || isMinimized) {
+    if (streamLoading || isReconnecting || isMinimized || transport === 'hls') {
       if (stallCheckIntervalRef.current) {
         clearInterval(stallCheckIntervalRef.current);
         stallCheckIntervalRef.current = null;
@@ -284,7 +287,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
         stallCheckIntervalRef.current = null;
       }
     };
-  }, [streamLoading, streamError, isReconnecting, isMinimized, printerId, attemptReconnect]);
+  }, [streamLoading, streamError, isReconnecting, isMinimized, printerId, attemptReconnect, transport]);
 
   // Fullscreen change listener
   useEffect(() => {
@@ -457,9 +460,9 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
     setPanOffset({ x: 0, y: 0 });
   };
 
-  const handleStreamError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleStreamError = (e?: React.SyntheticEvent<HTMLImageElement>) => {
     // Clearing the src (reconnect, Refresh) fires error with an empty src.
-    if (!e.currentTarget.getAttribute('src')) return;
+    if (e && !e.currentTarget.getAttribute('src')) return;
     setStreamLoading(false);
     if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
       attemptReconnect();
@@ -637,7 +640,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
             onClick={refresh}
             disabled={streamLoading || isReconnecting}
             className="p-1 hover:bg-bambu-dark-tertiary rounded disabled:opacity-50"
-            title="Refresh stream"
+            title={translateSystemText("Refresh stream")}
           >
             <RefreshCw className={`w-3.5 h-3.5 text-bambu-gray ${streamLoading ? 'animate-spin' : ''}`} />
           </button>
@@ -651,7 +654,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
           <button
             onClick={toggleFullscreen}
             className="p-1 hover:bg-bambu-dark-tertiary rounded"
-            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+            title={isFullscreen ? translateSystemText("Exit fullscreen") : translateSystemText("Fullscreen")}
           >
             {isFullscreen ? (
               <Minimize className="w-3.5 h-3.5 text-bambu-gray" />
@@ -676,7 +679,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
           <button
             onClick={() => setIsMinimized(!isMinimized)}
             className="p-1 hover:bg-bambu-dark-tertiary rounded"
-            title={isMinimized ? 'Expand' : 'Minimize'}
+            title={translateSystemText(isMinimized ? 'Expand' : 'Minimize')}
           >
             {isMinimized ? (
               <Maximize2 className="w-3.5 h-3.5 text-bambu-gray" />
@@ -687,7 +690,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
           <button
             onClick={onClose}
             className="p-1 hover:bg-red-500/20 rounded"
-            title="Close"
+            title={translateSystemText("Close")}
           >
             <X className="w-3.5 h-3.5 text-bambu-gray hover:text-red-600 dark:hover:text-red-400" />
           </button>
@@ -718,7 +721,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
               <div className="text-center p-2">
                 <WifiOff className="w-6 h-6 text-orange-400 mx-auto mb-2" />
                 <p className="text-xs text-bambu-gray">
-                  Reconnecting in {reconnectCountdown}s...
+                  {t('camera.reconnecting', { countdown: reconnectCountdown, attempt: reconnectAttempts + 1, max: MAX_RECONNECT_ATTEMPTS })}
                 </p>
               </div>
             </div>
@@ -745,10 +748,11 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
               </div>
             </div>
           )}
-          <img
+          <CameraMedia onTransport={setTransport} onMouseDown={handleImageMouseDown} src={streamUrl} onLoad={handleStreamLoad} onError={() => handleStreamError()} image={
+            <img
             ref={attachImg}
             key={imageKey}
-            alt="Camera stream"
+            alt={translateSystemText("Camera stream")}
             className="max-w-full max-h-full object-contain select-none"
             style={{
               transform: `scale(${zoomLevel}) translate(${panOffset.x / zoomLevel}px, ${panOffset.y / zoomLevel}px) rotate(${printer?.camera_rotation || 0}deg)`,
@@ -764,6 +768,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
             onMouseDown={handleImageMouseDown}
             draggable={false}
           />
+          } />
 
           {/* Zoom controls */}
           <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/60 rounded px-1.5 py-1 no-drag">
@@ -771,14 +776,14 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
               onClick={handleZoomOut}
               disabled={zoomLevel <= 1}
               className="p-1 hover:bg-white/10 rounded disabled:opacity-30"
-              title="Zoom out"
+              title={translateSystemText("Zoom out")}
             >
               <ZoomOut className="w-3.5 h-3.5 text-white" />
             </button>
             <button
               onClick={resetZoom}
               className="px-1.5 py-0.5 text-xs text-white hover:bg-white/10 rounded min-w-[32px]"
-              title="Reset zoom"
+              title={translateSystemText("Reset zoom")}
             >
               {Math.round(zoomLevel * 100)}%
             </button>
@@ -786,7 +791,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
               onClick={handleZoomIn}
               disabled={zoomLevel >= 4}
               className="p-1 hover:bg-white/10 rounded disabled:opacity-30"
-              title="Zoom in"
+              title={translateSystemText("Zoom in")}
             >
               <ZoomIn className="w-3.5 h-3.5 text-white" />
             </button>
@@ -798,7 +803,7 @@ export function EmbeddedCameraViewer({ printerId, printerName, viewerIndex = 0, 
               className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize no-drag hover:bg-white/10 rounded-tl transition-colors"
               onMouseDown={handleResizeMouseDown}
               onTouchStart={handleResizeTouchStart}
-              title="Drag to resize"
+              title={translateSystemText("Drag to resize")}
             >
               <svg
                 className="w-6 h-6 text-bambu-gray/70 hover:text-bambu-gray"

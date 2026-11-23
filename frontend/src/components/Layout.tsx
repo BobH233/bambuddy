@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { Suspense, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { PageLoading } from './PageLoading';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
@@ -622,7 +623,7 @@ export function Layout() {
           <button
             onClick={() => setMobileDrawerOpen(true)}
             className="p-2 -ml-2 rounded-lg hover:bg-bambu-dark-tertiary transition-colors"
-            aria-label="Open menu"
+            aria-label={translateSystemText("Open menu")}
           >
             <Menu className="w-6 h-6 text-white" />
           </button>
@@ -884,7 +885,7 @@ export function Layout() {
                 ) : (
                   <span
                     className="p-2 rounded-lg text-bambu-gray/50 cursor-not-allowed"
-                    title="You do not have permission to view system information"
+                    title={translateSystemText("You do not have permission to view system information")}
                   >
                     <Info className="w-5 h-5" />
                   </span>
@@ -1006,7 +1007,7 @@ export function Layout() {
               ) : (
                 <span
                   className="p-2 rounded-lg text-bambu-gray/50 cursor-not-allowed"
-                  title="You do not have permission to view system information"
+                  title={translateSystemText("You do not have permission to view system information")}
                 >
                   <Info className="w-5 h-5" />
                 </span>

@@ -1,3 +1,4 @@
+import { printerStatusText, translateSystemText } from '../../utils/displayText';
 import { useState, useMemo } from 'react';
 import { useQueryClient, useQueries } from '@tanstack/react-query';
 import {
@@ -142,7 +143,7 @@ function InlineMappingEditor({
   return (
     <div className="mt-2 bg-bambu-dark rounded-lg p-3 space-y-2">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-bambu-gray">Custom slot mapping</span>
+        <span className="text-xs text-bambu-gray">{translateSystemText("Custom slot mapping")}</span>
         <button
           type="button"
           onClick={handleRefresh}
@@ -150,7 +151,7 @@ function InlineMappingEditor({
           disabled={isRefreshing}
         >
           <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin' : ''}`} />
-          <span>Re-read</span>
+          <span>{translateSystemText("Re-read")}</span>
         </button>
       </div>
 
@@ -181,11 +182,10 @@ function InlineMappingEditor({
                 ? 'border-yellow-500 dark:border-yellow-400/50 text-yellow-700 dark:text-yellow-400'
                 : 'border-orange-500 dark:border-orange-400/50 text-orange-700 dark:text-orange-400'
             } ${isManual ? 'ring-1 ring-blue-400/50' : ''}`}
-            title={isManual ? 'Manually selected' : 'Auto-matched'}
+            title={isManual ? translateSystemText("Manually selected") : translateSystemText("Auto-matched")}
           >
             <option value="" className="bg-bambu-dark text-bambu-gray">
-              -- Select slot --
-            </option>
+              {translateSystemText("-- Select slot --")}</option>
             {filterFilamentsByNozzle(printerResult.loadedFilaments, req.nozzle_id)
               .map((f) => (
               <option key={f.globalTrayId} value={f.globalTrayId} className="bg-bambu-dark text-white">
@@ -196,11 +196,11 @@ function InlineMappingEditor({
           {status === 'match' ? (
             <Check className="w-3 h-3 text-bambu-green" />
           ) : status === 'type_only' ? (
-            <span title="Same type, different color">
+            <span title={translateSystemText("Same type, different color")}>
               <AlertTriangle className="w-3 h-3 text-yellow-600 dark:text-yellow-400" />
             </span>
           ) : (
-            <span title="Filament type not loaded">
+            <span title={translateSystemText("Filament type not loaded")}>
               <AlertTriangle className="w-3 h-3 text-orange-600 dark:text-orange-400" />
             </span>
           )}
@@ -272,16 +272,10 @@ export function PrinterSelector({
   const getPrinterStateLabel = (printerId: number): string | null => {
     const status = printerStatusMap.get(printerId);
     if (!status) return null;
-    if (!status.connected) return 'Offline';
+    if (!status.connected) return translateSystemText('Offline');
     const state = status.state;
     if (!state) return null;
-    if (state === 'RUNNING') return status.stg_cur_name || 'Printing';
-    if (state === 'PREPARE') return 'Preparing';
-    if (state === 'PAUSE') return 'Paused';
-    if (state === 'IDLE') return 'Idle';
-    if (state === 'FINISH') return 'Finished';
-    if (state === 'FAILED') return 'Failed';
-    return state;
+    return printerStatusText(state, state === 'RUNNING' ? status.stg_cur_name : null);
   };
 
   // Filter by sliced model (only in printer mode, when slicedForModel is set)
@@ -339,8 +333,7 @@ export function PrinterSelector({
     return (
       <div className="flex items-center gap-2 text-red-700 dark:text-red-400 text-sm mb-4">
         <AlertCircle className="w-4 h-4" />
-        No {showInactive ? '' : 'active '}printers available
-      </div>
+        {translateSystemText("No ")}{showInactive ? '' : 'active '}{translateSystemText("printers available")}</div>
     );
   }
 
@@ -409,7 +402,7 @@ export function PrinterSelector({
             }`}
           >
             <PrinterIcon className="w-4 h-4" />
-            <span className="text-sm">Specific Printer</span>
+            <span className="text-sm">{translateSystemText("Specific Printer")}</span>
           </button>
           <button
             type="button"
@@ -438,7 +431,7 @@ export function PrinterSelector({
                 target, not the slice metadata — an edited queue item can
                 target a different model than the file was sliced for (#2578). */}
             <span className="text-sm">
-              Any {(assignmentMode === 'model' ? targetModel : null) || slicedForModel || 'Model'}
+              {translateSystemText("Any ")}{(assignmentMode === 'model' ? targetModel : null) || slicedForModel || 'Model'}
             </span>
           </button>
         </div>
@@ -453,8 +446,7 @@ export function PrinterSelector({
               must only go to that model or its interchange family. */}
           <div>
             <label className="block text-xs text-bambu-gray mb-1">
-              Target Model
-              {slicedForModel && <span className="ml-2 text-bambu-gray/70">(sliced for {slicedForModel})</span>}
+              {translateSystemText("Target Model")}{slicedForModel && <span className="ml-2 text-bambu-gray/70">{translateSystemText("(sliced for ")}{slicedForModel})</span>}
             </label>
             <select
               value={targetModel || ''}
@@ -467,7 +459,7 @@ export function PrinterSelector({
               }}
               className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none text-sm"
             >
-              <option value="">Select a model...</option>
+              <option value="">{translateSystemText("Select a model...")}</option>
               {uniqueModels.map((model) => {
                 const compatible = isGcodeCompatible(slicedForModel, model);
                 return (
@@ -487,16 +479,13 @@ export function PrinterSelector({
               <div className="p-3 bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-300 dark:border-yellow-500/30 rounded-lg flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
                 <span className="text-sm text-yellow-700 dark:text-yellow-400">
-                  File was sliced for {slicedForModel}, but will be dispatched to a {targetModel} printer
-                </span>
+                  {translateSystemText("File was sliced for ")}{slicedForModel}{translateSystemText(", but will be dispatched to a ")}{targetModel} {translateSystemText(" printer")}</span>
               </div>
             ) : (
               <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-300 dark:border-red-500/30 rounded-lg flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
                 <span className="text-sm text-red-700 dark:text-red-400">
-                  File was sliced for {slicedForModel} and cannot be dispatched to {targetModel} printers —
-                  select a compatible model
-                </span>
+                  {translateSystemText("File was sliced for ")}{slicedForModel} {translateSystemText(" and cannot be dispatched to ")}{targetModel} {translateSystemText(" printers — select a compatible model")}</span>
               </div>
             )
           )}
@@ -504,13 +493,13 @@ export function PrinterSelector({
           {/* Location filter (only show when target model is selected and locations exist) */}
           {targetModel && uniqueLocations.length > 0 && onTargetLocationChange && (
             <div>
-              <label className="block text-xs text-bambu-gray mb-1">Location Filter (optional)</label>
+              <label className="block text-xs text-bambu-gray mb-1">{translateSystemText("Location Filter (optional)")}</label>
               <select
                 value={targetLocation || ''}
                 onChange={(e) => onTargetLocationChange(e.target.value || null)}
                 className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none text-sm"
               >
-                <option value="">Any location</option>
+                <option value="">{translateSystemText("Any location")}</option>
                 {uniqueLocations.map((location) => (
                   <option key={location} value={location}>
                     {location}
@@ -523,8 +512,7 @@ export function PrinterSelector({
           {/* Info text */}
           {targetModel && (
             <p className="text-xs text-bambu-gray">
-              Scheduler will assign to first available idle {targetModel} printer
-              {targetLocation ? ` in ${targetLocation}` : ''}
+              {translateSystemText("Scheduler will assign to first available idle ")}{targetModel} {translateSystemText(" printer")}{targetLocation ? ` in ${targetLocation}` : ''}
             </p>
           )}
         </div>
@@ -545,8 +533,7 @@ export function PrinterSelector({
                 onClick={handleSelectAll}
                 className="text-bambu-green hover:text-bambu-green/80 transition-colors"
               >
-                Select all
-              </button>
+                {translateSystemText("Select all")}</button>
             )}
             {selectedCount > 0 && (
               <button
@@ -554,8 +541,7 @@ export function PrinterSelector({
                 onClick={handleDeselectAll}
                 className="text-bambu-gray hover:text-white transition-colors"
               >
-                Clear
-              </button>
+                {translateSystemText("Clear")}</button>
             )}
           </div>
         </div>
@@ -599,7 +585,7 @@ export function PrinterSelector({
               <div className="text-left flex-1">
                 <p className={`font-medium ${disabled ? 'text-bambu-gray' : 'text-white'}`}>
                   {printer.name}
-                  {!printer.is_active && <span className="text-bambu-gray text-xs ml-2">(inactive)</span>}
+                  {!printer.is_active && <span className="text-bambu-gray text-xs ml-2">{translateSystemText("(inactive)")}</span>}
                 </p>
                 <p className="text-xs text-bambu-gray">
                   {printer.model || 'Unknown model'} • {printer.ip_address}
@@ -644,7 +630,7 @@ export function PrinterSelector({
                       onChange={(e) => handleOverrideToggle(printer.id, e.target.checked, e as unknown as React.MouseEvent)}
                       className="w-3.5 h-3.5 rounded border-bambu-gray/30 bg-bambu-dark-secondary text-bambu-green focus:ring-bambu-green focus:ring-offset-0"
                     />
-                    <span className="text-xs text-bambu-gray">Custom mapping</span>
+                    <span className="text-xs text-bambu-gray">{translateSystemText("Custom mapping")}</span>
                   </label>
 
                   {/* Match status indicator */}
@@ -655,8 +641,7 @@ export function PrinterSelector({
                       ? 'text-yellow-700 dark:text-yellow-400'
                       : 'text-orange-700 dark:text-orange-400'
                   }`}>
-                    ({mappingResult.exactMatches}/{mappingResult.totalSlots} matched)
-                  </span>
+                    ({mappingResult.exactMatches}/{mappingResult.totalSlots} {translateSystemText(" matched)")}</span>
 
                   {/* Loading indicator */}
                   {mappingResult.isLoading && (
@@ -674,8 +659,7 @@ export function PrinterSelector({
                       className="ml-auto flex items-center gap-1 px-2 py-0.5 text-xs rounded border border-bambu-gray/30 hover:border-bambu-gray hover:bg-bambu-dark-tertiary transition-colors text-bambu-gray hover:text-white"
                     >
                       <Wand2 className="w-3 h-3" />
-                      Auto
-                    </button>
+                      {translateSystemText("Auto")}</button>
                   )}
                 </div>
 
@@ -701,8 +685,7 @@ export function PrinterSelector({
           className="text-xs text-bambu-gray hover:text-white transition-colors mt-2 flex items-center gap-1"
         >
           <AlertTriangle className="w-3 h-3 text-yellow-600 dark:text-yellow-400" />
-          {hiddenPrinterCount} other printer{hiddenPrinterCount > 1 ? 's' : ''} hidden (different model) —
-          <span className="underline">show all</span>
+          {hiddenPrinterCount} {translateSystemText(" other printer")}{hiddenPrinterCount > 1 ? 's' : ''} {translateSystemText(" hidden (different model) —")}<span className="underline">{translateSystemText("show all")}</span>
         </button>
       )}
 
@@ -713,7 +696,7 @@ export function PrinterSelector({
           onClick={() => setShowAllPrinters(false)}
           className="text-xs text-bambu-gray hover:text-white transition-colors mt-2"
         >
-          <span className="underline">Show only {slicedForModel} printers</span>
+          <span className="underline">{translateSystemText("Show only ")}{slicedForModel} {translateSystemText(" printers")}</span>
         </button>
       )}
 
@@ -721,16 +704,14 @@ export function PrinterSelector({
       {assignmentMode === 'printer' && selectedCount === 0 && (
         <p className="text-xs text-orange-700 dark:text-orange-400 mt-1 flex items-center gap-1">
           <AlertCircle className="w-3 h-3" />
-          Select at least one printer
-        </p>
+          {translateSystemText("Select at least one printer")}</p>
       )}
 
       {/* Warning when no model selected (only in model mode) */}
       {assignmentMode === 'model' && !targetModel && (
         <p className="text-xs text-orange-700 dark:text-orange-400 mt-1 flex items-center gap-1">
           <AlertCircle className="w-3 h-3" />
-          Select a target printer model
-        </p>
+          {translateSystemText("Select a target printer model")}</p>
       )}
     </div>
   );

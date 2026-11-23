@@ -1,3 +1,4 @@
+import { printerStatusText, translateSystemText } from '../utils/displayText';
 import { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { compareFwVersions } from '../utils/firmwareVersion';
@@ -464,8 +465,7 @@ function NozzleSlotHoverCard({ slot, index, activeStatus, filamentName, children
           <div className="w-44 bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-lg shadow-xl overflow-hidden backdrop-blur-sm">
             {isEmpty ? (
               <div className="px-3 py-2 text-xs text-bambu-gray text-center whitespace-nowrap">
-                Slot {index + 1} — Empty
-              </div>
+                {translateSystemText("Slot ")}{index + 1} {translateSystemText(" — Empty")}</div>
             ) : (
               <div className="p-2.5 space-y-1.5">
                 {/* Diameter */}
@@ -1044,7 +1044,7 @@ function HumidityIndicator({ humidity, goodThreshold = 40, fairThreshold = 60, o
       type="button"
       onClick={onClick}
       className={`flex items-center gap-1 ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-      title={`Humidity: ${humidityValue}% - ${statusText}${onClick ? ' (click for history)' : ''}`}
+      title={`${translateSystemText('Humidity')}: ${humidityValue}% - ${translateSystemText(statusText)}${onClick ? translateSystemText(' (click for history)') : ''}`}
     >
       <DropComponent className={compact ? "w-2.5 h-3" : "w-3 h-4"} />
       <span className={`font-medium tabular-nums ${compact ? 'text-[length:var(--pc-t10,10px)]' : 'text-xs'}`} style={{ color: textColor }}>{humidityValue}%</span>
@@ -1089,7 +1089,7 @@ function TemperatureIndicator({ temp, goodThreshold = 28, fairThreshold = 35, on
       type="button"
       onClick={onClick}
       className={`flex items-center gap-1 ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-      title={`Temperature: ${temp}°C - ${statusText}${onClick ? ' (click for history)' : ''}`}
+      title={`${translateSystemText('Temperature')}: ${temp}°C - ${translateSystemText(statusText)}${onClick ? translateSystemText(' (click for history)') : ''}`}
     >
       <ThermoComponent className={compact ? "w-2.5 h-3" : "w-3 h-4"} />
       <span className={`tabular-nums text-right ${compact ? 'text-[length:var(--pc-t10,10px)] w-8' : 'w-12'}`} style={{ color: textColor }}>{temp}°C</span>
@@ -1561,7 +1561,7 @@ function IndicatorControlPopover({
                 step={customStep}
                 value={customValue}
                 onChange={e => setCustomValue(e.target.value)}
-                placeholder="Custom"
+                placeholder={translateSystemText("Custom")}
                 className="h-8 min-w-0 flex-1 rounded-lg border border-bambu-dark-tertiary bg-bambu-dark px-2 text-xs text-white placeholder:text-bambu-gray/60 focus:border-bambu-green focus:outline-none"
               />
               <button
@@ -1569,8 +1569,7 @@ function IndicatorControlPopover({
                 disabled={isPending || customValue.trim() === ''}
                 className="h-8 rounded-lg border border-bambu-dark-tertiary bg-bambu-dark px-2 text-xs font-medium text-white transition-colors hover:bg-bambu-dark-tertiary disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Set
-              </button>
+                {translateSystemText("Set")}</button>
             </form>
           </>
         )}
@@ -1645,7 +1644,7 @@ function NozzleTemperatureControlBox({
           step={1}
           value={customValue}
           onChange={e => setCustomValue(e.target.value)}
-          placeholder="Custom"
+          placeholder={translateSystemText("Custom")}
           className="h-7 min-w-0 flex-1 rounded-md border border-bambu-dark-tertiary bg-bambu-dark-secondary px-1.5 text-[11px] text-white placeholder:text-bambu-gray/60 focus:border-bambu-green focus:outline-none"
         />
         <button
@@ -1653,8 +1652,7 @@ function NozzleTemperatureControlBox({
           disabled={isPending || customValue.trim() === ''}
           className="h-7 rounded-md border border-bambu-dark-tertiary bg-bambu-dark-secondary px-2 text-[11px] font-medium text-white transition-colors hover:bg-bambu-dark-tertiary disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Set
-        </button>
+          {translateSystemText("Set")}</button>
       </form>
     </div>
   );
@@ -1697,26 +1695,7 @@ function classifyPrinterStatus(
  * otherwise formats the gcode_state nicely.
  */
 function getStatusDisplay(state: string | null | undefined, stg_cur_name: string | null | undefined): string {
-  // If we have a specific stage name (calibration, heating, etc.), use it
-  if (stg_cur_name) {
-    return stg_cur_name;
-  }
-
-  // Format the gcode_state nicely
-  switch (state) {
-    case 'RUNNING':
-      return 'Printing';
-    case 'PAUSE':
-      return 'Paused';
-    case 'FINISH':
-      return 'Finished';
-    case 'FAILED':
-      return 'Failed';
-    case 'IDLE':
-      return 'Idle';
-    default:
-      return state ? state.charAt(0) + state.slice(1).toLowerCase() : 'Idle';
-  }
+  return printerStatusText(state, stg_cur_name);
 }
 
 // Bambu models that ship with an enclosure chamber fan (firmware field
@@ -3039,7 +3018,7 @@ function PrinterCard({
       return { previousStatus };
     },
     onSuccess: (_, on) => {
-      showToast(`Chamber light ${on ? 'on' : 'off'}`);
+      showToast(translateSystemText(`Chamber light ${on ? 'on' : 'off'}`));
     },
     onError: (error: Error, _, context) => {
       // Rollback on error
@@ -3737,7 +3716,7 @@ function PrinterCard({
         variant="secondary"
         size="sm"
         onClick={() => setShowMenu(!showMenu)}
-        title={t('common.more', 'More')}
+        title={t('common.moreActions', 'More actions')}
         className={footerIconButtonClass}
       >
         <MoreVertical className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
@@ -4102,7 +4081,7 @@ function PrinterCard({
                     title={t('printers.clickToViewHmsErrors')}
                   >
                     <AlertTriangle className="w-[var(--pc-i3,0.75rem)] h-[var(--pc-i3,0.75rem)]" />
-                    {knownErrors.length > 0 ? knownErrors.length : 'OK'}
+                    {knownErrors.length > 0 ? knownErrors.length : translateSystemText("OK")}
                   </button>
                 );
               })()}
@@ -4178,7 +4157,7 @@ function PrinterCard({
                   <Wrench className="w-[var(--pc-i3,0.75rem)] h-[var(--pc-i3,0.75rem)]" />
                   {maintenanceInfo.due_count > 0 || maintenanceInfo.warning_count > 0
                     ? maintenanceInfo.due_count + maintenanceInfo.warning_count
-                    : 'OK'}
+                    : translateSystemText("OK")}
                 </button>
               )}
               {/* Queue Count Badge */}
@@ -4289,8 +4268,7 @@ function PrinterCard({
                       setDeleteArchives(true);
                     }}
                   >
-                    Delete
-                  </Button>
+                    {translateSystemText("Delete")}</Button>
                 </div>
               </CardContent>
             </Card>
@@ -4401,7 +4379,7 @@ function PrinterCard({
                             className="shrink-0 font-medium text-bambu-green"
                             title={t('printers.estimatedCompletion')}
                           >
-                            ETA {formatETA(status.remaining_time!, timeFormat, t)}
+                            {translateSystemText("ETA ")}{formatETA(status.remaining_time!, timeFormat, t)}
                           </span>
                         </>
                       )}
@@ -4503,7 +4481,7 @@ function PrinterCard({
                                       {formatDuration(status.remaining_time * 60)}
                                     </span>
                                     <span className="text-bambu-green font-medium" title={t('printers.estimatedCompletion')}>
-                                      ETA {formatETA(status.remaining_time, timeFormat, t)}
+                                      {translateSystemText("ETA ")}{formatETA(status.remaining_time, timeFormat, t)}
                                     </span>
                                   </>
                                 )}
@@ -4541,7 +4519,7 @@ function PrinterCard({
                               </>
                             ) : lastPrint ? (
                               <p className="truncate" title={lastPrint.print_name || lastPrint.filename}>
-                                Last: {lastPrint.print_name || lastPrint.filename}
+                                {translateSystemText("Last: ")}{lastPrint.print_name || lastPrint.filename}
                                 {lastPrint.completed_at && (
                                   <span className="ml-1 text-bambu-gray/60">
                                     • {formatDateOnly(lastPrint.completed_at, { month: 'short', day: 'numeric' })}
@@ -4722,7 +4700,7 @@ function PrinterCard({
                       {statusControlMenu === 'nozzle-temp' && (
                         isDualNozzle ? (
                           <IndicatorControlPopover
-                            title="Set Nozzle Temperatures"
+                            title={translateSystemText("Set Nozzle Temperatures")}
                             widthClass="w-[300px]"
                             popoverWidth={300}
                             popoverHeight={260}
@@ -4752,7 +4730,7 @@ function PrinterCard({
                           </IndicatorControlPopover>
                         ) : (
                           <IndicatorControlPopover
-                            title="Set Nozzle Temperature"
+                            title={translateSystemText("Set Nozzle Temperature")}
                             unit="°C"
                             customMin={0}
                             customMax={320}
@@ -4787,7 +4765,7 @@ function PrinterCard({
                       </p>
                       {statusControlMenu === 'bed-temp' && (
                         <IndicatorControlPopover
-                          title="Set Bed Temperature"
+                          title={translateSystemText("Set Bed Temperature")}
                           unit="°C"
                           customMin={0}
                           customMax={140}
@@ -4830,7 +4808,7 @@ function PrinterCard({
                           </p>
                           {hasChamberHeater && statusControlMenu === 'chamber-temp' && (
                             <IndicatorControlPopover
-                              title="Set Chamber Temperature"
+                              title={translateSystemText("Set Chamber Temperature")}
                               unit="°C"
                               customMin={0}
                               customMax={MAX_CHAMBER_TEMP_C}
@@ -4861,24 +4839,24 @@ function PrinterCard({
                           <NozzleIcon className="w-[var(--pc-i35,0.875rem)] h-[var(--pc-i35,0.875rem)] mb-0.5 text-amber-600 dark:text-amber-400" />
                           <div className="flex items-center gap-2">
                             <span className={`text-[length:var(--pc-t11,11px)] font-bold ${activeNozzle === 'L' ? 'text-amber-700 dark:text-amber-400' : 'text-gray-500'}`}>
-                              L{leftNozzleSlot?.nozzle_diameter ? ` ${leftNozzleSlot.nozzle_diameter}` : ''}
+                              {translateSystemText("L")}{leftNozzleSlot?.nozzle_diameter ? ` ${leftNozzleSlot.nozzle_diameter}` : ''}
                             </span>
                             <span className="text-[length:var(--pc-t9,9px)] text-bambu-gray/40">·</span>
                             <span className={`text-[length:var(--pc-t11,11px)] font-bold ${activeNozzle === 'R' ? 'text-amber-700 dark:text-amber-400' : 'text-gray-500'}`}>
-                              R{rightNozzleSlot?.nozzle_diameter ? ` ${rightNozzleSlot.nozzle_diameter}` : ''}
+                              {translateSystemText("R")}{rightNozzleSlot?.nozzle_diameter ? ` ${rightNozzleSlot.nozzle_diameter}` : ''}
                             </span>
                           </div>
                           <p className="text-[length:var(--pc-t9,9px)] text-bambu-gray">{t('printers.temperatures.nozzle')}</p>
                           {statusControlMenu === 'nozzle-select' && (
                             <IndicatorControlPopover
-                              title="Set Nozzle Selection"
+                              title={translateSystemText("Set Nozzle Selection")}
                               widthClass="w-[300px]"
                               popoverWidth={300}
                               popoverHeight={140}
                               isPending={selectExtruderMutation.isPending}
                               options={[
-                                { label: 'Left', value: 1 },
-                                { label: 'Right', value: 0 },
+                                { label: translateSystemText("Left"), value: 1 },
+                                { label: translateSystemText("Right"), value: 0 },
                               ]}
                               onClose={() => setStatusControlMenu(null)}
                               onSubmit={(extruder) => selectExtruderMutation.mutate(extruder)}
@@ -5078,7 +5056,7 @@ function PrinterCard({
                                         onClick={() => requestXyJog(0, bedJogStep)}
                                         disabled={xyJogMutation.isPending}
                                         className={jogButtonClass}
-                                        aria-label="Move Y forward"
+                                        aria-label={translateSystemText("Move Y forward")}
                                       >
                                         <ArrowUp className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
                                       </button>
@@ -5087,7 +5065,7 @@ function PrinterCard({
                                         onClick={() => requestXyJog(-bedJogStep, 0)}
                                         disabled={xyJogMutation.isPending}
                                         className={jogButtonClass}
-                                        aria-label="Move X left"
+                                        aria-label={translateSystemText("Move X left")}
                                       >
                                         <ArrowLeft className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
                                       </button>
@@ -5106,7 +5084,7 @@ function PrinterCard({
                                         onClick={() => requestXyJog(bedJogStep, 0)}
                                         disabled={xyJogMutation.isPending}
                                         className={jogButtonClass}
-                                        aria-label="Move X right"
+                                        aria-label={translateSystemText("Move X right")}
                                       >
                                         <ArrowRight className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
                                       </button>
@@ -5115,7 +5093,7 @@ function PrinterCard({
                                         onClick={() => requestXyJog(0, -bedJogStep)}
                                         disabled={xyJogMutation.isPending}
                                         className={jogButtonClass}
-                                        aria-label="Move Y back"
+                                        aria-label={translateSystemText("Move Y back")}
                                       >
                                         <ArrowDown className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
                                       </button>
@@ -5147,7 +5125,7 @@ function PrinterCard({
                                         onClick={() => requestExtruderJog(-bedJogStep)}
                                         disabled={extruderJogMutation.isPending}
                                         className={jogButtonClass}
-                                        aria-label="Retract filament"
+                                        aria-label={translateSystemText("Retract filament")}
                                       >
                                         <ArrowUp className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
                                       </button>
@@ -5158,7 +5136,7 @@ function PrinterCard({
                                         onClick={() => requestExtruderJog(bedJogStep)}
                                         disabled={extruderJogMutation.isPending}
                                         className={jogButtonClass}
-                                        aria-label="Extrude filament"
+                                        aria-label={translateSystemText("Extrude filament")}
                                       >
                                         <ArrowDown className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)]" />
                                       </button>
@@ -6703,7 +6681,7 @@ function PrinterCard({
                           }
                         }}
                         disabled={runScriptMutation.isPending}
-                        title={`${isScript ? 'Run' : 'Toggle'} ${script.ha_entity_id}`}
+                        title={`${isScript ? translateSystemText("Run") : translateSystemText("Toggle")} ${script.ha_entity_id}`}
                         className="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 hover:bg-blue-500/30 rounded transition-colors flex items-center gap-1"
                       >
                         <Play className="w-[var(--pc-i25,0.625rem)] h-[var(--pc-i25,0.625rem)]" />
@@ -6916,12 +6894,10 @@ function PrinterCard({
                   <XCircle className="w-[var(--pc-i5,1.25rem)] h-[var(--pc-i5,1.25rem)] text-yellow-500" />
                 )}
                 <h2 className="text-lg font-semibold text-white">
-                  Build Plate Check
-                </h2>
+                  {translateSystemText("Build Plate Check")}</h2>
                 {plateCheckResult.reference_count !== undefined && plateCheckResult.max_references && (
                   <span className="text-xs text-bambu-gray bg-bambu-dark-tertiary px-2 py-1 rounded">
-                    {plateCheckResult.reference_count}/{plateCheckResult.max_references} refs
-                  </span>
+                    {plateCheckResult.reference_count}/{plateCheckResult.max_references} {translateSystemText(" refs")}</span>
                 )}
               </div>
               <button
@@ -7137,7 +7113,7 @@ function PrinterCard({
                     </div>
                   ) : (
                     <p className="text-xs text-bambu-gray">
-                      Current: X={Math.round((plateCheckResult.roi?.x || 0.15) * 100)}%, Y={Math.round((plateCheckResult.roi?.y || 0.35) * 100)}%,
+                      {translateSystemText("Current: X=")}{Math.round((plateCheckResult.roi?.x || 0.15) * 100)}%, Y={Math.round((plateCheckResult.roi?.y || 0.35) * 100)}%,
                       W={Math.round((plateCheckResult.roi?.w || 0.70) * 100)}%, H={Math.round((plateCheckResult.roi?.h || 0.55) * 100)}%
                     </p>
                   )}
@@ -7157,8 +7133,7 @@ function PrinterCard({
                     {isCalibrating ? (
                       <>
                         <Loader2 className="w-[var(--pc-i4,1rem)] h-[var(--pc-i4,1rem)] mr-2 animate-spin" />
-                        Calibrating...
-                      </>
+                        {translateSystemText("Calibrating...")}</>
                     ) : (
                       'Calibrate Empty Plate'
                     )}
@@ -7167,11 +7142,10 @@ function PrinterCard({
               ) : (
                 <>
                   <Button variant="ghost" onClick={() => handleCalibratePlate()} disabled={isCalibrating}>
-                    {isCalibrating ? 'Adding...' : `Add Reference (${plateReferences?.references.length || 0}/${plateReferences?.max_references || 5})`}
+                    {isCalibrating ? translateSystemText("Adding...") : `Add Reference (${plateReferences?.references.length || 0}/${plateReferences?.max_references || 5})`}
                   </Button>
                   <Button onClick={() => closePlateCheckModal()}>
-                    Close
-                  </Button>
+                    {translateSystemText("Close")}</Button>
                 </>
               )}
             </div>
@@ -8082,7 +8056,7 @@ export function AddPrinterModal({
                 className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none"
                 value={form.ip_address}
                 onChange={(e) => setForm({ ...form, ip_address: e.target.value })}
-                placeholder="192.168.1.100 or printer.local"
+                placeholder={translateSystemText("192.168.1.100 or printer.local")}
               />
             </div>
             <div>
@@ -8652,7 +8626,7 @@ function EditPrinterModal({
                 className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none"
                 value={form.ip_address}
                 onChange={(e) => setForm({ ...form, ip_address: e.target.value })}
-                placeholder="192.168.1.100 or printer.local"
+                placeholder={translateSystemText("192.168.1.100 or printer.local")}
               />
             </div>
             <div>
@@ -8712,7 +8686,7 @@ function EditPrinterModal({
               </select>
             </div>
             <div>
-              <label className="block text-sm text-bambu-gray mb-1">Location / Group</label>
+              <label className="block text-sm text-bambu-gray mb-1">{translateSystemText("Location / Group")}</label>
               <input
                 type="text"
                 className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none"
@@ -8892,7 +8866,7 @@ function PowerDropdownItem({
         }`}
       >
         <Power className="w-3 h-3" />
-        {isPowering ? '...' : 'On'}
+        {isPowering ? '...' : translateSystemText("On")}
       </button>
     </div>
   );
@@ -9887,8 +9861,7 @@ export function PrintersPage() {
                 ))}
                 {printers?.filter(p => smartPlugByPrinter[p.id]).length === 0 && (
                   <div className="px-3 py-2 text-sm text-bambu-gray">
-                    No printers with smart plugs
-                  </div>
+                    {translateSystemText("No printers with smart plugs")}</div>
                 )}
               </div>
             </>

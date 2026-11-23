@@ -1,3 +1,4 @@
+from backend.app.services.camera_hls import hls_manager
 import asyncio
 import json
 import logging
@@ -2097,6 +2098,32 @@ def _take_new_hms_faults(printer_id: int, errors: list, print_state: str | None 
 _NO_PREPARATION_STAGES = frozenset({0, -1, 255})
 
 
+def _seed_print_notification_baseline(printer_id: int, state: PrinterState | None) -> None:
+    """Adopt an already running print without replaying its past milestones."""
+    if state is None or not state.connected:
+        return
+    if state.state not in ("RUNNING", "PRINTING", "PAUSE", "PAUSED"):
+        return
+    layer = state.layer_num or 0
+    progress = state.progress or 0
+    if layer > 0 and state.mc_print_sub_stage in (None, 0):
+        _first_layer_notified.setdefault(printer_id, layer >= 2)
+    # Partial startup telemetry may bring the layer count a message later.
+    # Wait for it, unless this printer supplies no layer data at all.
+    if layer > 0 or ((state.total_layers or 0) == 0 and state.stg_cur in _NO_PREPARATION_STAGES):
+        milestone = 75 if progress >= 75 else 50 if progress >= 50 else 25 if progress >= 25 else 0
+        _last_progress_milestone.setdefault(printer_id, milestone)
+
+
+def _take_first_layer_completion(printer_id: int, layer_num: int, state: PrinterState | None) -> bool:
+    if not 2 <= layer_num <= 10 or _first_layer_notified.get(printer_id, False):
+        return False
+    if state is None or state.state != "RUNNING" or state.mc_print_sub_stage not in (None, 0):
+        return False
+    _first_layer_notified[printer_id] = True
+    return True
+
+
 def _progress_milestone_to_notify(printer_id: int, state: PrinterState) -> int | None:
     """The milestone (25, 50 or 75) this status update reaches for the first time, if any.
 
@@ -2140,6 +2167,7 @@ def _progress_milestone_to_notify(printer_id: int, state: PrinterState) -> int |
 
 async def on_printer_status_change(printer_id: int, state: PrinterState):
     """Handle printer status changes - broadcast via WebSocket."""
+    _seed_print_notification_baseline(printer_id, state)
     try:
         notify_live_activities.observe(printer_id, state)
     except Exception:
@@ -2518,7 +2546,9 @@ async def on_printer_status_change(printer_id: int, state: PrinterState):
                 remaining_time_seconds = state.remaining_time * 60 if state.remaining_time else None
 
                 # Capture camera snapshot for notification image attachment (no DB held).
-                image_data = await _capture_snapshot_for_notification(printer_id, printer, logging.getLogger(__name__))
+                image_data = await _capture_snapshot_for_notification(
+                    printer_id, printer, logging.getLogger(__name__), light=False
+                )
 
                 # Notification send needs a session (provider/template lookups).
                 async with async_session() as db:
@@ -2533,7 +2563,7 @@ async def on_printer_status_change(printer_id: int, state: PrinterState):
                     )
             except Exception as e:
                 logging.getLogger(__name__).warning(f"Progress milestone notification failed: {e}")
-    elif progress < 5:
+    elif progress < 5 and state_known and state.connected and state.state not in ("RUNNING", "PRINTING", "PAUSE", "PAUSED"):
         # Reset milestone tracking when print restarts or new print begins
         _last_progress_milestone[printer_id] = 0
         _first_layer_notified[printer_id] = False
@@ -3921,10 +3951,13 @@ async def _capture_snapshot_frame(printer_id: int, printer, logger) -> bytes | N
         active_chamber = [k for k in _active_chamber_streams if k.startswith(f"{printer_id}-")]
         buffered_frame = get_buffered_frame(printer_id)
 
-        if (active_for_printer or active_chamber) and buffered_frame:
+        if (active_for_printer or active_chamber or hls_manager.get(printer_id)) and buffered_frame:
             logger.info("[SNAPSHOT] Using buffered frame for printer %s: %s bytes", printer_id, len(buffered_frame))
             if len(buffered_frame) <= 2_500_000:
                 return _apply_camera_rotation(buffered_frame, printer, logger)
+
+        if hls_manager.get(printer_id):
+            return None
 
         # Fresh capture from printer camera
         logger.info("[SNAPSHOT] Capturing fresh frame for printer %s", printer_id)
@@ -4962,6 +4995,7 @@ async def on_print_start(printer_id: int, data: dict):
     # never shows. This callback does not fire after a Bambuddy restart (#1304)
     # or on resume from pause, so it cannot repeat a milestone mid-print.
     _last_progress_milestone[printer_id] = 0
+    _first_layer_notified[printer_id] = False
     _kill_switch_notification_tasks.pop(printer_id, None)
 
     # #1721: drop any leftover pre-captured finish frame from a prior print
@@ -10408,7 +10442,7 @@ async def _close_out_print(printer_id: int, data: dict):
                         ]
                         buffered_frame = get_buffered_frame(printer_id)
 
-                        if (active_for_printer or active_chamber_for_printer) and buffered_frame:
+                        if (active_for_printer or active_chamber_for_printer or hls_manager.get(printer_id)) and buffered_frame:
                             # Use frame from active stream
                             logger.info("[PHOTO-BG] Using buffered frame from active stream")
                             buffered_frame = _apply_camera_rotation(buffered_frame, printer, logger)
@@ -10419,6 +10453,8 @@ async def _close_out_print(printer_id: int, data: dict):
                             photo_path = photos_dir / photo_filename
                             await asyncio.to_thread(photo_path.write_bytes, buffered_frame)
                             logger.info("[PHOTO-BG] Saved buffered frame: %s", photo_filename)
+                        elif hls_manager.get(printer_id):
+                            logger.info("[PHOTO-BG] HLS camera is starting; skip competing capture")
                         else:
                             # No active stream - capture new frame
                             from backend.app.services.camera import capture_finish_photo
@@ -12063,6 +12099,11 @@ async def lifespan(app: FastAPI):
         """Capture timelapse frame on layer change + first layer notification."""
         from backend.app.services.layer_timelapse import on_layer_change as tl_layer_change
 
+        client = printer_manager.get_client(printer_id)
+        state = client.state if client else None
+        # Layer callbacks can run before the first status callback after startup.
+        _seed_print_notification_baseline(printer_id, state)
+
         await tl_layer_change(printer_id, layer_num)
 
         # #1867: bank a recent in-print frame so the finish-photo path has a
@@ -12081,14 +12122,7 @@ async def lifespan(app: FastAPI):
         # the layer counter advanced past 2 during PREPARE, the next on_layer_change
         # edge fires later; _first_layer_notified stays clear until we actually send
         # so a deferred re-evaluation can win. See issue #1837.
-        if 2 <= layer_num <= 10 and not _first_layer_notified.get(printer_id, False):
-            client = printer_manager.get_client(printer_id)
-            state = client.state if client else None
-            if not state or state.state != "RUNNING":
-                return
-            if state.mc_print_sub_stage not in (None, 0):
-                return
-            _first_layer_notified[printer_id] = True
+        if _take_first_layer_completion(printer_id, layer_num, state):
             try:
                 async with async_session() as db:
                     from backend.app.models.printer import Printer
@@ -12471,6 +12505,9 @@ async def lifespan(app: FastAPI):
     stop_runtime_tracking()
     stop_spoolbuddy_watchdog()
     stop_camera_cleanup()
+    from backend.app.services.camera_hls import hls_manager
+
+    await hls_manager.shutdown()
     stop_connection_watchdog()
     from backend.app.services.loop_watchdog import stop_loop_watchdog
 
@@ -12638,6 +12675,8 @@ PUBLIC_API_PATTERNS = [
     "/icon",  # /external-links/{id}/icon
     # Camera (streams loaded via <img> tag)
     "/camera/stream",  # /printers/{id}/camera/stream
+    "/camera/playback",
+    "/camera/hls/",
     "/camera/snapshot",  # /printers/{id}/camera/snapshot
     # Streaming-overlay status feed (#2613): OBS loads /overlay/{id} with no login
     # and this backs it, authenticated by an ``overlay``-scoped token in the query

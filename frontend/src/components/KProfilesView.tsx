@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -131,7 +132,7 @@ function KProfileCard({ profile, onEdit, onCopy, selectionMode, isSelected, onTo
             {profile.name || 'Unnamed'}
           </span>
           {note && (
-            <span title="Has note">
+            <span title={translateSystemText("Has note")}>
               <StickyNote className="w-3 h-3 text-yellow-500" />
             </span>
           )}
@@ -141,7 +142,7 @@ function KProfileCard({ profile, onEdit, onCopy, selectionMode, isSelected, onTo
         </div>
         {note && (
           <div className="text-xs mt-0.5 truncate text-yellow-500/70" title={note}>
-            Note: {note.length > 50 ? note.substring(0, 50) + '...' : note}
+            {translateSystemText("Note: ")}{note.length > 50 ? note.substring(0, 50) + '...' : note}
           </div>
         )}
       </button>
@@ -152,7 +153,7 @@ function KProfileCard({ profile, onEdit, onCopy, selectionMode, isSelected, onTo
             onCopy();
           }}
           className="text-bambu-gray hover:text-white transition-colors p-1"
-          title="Copy profile"
+          title={translateSystemText("Copy profile")}
         >
           <Copy className="w-4 h-4" />
         </button>

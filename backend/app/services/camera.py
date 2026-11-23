@@ -6,6 +6,7 @@ Supports two camera protocols:
 """
 
 import asyncio
+import contextlib
 import functools
 import logging
 import os
@@ -642,6 +643,14 @@ def capture_in_flight(ip_address: str) -> bool:
     """
     task = _inflight_captures.get(ip_address)
     return task is not None and not task.done()
+
+
+async def wait_for_camera_capture(ip_address: str) -> None:
+    """Let a snapshot already in flight release the printer's camera reader."""
+    task = _inflight_captures.get(ip_address)
+    if task is not None and not task.done():
+        with contextlib.suppress(Exception):
+            await asyncio.wait_for(asyncio.shield(task), timeout=35)
 
 
 def _discard_inflight_capture(ip_address: str, task: asyncio.Task) -> None:

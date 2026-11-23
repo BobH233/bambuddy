@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useEffect } from 'react';
 import { X, Download } from 'lucide-react';
 import { Button } from './Button';
@@ -39,7 +40,7 @@ export function QRCodeModal({ archiveId, archiveName, onClose }: QRCodeModalProp
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-bambu-dark-tertiary">
-          <h2 className="text-lg font-semibold text-white">QR Code</h2>
+          <h2 className="text-lg font-semibold text-white">{translateSystemText("QR Code")}</h2>
           <button
             onClick={onClose}
             className="text-bambu-gray hover:text-white transition-colors"
@@ -56,17 +57,15 @@ export function QRCodeModal({ archiveId, archiveName, onClose }: QRCodeModalProp
           <div className="bg-white p-4 rounded-lg mb-4">
             <img
               src={qrCodeUrl}
-              alt="QR Code"
+              alt={translateSystemText("QR Code")}
               className="w-64 h-64"
             />
           </div>
           <p className="text-xs text-bambu-gray mb-4 text-center">
-            Scan to open this archive
-          </p>
+            {translateSystemText("Scan to open this archive")}</p>
           <Button onClick={handleDownload} className="w-full">
             <Download className="w-4 h-4" />
-            Download QR Code
-          </Button>
+            {translateSystemText("Download QR Code")}</Button>
         </div>
       </div>
     </div>

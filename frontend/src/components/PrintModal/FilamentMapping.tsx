@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -458,7 +459,7 @@ export function FilamentMapping({
                             disabled={!option.eligible}
                             title={option.reason}
                           >
-                            R{option.position}
+                            {translateSystemText("R")}{option.position}
                             {option.diameter ? ` · ${option.diameter}` : ''}
                           </option>
                         ))}
@@ -593,7 +594,7 @@ export function FilamentMapping({
           <div className="text-xs text-bambu-gray">
             {t('printModal.totalCost')}{' '}
             <span className="text-white">
-              {totalCost > 0 || hasAnyCost ? `${currencySymbol}${totalCost.toFixed(2)}` : 'N/A'}
+              {totalCost > 0 || hasAnyCost ? `${currencySymbol}${totalCost.toFixed(2)}` : translateSystemText("N/A")}
             </span>
             {quantity > 1 && totalCost > 0 && (
               <span className="ml-2">

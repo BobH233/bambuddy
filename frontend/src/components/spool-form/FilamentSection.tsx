@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, Loader2, ChevronDown, Cloud, CloudOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -443,7 +444,7 @@ export function FilamentSection({
                 setSubtypeDropdownOpen(true);
                 setSubtypeSearch('');
               }}
-              placeholder="Basic, Matte, Silk..."
+              placeholder={translateSystemText("Basic, Matte, Silk...")}
               className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white text-sm placeholder:text-bambu-gray/50 focus:outline-none focus:border-bambu-green"
             />
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bambu-gray/50 pointer-events-none" />

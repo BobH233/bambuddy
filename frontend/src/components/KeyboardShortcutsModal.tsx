@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useEffect } from 'react';
 import { X, Keyboard, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -42,30 +43,30 @@ function getShortcuts(
         isExternal: false,
       }))
     : [
-        { keys: ['1'], description: 'Go to Printers', isExternal: false },
-        { keys: ['2'], description: 'Go to Archives', isExternal: false },
-        { keys: ['3'], description: 'Go to Queue', isExternal: false },
-        { keys: ['4'], description: 'Go to Statistics', isExternal: false },
-        { keys: ['5'], description: 'Go to Cloud Profiles', isExternal: false },
-        { keys: ['6'], description: 'Go to Settings', isExternal: false },
+        { keys: ['1'], description: translateSystemText("Go to Printers"), isExternal: false },
+        { keys: ['2'], description: translateSystemText("Go to Archives"), isExternal: false },
+        { keys: ['3'], description: translateSystemText("Go to Queue"), isExternal: false },
+        { keys: ['4'], description: translateSystemText("Go to Statistics"), isExternal: false },
+        { keys: ['5'], description: translateSystemText("Go to Cloud Profiles"), isExternal: false },
+        { keys: ['6'], description: translateSystemText("Go to Settings"), isExternal: false },
       ];
 
   return [
     { category: 'Navigation', items: navShortcuts },
     { category: 'Archives', items: [
-      { keys: ['/'], description: 'Focus search', isExternal: false },
-      { keys: ['U'], description: 'Open upload modal', isExternal: false },
-      { keys: ['Esc'], description: 'Clear selection / blur input', isExternal: false },
-      { keys: ['Right-click'], description: 'Context menu on cards', isExternal: false },
+      { keys: ['/'], description: translateSystemText("Focus search"), isExternal: false },
+      { keys: ['U'], description: translateSystemText("Open upload modal"), isExternal: false },
+      { keys: ['Esc'], description: translateSystemText("Clear selection / blur input"), isExternal: false },
+      { keys: ['Right-click'], description: translateSystemText("Context menu on cards"), isExternal: false },
     ]},
     { category: 'K-Profiles', items: [
-      { keys: ['R'], description: 'Refresh profiles', isExternal: false },
-      { keys: ['N'], description: 'New profile', isExternal: false },
-      { keys: ['Esc'], description: 'Exit selection mode', isExternal: false },
+      { keys: ['R'], description: translateSystemText("Refresh profiles"), isExternal: false },
+      { keys: ['N'], description: translateSystemText("New profile"), isExternal: false },
+      { keys: ['Esc'], description: translateSystemText("Exit selection mode"), isExternal: false },
     ]},
     { category: 'General', items: [
       { keys: ['C'], description: "Show a printer's camera", isExternal: false },
-      { keys: ['?'], description: 'Show this help', isExternal: false },
+      { keys: ['?'], description: translateSystemText("Show this help"), isExternal: false },
     ]},
   ];
 }
@@ -99,7 +100,7 @@ export function KeyboardShortcutsModal({ onClose, navItems, sidebarItems }: Keyb
           <div className="flex items-center justify-between p-4 border-b border-bambu-dark-tertiary">
             <div className="flex items-center gap-2">
               <Keyboard className="w-5 h-5 text-bambu-green" />
-              <h2 className="text-xl font-semibold text-white">Keyboard Shortcuts</h2>
+              <h2 className="text-xl font-semibold text-white">{translateSystemText("Keyboard Shortcuts")}</h2>
             </div>
             <button
               onClick={onClose}
@@ -138,8 +139,7 @@ export function KeyboardShortcutsModal({ onClose, navItems, sidebarItems }: Keyb
           {/* Footer */}
           <div className="p-4 border-t border-bambu-dark-tertiary">
             <p className="text-xs text-bambu-gray text-center">
-              Press <KeyBadge>Esc</KeyBadge> or click outside to close
-            </p>
+              {translateSystemText("Press ")}<KeyBadge>Esc</KeyBadge> {translateSystemText(" or click outside to close")}</p>
           </div>
         </CardContent>
       </Card>

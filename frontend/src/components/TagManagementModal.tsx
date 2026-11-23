@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { X, Tag, Pencil, Trash2, Loader2, Search, Check, AlertTriangle } from 'lucide-react';
@@ -131,7 +132,7 @@ export function TagManagementModal({ onClose }: TagManagementModalProps) {
           <div className="flex items-center justify-between p-4 border-b border-bambu-dark-tertiary flex-shrink-0">
             <div className="flex items-center gap-2">
               <Tag className="w-5 h-5 text-bambu-green" />
-              <h2 className="text-xl font-semibold text-white">Manage Tags</h2>
+              <h2 className="text-xl font-semibold text-white">{translateSystemText("Manage Tags")}</h2>
             </div>
             <button
               onClick={onClose}
@@ -148,7 +149,7 @@ export function TagManagementModal({ onClose }: TagManagementModalProps) {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bambu-gray" />
                 <input
                   type="text"
-                  placeholder="Search tags..."
+                  placeholder={translateSystemText("Search tags...")}
                   className="w-full pl-9 pr-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white text-sm focus:border-bambu-green focus:outline-none"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -159,13 +160,13 @@ export function TagManagementModal({ onClose }: TagManagementModalProps) {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'count' | 'name')}
               >
-                <option value="count">Sort by Count</option>
-                <option value="name">Sort by Name</option>
+                <option value="count">{translateSystemText("Sort by Count")}</option>
+                <option value="name">{translateSystemText("Sort by Name")}</option>
               </select>
             </div>
             {tags && (
               <p className="text-xs text-bambu-gray mt-2">
-                {tags.length} tag{tags.length !== 1 ? 's' : ''} across {totalUsage} usage{totalUsage !== 1 ? 's' : ''}
+                {tags.length} {translateSystemText(" tag")}{tags.length !== 1 ? 's' : ''} {translateSystemText(" across ")}{totalUsage} {translateSystemText(" usage")}{totalUsage !== 1 ? 's' : ''}
               </p>
             )}
           </div>
@@ -225,7 +226,7 @@ export function TagManagementModal({ onClose }: TagManagementModalProps) {
                       <div className="flex-1 flex items-center gap-2">
                         <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
                         <span className="text-sm text-bambu-gray-light flex-1">
-                          Delete "{tag.name}" from {tag.count} archive{tag.count !== 1 ? 's' : ''}?
+                          {translateSystemText("Delete \"")}{tag.name}{translateSystemText("\" from ")}{tag.count} {translateSystemText(" archive")}{tag.count !== 1 ? 's' : ''}?
                         </span>
                         <Button
                           size="sm"
@@ -261,14 +262,14 @@ export function TagManagementModal({ onClose }: TagManagementModalProps) {
                           <button
                             onClick={() => startEdit(tag)}
                             className="p-1.5 rounded hover:bg-bambu-dark text-bambu-gray hover:text-white transition-colors"
-                            title="Rename tag"
+                            title={translateSystemText("Rename tag")}
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => confirmDelete(tag.name)}
                             className="p-1.5 rounded hover:bg-bambu-dark text-bambu-gray hover:text-red-700 dark:hover:text-red-400 transition-colors"
-                            title="Delete tag"
+                            title={translateSystemText("Delete tag")}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -284,8 +285,7 @@ export function TagManagementModal({ onClose }: TagManagementModalProps) {
           {/* Footer */}
           <div className="flex gap-3 p-4 border-t border-bambu-dark-tertiary flex-shrink-0">
             <Button variant="secondary" onClick={onClose} className="flex-1">
-              Close
-            </Button>
+              {translateSystemText("Close")}</Button>
           </div>
         </CardContent>
       </Card>

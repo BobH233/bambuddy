@@ -1,0 +1,197 @@
+{
+  "print_start": {
+    "name": "开始打印",
+    "title_template": "开始打印",
+    "body_template": "打印机：{printer}\n任务：{filename}\n预计耗时：{estimated_time}"
+  },
+  "print_complete": {
+    "name": "打印完成",
+    "title_template": "打印完成",
+    "body_template": "打印机：{printer}\n任务：{filename}\n打印耗时：{duration}\n耗材用量：{filament_grams} g"
+  },
+  "print_failed": {
+    "name": "打印失败",
+    "title_template": "打印失败",
+    "body_template": "打印机：{printer}\n任务：{filename}\n已用时间：{duration}\n原因：{reason}"
+  },
+  "print_stopped": {
+    "name": "打印已停止",
+    "title_template": "打印已停止",
+    "body_template": "打印机：{printer}\n任务：{filename}\n已用时间：{duration}"
+  },
+  "print_progress": {
+    "name": "打印进度",
+    "title_template": "打印进度 {progress}%",
+    "body_template": "打印机：{printer}\n任务：{filename}\n剩余时间：{remaining_time}"
+  },
+  "print_confirm_request": {
+    "name": "请确认打印结果",
+    "title_template": "请确认打印结果",
+    "body_template": "打印机：{printer}\n任务：{filename}\n确认页面：{confirm_url}"
+  },
+  "print_missing_spool_assignment": {
+    "name": "耗材卷未关联",
+    "title_template": "耗材卷未关联",
+    "body_template": "打印机：{printer}\n打印已开始，但以下槽位尚未关联库存耗材卷：{missing_slots}\n预期耗材：\n{missing_slot_details}"
+  },
+  "billing_charge_failed": {
+    "name": "打印费用记账失败",
+    "title_template": "打印费用记账失败",
+    "body_template": "打印机：{printer}\n任务：{filename}\n费用未能入账，预算预留已保留。\n打印记录：{archive_id}"
+  },
+  "printer_offline": {
+    "name": "打印机离线",
+    "title_template": "打印机离线",
+    "body_template": "打印机：{printer}\n与打印机的连接已断开。"
+  },
+  "printer_error": {
+    "name": "打印机告警",
+    "title_template": "打印机告警：{error_type}",
+    "body_template": "打印机：{printer}\n详情：{error_detail}"
+  },
+  "ai_failure_detection": {
+    "name": "AI 检测到疑似打印异常",
+    "title_template": "AI 检测到疑似打印异常",
+    "body_template": "打印机：{printer}\n任务：{task_name}\n检测服务：{provider}\n质量评分：{print_quality}\n置信度：{confidence}\n已采取措施：{action}"
+  },
+  "plate_not_empty": {
+    "name": "平台有异物，打印已暂停",
+    "title_template": "平台有异物，打印已暂停",
+    "body_template": "打印机：{printer}\n检测到平台上有物体，请清理平台后恢复打印。"
+  },
+  "plate_clear_required": {
+    "name": "请清理打印平台",
+    "title_template": "请清理打印平台",
+    "body_template": "打印机：{printer}\n打印已结束，请确认平台已清空后继续队列。"
+  },
+  "filament_low": {
+    "name": "耗材余量不足",
+    "title_template": "耗材余量不足",
+    "body_template": "打印机：{printer}\n槽位：{slot}\n剩余比例：{remaining_percent}%"
+  },
+  "maintenance_due": {
+    "name": "打印机维护提醒",
+    "title_template": "打印机维护提醒",
+    "body_template": "打印机：{printer}\n维护项目：\n{items}"
+  },
+  "ams_humidity_high": {
+    "name": "AMS 湿度过高",
+    "title_template": "AMS 湿度过高",
+    "body_template": "打印机：{printer}\n模块：{ams_label}\n当前湿度：{humidity}%\n告警阈值：{threshold}%"
+  },
+  "ams_temperature_high": {
+    "name": "AMS 温度过高",
+    "title_template": "AMS 温度过高",
+    "body_template": "打印机：{printer}\n模块：{ams_label}\n当前温度：{temperature}℃\n告警阈值：{threshold}℃"
+  },
+  "ams_drying_suspended": {
+    "name": "AMS 自动烘干已暂停",
+    "title_template": "AMS 自动烘干已暂停",
+    "body_template": "打印机：{printer}\n模块：{ams_label}\n已完成 {cycles} 轮烘干，湿度仍为 {humidity}%，高于 {threshold}% 阈值。\nAMS 温热时湿度读数可能偏高，请检查阈值或单独烘干耗材。"
+  },
+  "bed_cooled": {
+    "name": "热床已冷却",
+    "title_template": "热床已冷却",
+    "body_template": "打印机：{printer}\n当前热床温度：{bed_temp}℃\n提醒阈值：{threshold}℃"
+  },
+  "ha_sensor_alert": {
+    "name": "打印机传感器告警",
+    "title_template": "打印机传感器告警",
+    "body_template": "打印机：{printer}\n传感器：{sensor}\n状态：{state}"
+  },
+  "location_ha_sensor_alert": {
+    "name": "存放位置传感器告警",
+    "title_template": "存放位置传感器告警",
+    "body_template": "位置：{location}\n传感器：{sensor}\n状态：{state}"
+  },
+  "first_layer_complete": {
+    "name": "首层打印完成",
+    "title_template": "首层打印完成",
+    "body_template": "打印机：{printer}\n任务：{filename}\n已完成第 1 层，共 {total_layers} 层。"
+  },
+  "print_pause_upcoming": {
+    "name": "即将到达预设暂停点",
+    "title_template": "即将到达预设暂停点",
+    "body_template": "打印机：{printer}\n任务：{filename}\n距暂停约：{time_to_pause}\n预计时间：{eta}\n暂停层：{layer}/{total_layers}"
+  },
+  "test": {
+    "name": "通知连接测试",
+    "title_template": "通知连接测试",
+    "body_template": "这是一条 Bambuddy 通知测试。"
+  },
+  "queue_job_added": {
+    "name": "任务已加入队列",
+    "title_template": "任务已加入队列",
+    "body_template": "任务：{job_name}\n目标：{target}"
+  },
+  "queue_job_assigned": {
+    "name": "队列任务已分配",
+    "title_template": "队列任务已分配",
+    "body_template": "任务：{job_name}\n打印机：{printer}\n来源：{target_model} 自动分配队列"
+  },
+  "queue_job_started": {
+    "name": "队列任务开始打印",
+    "title_template": "队列任务开始打印",
+    "body_template": "打印机：{printer}\n任务：{job_name}\n预计耗时：{estimated_time}"
+  },
+  "queue_job_waiting": {
+    "name": "队列任务等待中",
+    "title_template": "队列任务等待中",
+    "body_template": "任务：{job_name}\n等待机型：{target_model}\n原因：{waiting_reason}"
+  },
+  "queue_job_skipped": {
+    "name": "队列任务已跳过",
+    "title_template": "队列任务已跳过",
+    "body_template": "打印机：{printer}\n任务：{job_name}\n原因：{reason}"
+  },
+  "queue_job_failed": {
+    "name": "队列任务启动失败",
+    "title_template": "队列任务启动失败",
+    "body_template": "打印机：{printer}\n任务：{job_name}\n原因：{reason}"
+  },
+  "queue_completed": {
+    "name": "打印队列已完成",
+    "title_template": "打印队列已完成",
+    "body_template": "队列中的 {completed_count} 个任务均已结束。"
+  },
+  "user_created": {
+    "name": "账户欢迎邮件",
+    "title_template": "欢迎使用 {app_name}",
+    "body_template": "欢迎你，{username}！\n\n你的 {app_name} 账户已创建，请在首次登录后修改密码。\n\n登录地址：{login_url}\n\n登录信息："
+  },
+  "password_reset": {
+    "name": "密码重置邮件",
+    "title_template": "{app_name} — 重置密码",
+    "body_template": "{username}，你好！\n\n我们收到了你的 {app_name} 账户密码重置请求。如果不是你本人操作，可忽略此邮件，密码尚未改变。\n\n请通过下方链接设置新密码（1 小时内有效，仅可使用一次）："
+  },
+  "stock_reorder_alert": {
+    "name": "耗材补货提醒",
+    "title_template": "耗材补货提醒：{material}",
+    "body_template": "耗材：{material} {subtype} {color}（{brand}）\n库存：{stock_g} g\n日均消耗：{rate_g_day} g\n预计可用：{days_left} 天\n已达到补货点，请及时采购。"
+  },
+  "stock_break_alert": {
+    "name": "耗材断供风险",
+    "title_template": "耗材断供风险：{material}",
+    "body_template": "耗材：{material} {subtype} {color}（{brand}）\n库存：{stock_g} g\n日均消耗：{rate_g_day} g\n采购交期：{lead_time_days} 天\n预计可用：{days_left} 天\n可能在补货到达前用尽，请及时处理。"
+  },
+  "user_print_start": {
+    "name": "你的打印已开始（用户邮件）",
+    "title_template": "你的打印已开始",
+    "body_template": "{username}，你好！\n\n你的打印任务已在 {printer} 上开始。\n\n文件：{filename}\n\n完成后将通知你。"
+  },
+  "user_print_complete": {
+    "name": "你的打印已完成（用户邮件）",
+    "title_template": "你的打印已完成",
+    "body_template": "{username}，你好！\n\n你的打印任务已在 {printer} 上完成。\n\n文件：{filename}"
+  },
+  "user_print_failed": {
+    "name": "你的打印失败（用户邮件）",
+    "title_template": "你的打印失败",
+    "body_template": "{username}，你好！\n\n你的打印任务在 {printer} 上失败。\n\n文件：{filename}"
+  },
+  "user_print_stopped": {
+    "name": "你的打印已停止（用户邮件）",
+    "title_template": "你的打印已停止",
+    "body_template": "{username}，你好！\n\n你的打印任务在 {printer} 上已停止。\n\n文件：{filename}"
+  }
+}

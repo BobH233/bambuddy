@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useRef, useEffect, useLayoutEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
@@ -419,7 +420,7 @@ export function FilamentHoverCard({ data, children, disabled, className = '', sp
                           handleCopyUuid();
                         }}
                         className="flex items-center gap-1 text-xs text-bambu-gray hover:text-white transition-colors"
-                        title="Copy spool UUID"
+                        title={translateSystemText("Copy spool UUID")}
                       >
                         <span className="font-mono text-[10px] truncate max-w-[80px]">
                           {data.trayUuid.slice(0, 8)}...

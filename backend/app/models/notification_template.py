@@ -279,3 +279,14 @@ DEFAULT_TEMPLATES = [
         "body_template": "Hello {username},\n\nYour print job was stopped on {printer}.\n\nFile: {filename}",
     },
 ]
+
+
+from backend.app.services.localization import chinese_enabled as _chinese_enabled
+
+if _chinese_enabled():
+    import json as _json
+    from pathlib import Path as _Path
+
+    _translated = _json.loads((_Path(__file__).resolve().parent.parent / "data" / "notification_templates_zh_CN.json").read_text(encoding="utf-8"))
+    for _template in DEFAULT_TEMPLATES:
+        _template.update(_translated.get(_template["event_type"], {}))

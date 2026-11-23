@@ -1,3 +1,4 @@
+import { CameraMedia } from './CameraMedia';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MutableRefObject, type ReactNode, type SyntheticEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Clock, Layers, Printer, Timer } from 'lucide-react';
@@ -18,7 +19,7 @@ interface UpdatedStreamOverlayProps {
   camera: {
     url: string | undefined;
     rotation: number;
-    onError: (event: SyntheticEvent<HTMLImageElement>) => void;
+    onError: (event?: SyntheticEvent<HTMLImageElement>) => void;
     imgRef?: MutableRefObject<HTMLImageElement | null>;
   } | null;
   name: string | null;
@@ -111,6 +112,7 @@ export function UpdatedStreamOverlay(props: UpdatedStreamOverlayProps) {
       </header>
       {camera && (
         <div className="updated-overlay__camera" ref={cameraRef}>
+          <CameraMedia src={camera.url} onError={() => camera.onError()} image={
           <img
             ref={attachCamera}
             alt={t('streamOverlay.cameraStream')}
@@ -122,6 +124,7 @@ export function UpdatedStreamOverlay(props: UpdatedStreamOverlayProps) {
             }}
             onError={camera.onError}
           />
+          } />
         </div>
       )}
       {hasPanel && (

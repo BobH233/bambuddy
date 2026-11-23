@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useEffect, useRef } from 'react';
 import { Layers, Check, AlertTriangle, Square, CheckSquare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -52,12 +53,11 @@ export function PlateSelector({
     <div className="mb-4">
       <div className="flex items-center gap-2 mb-2">
         <Layers className="w-4 h-4 text-bambu-gray" />
-        <span className="text-sm text-bambu-gray">Select Plate{multiSelect ? 's' : ''} to Print</span>
+        <span className="text-sm text-bambu-gray">{translateSystemText("Select Plate")}{multiSelect ? 's' : ''} {translateSystemText(" to Print")}</span>
         {selectedPlates.size === 0 && (
           <span className="text-xs text-orange-700 dark:text-orange-400 flex items-center gap-1">
             <AlertTriangle className="w-3 h-3" />
-            Selection required
-          </span>
+            {translateSystemText("Selection required")}</span>
         )}
         {multiSelect && onSelectAll && onDeselectAll && (
           <button

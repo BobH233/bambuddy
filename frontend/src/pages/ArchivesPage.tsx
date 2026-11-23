@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -1791,8 +1792,7 @@ function ArchiveCard({
                 }}
                 className="w-full"
               >
-                Cancel
-              </Button>
+                {translateSystemText("Cancel")}</Button>
             </div>
           </div>
         </div>
@@ -3025,9 +3025,9 @@ const PRINTED_STATUSES = ['completed', 'failed', 'aborted', 'cancelled', 'stoppe
 const collections: { id: Collection; label: string; icon: React.ReactNode }[] = [
   { id: 'all', label: 'All Archives', icon: <FolderOpen className="w-4 h-4" /> },
   { id: 'recent', label: 'Last 24 Hours', icon: <Clock className="w-4 h-4" /> },
-  { id: 'this-week', label: 'This Week', icon: <Calendar className="w-4 h-4" /> },
-  { id: 'this-month', label: 'This Month', icon: <Calendar className="w-4 h-4" /> },
-  { id: 'favorites', label: 'Favorites', icon: <Star className="w-4 h-4" /> },
+  { id: 'this-week', label: translateSystemText("This Week"), icon: <Calendar className="w-4 h-4" /> },
+  { id: 'this-month', label: translateSystemText("This Month"), icon: <Calendar className="w-4 h-4" /> },
+  { id: 'favorites', label: translateSystemText("Favorites"), icon: <Star className="w-4 h-4" /> },
   { id: 'not-printed', label: 'Not Printed', icon: <Upload className="w-4 h-4" /> },
   { id: 'printed', label: 'Printed', icon: <Printer className="w-4 h-4" /> },
   { id: 'failed', label: 'Failed Prints', icon: <AlertCircle className="w-4 h-4" /> },
@@ -3474,7 +3474,7 @@ export function ArchivesPage() {
                 entry.status === 'skipped' ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400' :
                 'bg-gray-500/20 text-gray-400'
               }`}>
-                {entry.status}
+                {translateSystemText(entry.status)}
               </span>
               {entry.failure_reason && (
                 <span className="block text-[10px] text-bambu-gray mt-0.5">
@@ -4003,16 +4003,13 @@ export function ArchivesPage() {
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-lg shadow-xl px-4 py-3 flex items-center gap-4">
           <Button variant="secondary" size="sm" onClick={clearSelection}>
             <X className="w-4 h-4" />
-            Close
-          </Button>
+            {translateSystemText("Close")}</Button>
           <div className="w-px h-6 bg-bambu-dark-tertiary" />
           <span className="text-white font-medium">
-            {selectedIds.size} selected
-          </span>
+            {selectedIds.size} {translateSystemText(" selected")}</span>
           <div className="w-px h-6 bg-bambu-dark-tertiary" />
           <Button variant="secondary" size="sm" onClick={selectAll}>
-            Select All
-          </Button>
+            {translateSystemText("Select All")}</Button>
           <div className="w-px h-6 bg-bambu-dark-tertiary" />
           <Button
             variant="secondary"
@@ -4022,8 +4019,7 @@ export function ArchivesPage() {
             title={!hasAnyPermission('archives:update_own', 'archives:update_all') ? t('archives.permission.noUpdateArchives') : undefined}
           >
             <Tag className="w-4 h-4" />
-            Tags
-          </Button>
+            {translateSystemText("Tags")}</Button>
           <Button
             variant="secondary"
             size="sm"
@@ -4032,8 +4028,7 @@ export function ArchivesPage() {
             title={!hasAnyPermission('archives:update_own', 'archives:update_all') ? t('archives.permission.noUpdateArchives') : undefined}
           >
             <FolderKanban className="w-4 h-4" />
-            Project
-          </Button>
+            {translateSystemText("Project")}</Button>
           <Button
             variant="secondary"
             size="sm"
@@ -4052,8 +4047,7 @@ export function ArchivesPage() {
             }}
           >
             <Star className="w-4 h-4" />
-            Favorite
-          </Button>
+            {translateSystemText("Favorite")}</Button>
           <Button
             size="sm"
             className="bg-red-500 hover:bg-red-600"
@@ -4062,8 +4056,7 @@ export function ArchivesPage() {
             title={!hasAnyPermission('archives:delete_own', 'archives:delete_all') ? t('archives.permission.noDelete') : undefined}
           >
             <Trash2 className="w-4 h-4" />
-            Delete
-          </Button>
+            {translateSystemText("Delete")}</Button>
         </div>
       )}
 
@@ -4148,11 +4141,9 @@ export function ArchivesPage() {
             <div>
               <h1 className="text-2xl font-bold text-white flex items-center gap-3">
                 <ArchiveIcon className="w-7 h-7 text-bambu-green" />
-                Archives
-              </h1>
+                {translateSystemText("Archives")}</h1>
               <p className="text-bambu-gray mt-1">
-                {filteredArchives?.length || 0} of {archives?.length || 0} prints
-              </p>
+                {filteredArchives?.length || 0} {translateSystemText(" of ")}{archives?.length || 0} {translateSystemText(" prints")}</p>
             </div>
             <select
               className="mt-0.5 px-3 py-1.5 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-bambu-gray-light text-sm focus:border-bambu-green focus:outline-none"
@@ -4180,8 +4171,7 @@ export function ArchivesPage() {
               ) : (
                 <FileSpreadsheet className="w-4 h-4" />
               )}
-              Export
-            </Button>
+              {translateSystemText("Export")}</Button>
             {showExportMenu && (
               <div className="absolute right-0 top-full mt-1 w-48 bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-lg shadow-xl z-20">
                 <button
@@ -4212,8 +4202,7 @@ export function ArchivesPage() {
                   }}
                 >
                   <FileText className="w-4 h-4" />
-                  Export as CSV
-                </button>
+                  {translateSystemText("Export as CSV")}</button>
                 <button
                   className="w-full px-4 py-2 text-left text-white hover:bg-bambu-dark-tertiary transition-colors flex items-center gap-2 rounded-b-lg"
                   onClick={async () => {
@@ -4242,8 +4231,7 @@ export function ArchivesPage() {
                   }}
                 >
                   <FileSpreadsheet className="w-4 h-4" />
-                  Export as Excel
-                </button>
+                  {translateSystemText("Export as Excel")}</button>
               </div>
             )}
           </div>
@@ -4254,14 +4242,13 @@ export function ArchivesPage() {
               onClick={() => setShowCompareModal(true)}
             >
               <GitCompare className="w-4 h-4" />
-              Compare ({selectedIds.size})
+              {translateSystemText("Compare (")}{selectedIds.size})
             </Button>
           )}
           {!selectionMode && (
             <Button variant="secondary" onClick={() => setIsSelectionMode(true)}>
               <CheckSquare className="w-4 h-4" />
-              Select
-            </Button>
+              {translateSystemText("Select")}</Button>
           )}
           <Button
             onClick={() => setShowUpload(true)}
@@ -4269,8 +4256,7 @@ export function ArchivesPage() {
             title={!hasPermission('archives:create') ? t('archives.permission.noCreate') : undefined}
           >
             <Upload className="w-4 h-4" />
-            Upload 3MF
-          </Button>
+            {translateSystemText("Upload 3MF")}</Button>
           {canMergeDuplicates && (
             <Button
               variant="secondary"
@@ -4353,7 +4339,7 @@ export function ArchivesPage() {
                   setFilterPrinter(e.target.value ? Number(e.target.value) : null)
                 }
               >
-                <option value="">All Printers</option>
+                <option value="">{translateSystemText("All Printers")}</option>
                 {printers?.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
@@ -4370,7 +4356,7 @@ export function ArchivesPage() {
                   setFilterMaterial(e.target.value || null)
                 }
               >
-                <option value="">All Materials</option>
+                <option value="">{translateSystemText("All Materials")}</option>
                 {uniqueMaterials.map((m) => (
                   <option key={m} value={m}>
                     {m}
@@ -4385,9 +4371,9 @@ export function ArchivesPage() {
                 value={filterFileType}
                 onChange={(e) => setFilterFileType(e.target.value as 'all' | 'gcode' | 'source')}
               >
-                <option value="all">All Files</option>
-                <option value="gcode">Sliced (GCODE)</option>
-                <option value="source">Source Only</option>
+                <option value="all">{translateSystemText("All Files")}</option>
+                <option value="gcode">{translateSystemText("Sliced (GCODE)")}</option>
+                <option value="source">{translateSystemText("Source Only")}</option>
               </select>
             </div>
             <button
@@ -4400,7 +4386,7 @@ export function ArchivesPage() {
               title={filterFavorites ? t('archives.showAll') : t('archives.showFavoritesOnly')}
             >
               <Star className={`w-4 h-4 ${filterFavorites ? 'fill-yellow-400' : ''}`} />
-              <span className="text-sm hidden md:inline">Favorites</span>
+              <span className="text-sm hidden md:inline">{translateSystemText("Favorites")}</span>
             </button>
             <button
               onClick={() => setHideFailed(!hideFailed)}
@@ -4412,7 +4398,7 @@ export function ArchivesPage() {
               title={hideFailed ? t('archives.showFailedPrints') : t('archives.hideFailedPrints')}
             >
               <AlertCircle className={`w-4 h-4 ${hideFailed ? '' : ''}`} />
-              <span className="text-sm hidden md:inline">Hide Failed</span>
+              <span className="text-sm hidden md:inline">{translateSystemText("Hide Failed")}</span>
             </button>
             <button
               onClick={() => setFilterUnconfirmed(!filterUnconfirmed)}
@@ -4446,7 +4432,7 @@ export function ArchivesPage() {
                   value={filterTag || ''}
                   onChange={(e) => setFilterTag(e.target.value || null)}
                 >
-                  <option value="">All Tags</option>
+                  <option value="">{translateSystemText("All Tags")}</option>
                   {uniqueTags.map((t) => (
                     <option key={t} value={t}>
                       {t}
@@ -4486,14 +4472,13 @@ export function ArchivesPage() {
                 className="text-bambu-gray hover:text-white"
               >
                 <X className="w-4 h-4" />
-                Reset
-              </Button>
+                {translateSystemText("Reset")}</Button>
             )}
           </div>
           {/* Color Filter */}
           {uniqueColors.length > 0 && (
             <div className="flex items-center gap-3 mt-4 pt-4 border-t border-bambu-dark-tertiary">
-              <span className="text-xs text-bambu-gray">Colors:</span>
+              <span className="text-xs text-bambu-gray">{translateSystemText("Colors:")}</span>
               {filterColors.size > 1 && (
                 <button
                   onClick={() => setColorFilterMode(m => m === 'or' ? 'and' : 'or')}
@@ -4528,8 +4513,7 @@ export function ArchivesPage() {
                   className="text-xs text-bambu-gray hover:text-white flex items-center gap-1"
                 >
                   <X className="w-3 h-3" />
-                  Clear
-                </button>
+                  {translateSystemText("Clear")}</button>
               )}
             </div>
           )}
@@ -4554,8 +4538,7 @@ export function ArchivesPage() {
               {search ? t('archives.noArchivesSearch') : t('archives.noArchivesYet')}
             </p>
             <p className="text-sm text-bambu-gray mt-2">
-              Archives are created automatically when prints complete
-            </p>
+              {translateSystemText("Archives are created automatically when prints complete")}</p>
           </CardContent>
         </Card>
       ) : viewMode === 'calendar' ? (
@@ -4607,11 +4590,11 @@ export function ArchivesPage() {
               {/* List Header */}
               <div className="grid grid-cols-12 gap-4 px-4 py-3 text-xs text-bambu-gray font-medium">
                 <div className="col-span-1"></div>
-                <div className="col-span-4">Name</div>
-                <div className="col-span-2">Printer</div>
-                <div className="col-span-2">Date</div>
-                <div className="col-span-1">Size</div>
-                <div className="col-span-2 text-right">Actions</div>
+                <div className="col-span-4">{translateSystemText("Name")}</div>
+                <div className="col-span-2">{translateSystemText("Printer")}</div>
+                <div className="col-span-2">{translateSystemText("Date")}</div>
+                <div className="col-span-1">{translateSystemText("Size")}</div>
+                <div className="col-span-2 text-right">{translateSystemText("Actions")}</div>
               </div>
               {/* List Items */}
               {paginatedArchives?.map((archive) => (

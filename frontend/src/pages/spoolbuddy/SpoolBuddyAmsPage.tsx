@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -643,7 +644,7 @@ export function SpoolBuddyAmsPage() {
                           {nozzleSide && <NozzleBadge side={nozzleSide} />}
                         </div>
                         <div className="text-sm text-white/80 truncate">
-                          {isEmpty ? 'Empty' : tray.tray_type || '?'}
+                          {isEmpty ? translateSystemText("Empty") : tray.tray_type || '?'}
                         </div>
                         {(temp != null || humidity != null) && (
                           <div className="flex items-center gap-1.5">

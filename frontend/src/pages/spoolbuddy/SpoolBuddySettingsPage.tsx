@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useOutletContext } from 'react-router-dom';
@@ -26,7 +27,7 @@ function formatDateTime(iso: string | null): string {
 }
 
 const BLANK_OPTIONS = [
-  { label: 'Off', value: 0 },
+  { label: translateSystemText("Off"), value: 0 },
   { label: '1m', value: 60 },
   { label: '2m', value: 120 },
   { label: '5m', value: 300 },

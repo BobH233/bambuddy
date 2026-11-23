@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -71,12 +72,12 @@ function SwitchItem({ plug }: { plug: SmartPlug }) {
                     <span className="text-teal-700 dark:text-teal-400">{Math.round(status?.energy?.power ?? 0)}W</span>
                     <span className="text-bambu-gray mx-1">|</span>
                     <Eye className="w-3 h-3 text-bambu-gray" />
-                    <span className="text-bambu-gray">Monitor</span>
+                    <span className="text-bambu-gray">{translateSystemText("Monitor")}</span>
                   </>
                 ) : (
                   <>
                     <WifiOff className="w-3 h-3 text-status-error" />
-                    <span className="text-status-error">Waiting</span>
+                    <span className="text-status-error">{translateSystemText("Waiting")}</span>
                   </>
                 )
               ) : isReachable ? (
@@ -94,7 +95,7 @@ function SwitchItem({ plug }: { plug: SmartPlug }) {
               ) : (
                 <>
                   <WifiOff className="w-3 h-3 text-status-error" />
-                  <span className="text-status-error">Offline</span>
+                  <span className="text-status-error">{translateSystemText("Offline")}</span>
                 </>
               )}
             </div>
@@ -112,7 +113,7 @@ function SwitchItem({ plug }: { plug: SmartPlug }) {
                   ? 'bg-bambu-green text-white'
                   : 'bg-bambu-dark text-bambu-gray hover:text-white'
               } disabled:opacity-50 disabled:cursor-not-allowed`}
-              title="Turn On"
+              title={translateSystemText("Turn On")}
             >
               {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Power className="w-4 h-4" />}
             </button>
@@ -124,7 +125,7 @@ function SwitchItem({ plug }: { plug: SmartPlug }) {
                   ? 'bg-bambu-dark-tertiary text-white'
                   : 'bg-bambu-dark text-bambu-gray hover:text-white'
               } disabled:opacity-50 disabled:cursor-not-allowed`}
-              title="Turn Off"
+              title={translateSystemText("Turn Off")}
             >
               {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <PowerOff className="w-4 h-4" />}
             </button>
@@ -134,7 +135,7 @@ function SwitchItem({ plug }: { plug: SmartPlug }) {
 
       {confirmAction && (
         <ConfirmModal
-          title={`Turn ${confirmAction === 'on' ? 'On' : 'Off'} Smart Plug`}
+          title={`Turn ${confirmAction === 'on' ? translateSystemText("On") : translateSystemText("Off")} Smart Plug`}
           message={`Are you sure you want to turn ${confirmAction === 'on' ? 'on' : 'off'} "${plug.name}"?`}
           confirmText={confirmAction === 'on' ? 'Turn On' : 'Turn Off'}
           variant={confirmAction === 'off' ? 'warning' : 'default'}
@@ -166,8 +167,7 @@ export function SwitchbarPopover({ onClose }: SwitchbarPopoverProps) {
       <div className="px-4 py-3 border-b border-bambu-dark-tertiary">
         <h3 className="text-sm font-semibold text-white flex items-center gap-2">
           <Plug className="w-4 h-4 text-bambu-green" />
-          Smart Switches
-        </h3>
+          {translateSystemText("Smart Switches")}</h3>
       </div>
 
       {/* Content */}

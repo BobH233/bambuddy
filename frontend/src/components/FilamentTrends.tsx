@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -280,8 +281,7 @@ export function FilamentTrends({ archives, currency = '$', dateFrom, dateTo }: F
             </p>
           </div>
           <p className="text-xs text-bambu-gray">
-            {currency}{totalPrints > 0 ? (totalCost / totalPrints).toFixed(2) : '0.00'} avg
-          </p>
+            {currency}{totalPrints > 0 ? (totalCost / totalPrints).toFixed(2) : '0.00'} {translateSystemText(" avg")}</p>
         </div>
       </div>
 
@@ -549,7 +549,7 @@ export function FilamentTrends({ archives, currency = '$', dateFrom, dateTo }: F
                   })}
                 </div>
                 {colorData.length > 8 && (
-                  <p className="text-[10px] text-bambu-gray mt-1 text-center">+{colorData.length - 8} more</p>
+                  <p className="text-[10px] text-bambu-gray mt-1 text-center">+{colorData.length - 8} {translateSystemText(" more")}</p>
                 )}
               </div>
             );

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ShieldCheck, ShieldOff, Mail, Smartphone, Key, RefreshCw, Trash2, X, Eye, EyeOff, Copy } from 'lucide-react';
@@ -111,7 +112,7 @@ function TOTPSetupWizard({ onDone }: { onDone: () => void }) {
         <div className="flex justify-center">
           <img
             src={`data:image/png;base64,${setupData.qr_code_b64}`}
-            alt="TOTP QR Code"
+            alt={translateSystemText("TOTP QR Code")}
             className="w-48 h-48 rounded-lg"
           />
         </div>

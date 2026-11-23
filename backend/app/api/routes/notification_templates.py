@@ -20,6 +20,7 @@ from backend.app.schemas.notification_template import (
     TemplatePreviewResponse,
 )
 from backend.app.services.notification_service import notification_service
+from backend.app.services.localization import system_text
 
 router = APIRouter(prefix="/notification-templates", tags=["notification-templates"])
 
@@ -91,7 +92,7 @@ async def get_variables(
     return [
         EventVariablesResponse(
             event_type=event_type,
-            event_name=EVENT_NAMES.get(event_type, event_type),
+            event_name=system_text(EVENT_NAMES.get(event_type, event_type)),
             variables=variables,
             supports_photo=event_type in PHOTO_CAPABLE_EVENTS,
         )

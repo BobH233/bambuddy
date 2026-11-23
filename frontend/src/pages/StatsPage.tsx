@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -457,7 +458,7 @@ function HourlyHeatmap({ printDates, dateFrom, dateTo }: { printDates: string[];
 
       {/* Legend */}
       <div className="flex items-center gap-2 mt-3 text-bambu-gray text-xs">
-        <span>Less</span>
+        <span>{translateSystemText("Less")}</span>
         <div className="flex" style={{ gap }}>
           <div className="rounded-sm bg-bambu-dark" style={{ width: cellSize, height: cellSize }} />
           <div className="rounded-sm bg-bambu-green/30" style={{ width: cellSize, height: cellSize }} />
@@ -465,7 +466,7 @@ function HourlyHeatmap({ printDates, dateFrom, dateTo }: { printDates: string[];
           <div className="rounded-sm bg-bambu-green/75" style={{ width: cellSize, height: cellSize }} />
           <div className="rounded-sm bg-bambu-green" style={{ width: cellSize, height: cellSize }} />
         </div>
-        <span>More</span>
+        <span>{translateSystemText("More")}</span>
       </div>
     </div>
   );

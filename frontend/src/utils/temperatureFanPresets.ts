@@ -1,3 +1,4 @@
+import { translateSystemText } from './displayText';
 /**
  * Helpers for the user-configurable temperature / fan-speed presets shown in
  * the printer-card popovers and edited under Settings -> Workflow.
@@ -67,7 +68,7 @@ export function buildPresetOptions(
   unit: 'C' | '%',
 ): Array<{ label: string; value: number }> {
   return [
-    { label: 'Off', value: 0 },
+    { label: translateSystemText("Off"), value: 0 },
     ...values.map((v) => ({ label: `${v} ${unit}`, value: v })),
   ];
 }

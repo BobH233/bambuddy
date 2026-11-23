@@ -84,7 +84,11 @@ let streamToken: string | null = null;
 let mediaToken: string | null = null;
 
 export function setStreamToken(token: string | null) {
+  const previousToken = streamToken;
   streamToken = token;
+  if (previousToken && token && previousToken !== token) {
+    window.dispatchEvent(new CustomEvent('bambuddy-camera-token', { detail: { previousToken, token } }));
+  }
 }
 
 export function getStreamToken(): string | null {

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { useTranslation } from 'react-i18next';
 import type { AMSUnit, AMSTray } from '../../api/client';
 import { getEmptySlotKind, getFillBarColor } from '../../utils/amsHelpers';
@@ -203,7 +204,7 @@ function SpoolSlot({ tray, slotIndex, isActive, fillOverride, spoolmanFill, acce
         className="text-sm text-bambu-gray-light truncate max-w-full"
         title={emptyKind === 'reset' ? 'Spool loaded — slot not configured' : undefined}
       >
-        {isEmpty ? (emptyKind === 'reset' ? '?' : 'Empty') : tray.tray_type || 'Unknown'}
+        {isEmpty ? (emptyKind === 'reset' ? '?' : translateSystemText("Empty")) : tray.tray_type || 'Unknown'}
       </span>
 
       {/* Fill level bar */}

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -98,16 +99,16 @@ function formatDuration(value: number, type: 'hours' | 'days', t?: TFunction): s
     return t ? t('maintenance.months', { count: months }) : `${months} months`;
   } else {
     // Print hours - convert to readable units
-    if (value < 1) return `${Math.round(value * 60)}m`;
-    if (value < 24) return `${value < 10 ? value.toFixed(1) : Math.round(value)}h`;
+    if (value < 1) return translateSystemText(`${Math.round(value * 60)}m`);
+    if (value < 24) return translateSystemText(`${value < 10 ? value.toFixed(1) : Math.round(value)}h`);
     // 24+ hours: show as days of print time
     const days = value / 24;
-    if (days < 7) return `${days < 2 ? days.toFixed(1) : Math.round(days)}d`;
+    if (days < 7) return translateSystemText(`${days < 2 ? days.toFixed(1) : Math.round(days)}d`);
     // 7+ days: show as weeks of print time
     const weeks = days / 7;
-    if (weeks < 12) return `${weeks < 2 ? weeks.toFixed(1) : Math.round(weeks)}w`;
+    if (weeks < 12) return translateSystemText(`${weeks < 2 ? weeks.toFixed(1) : Math.round(weeks)}w`);
     // 12+ weeks: show as months of print time
-    return `${Math.round(weeks / 4)}mo`;
+    return translateSystemText(`${Math.round(weeks / 4)}mo`);
   }
 }
 
@@ -123,7 +124,7 @@ function formatIntervalLabel(value: number, type: 'hours' | 'days', t?: TFunctio
     if (value === 365) return t ? t('maintenance.year') : '1 year';
     return t ? t('maintenance.days', { count: value }) : `${value} days`;
   }
-  return `${value}h`;
+  return translateSystemText(`${value}h`);
 }
 
 
@@ -214,7 +215,7 @@ function MaintenanceCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h3 className={`font-medium truncate ${item.enabled ? 'text-white' : 'text-bambu-gray'}`}>
-              {item.maintenance_type_name}
+              {translateSystemText(item.maintenance_type_name)}
             </h3>
             {intervalType === 'days' && (
               <span title={t('maintenance.timeBasedInterval')}>
@@ -422,7 +423,7 @@ function PrinterSection({
               </div>
               <div>
                 <div className={`text-sm font-medium ${nextTask.is_due ? 'text-red-700 dark:text-red-400' : 'text-amber-700 dark:text-amber-400'}`}>
-                  {nextTask.maintenance_type_name}
+                  {translateSystemText(nextTask.maintenance_type_name)}
                 </div>
                 <div className={`text-xs ${nextTask.is_due ? 'text-red-700/80 dark:text-red-400/70' : 'text-amber-700/80 dark:text-amber-400/70'}`}>
                   {nextTask.is_due ? t('common.overdue') : t('maintenance.dueSoon')}
@@ -765,7 +766,7 @@ function SettingsSection({
                     <Icon className="w-5 h-5 text-bambu-gray" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-white truncate">{type.name}</div>
+                    <div className="text-sm font-medium text-white truncate">{translateSystemText(type.name)}</div>
                     <div className="text-xs text-bambu-gray mt-0.5 flex items-center gap-1">
                       {intervalType === 'days' ? <Calendar className="w-3 h-3" /> : <Timer className="w-3 h-3" />}
                       {formatIntervalLabel(type.default_interval_hours, intervalType, t)}
@@ -872,7 +873,7 @@ function SettingsSection({
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-white truncate">{type.name}</span>
+                      <span className="text-sm font-medium text-white truncate">{translateSystemText(type.name)}</span>
                       <span className="px-1.5 py-0.5 bg-bambu-green/20 text-bambu-green text-[10px] font-medium rounded">
                         {t('maintenance.custom')}
                       </span>
@@ -905,7 +906,7 @@ function SettingsSection({
                   </button>
                   <button
                     onClick={() => {
-                      if (confirm(`${t('maintenance.deleteTypeConfirm', { name: type.name })}\n\n${t('maintenance.deleteTypeAllPrinters')}`)) {
+                      if (confirm(`${t('maintenance.deleteTypeConfirm', { name: translateSystemText(type.name) })}\n\n${t('maintenance.deleteTypeAllPrinters')}`)) {
                         onDeleteType(type.id);
                       }
                     }}
@@ -991,7 +992,7 @@ function SettingsSection({
                       return (
                         <div key={item.id} className="flex items-center gap-2 p-2.5 bg-bambu-dark rounded-lg">
                           <Icon className="w-4 h-4 text-bambu-gray shrink-0" />
-                          <span className="text-xs text-bambu-gray flex-1 truncate">{item.maintenance_type_name}</span>
+                          <span className="text-xs text-bambu-gray flex-1 truncate">{translateSystemText(item.maintenance_type_name)}</span>
 
                           {isEditing ? (
                             <div className="flex items-center gap-1">
@@ -1019,7 +1020,7 @@ function SettingsSection({
                                 className="w-16 px-2 py-1 bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded text-white text-xs"
                                 min="1"
                               />
-                              <Button size="sm" onClick={() => handleSaveInterval(item.id, defaultInterval, defaultIntervalType)}>OK</Button>
+                              <Button size="sm" onClick={() => handleSaveInterval(item.id, defaultInterval, defaultIntervalType)}>{translateSystemText("OK")}</Button>
                             </div>
                           ) : (
                             <button

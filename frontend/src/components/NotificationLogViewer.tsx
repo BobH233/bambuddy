@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -264,11 +265,11 @@ function LogEntry({
         <div className="px-3 py-2 border-t border-bambu-dark-tertiary bg-bambu-dark/20 space-y-2">
           <div>
             <p className="text-xs text-bambu-gray mb-1">{t('notifications.logTitle')}</p>
-            <p className="text-sm text-white">{log.title}</p>
+            <p className="text-sm text-white">{translateSystemText(log.title)}</p>
           </div>
           <div>
             <p className="text-xs text-bambu-gray mb-1">{t('notifications.logMessage')}</p>
-            <p className="text-sm text-white whitespace-pre-wrap">{log.message}</p>
+            <p className="text-sm text-white whitespace-pre-wrap">{translateSystemText(log.message)}</p>
           </div>
           {!log.success && log.error_message && (
             <div>

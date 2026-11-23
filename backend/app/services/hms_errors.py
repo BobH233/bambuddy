@@ -16,10 +16,11 @@ text differs on that model (0300_8001 is "paused by the user" on some models and
 "paused by a pause command in the file" on others). A code Bambu lists with
 empty text is stored as "" and reads as no description.
 
-Only English ships; Bambu Studio has more languages if that is ever wanted.
+Chinese descriptions can be selected for this deployment with BAMBUDDY_UI_LANGUAGE.
 """
 
 import json
+import os
 from pathlib import Path
 
 _DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "hms_catalog.json"
@@ -28,6 +29,9 @@ _DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "hms_catalog.json
 # not depend on the working directory (systemd unit, Docker, tests).
 with _DATA_FILE.open(encoding="utf-8") as _f:
     _CATALOG: dict = json.load(_f)
+
+with _DATA_FILE.with_name("hms_catalog_zh_CN.json").open(encoding="utf-8") as _f:
+    _CHINESE_CATALOG: dict = json.load(_f)
 
 _TABLES: dict[int, tuple[dict[str, str], dict[str, dict[str, str]]]] = {
     16: (_CATALOG["hms"], _CATALOG["hms_by_model"]),
@@ -72,7 +76,18 @@ def describe_fault(full_code: str | None, model: str | None = None) -> str | Non
     notifications -- says the same thing (#2926). None covers both "not listed"
     and "listed without text"; ``lookup_fault`` tells the two apart.
     """
-    return lookup_fault(full_code, model) or None
+    original = lookup_fault(full_code, model)
+    if not original:
+        return None
+    if os.environ.get("BAMBUDDY_UI_LANGUAGE", "").lower() in {"zh", "zh-cn", "zh-hans"}:
+        code = full_code.strip().upper()
+        section = "hms" if len(code) == 16 else "error"
+        if model:
+            specific = _CHINESE_CATALOG[section + "_by_model"].get(model.upper(), {}).get(code)
+            if specific:
+                return specific
+        return _CHINESE_CATALOG[section].get(code) or original
+    return original
 
 
 def get_error_description(error_code: str, model: str | None = None) -> str | None:

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../../utils/displayText';
 import { Suspense, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useQueries } from '@tanstack/react-query';
@@ -234,7 +235,7 @@ export function SpoolBuddyLayout() {
         <button
           onClick={() => setQuickMenuOpen(true)}
           className="w-full h-1.5 bg-bambu-dark-secondary flex justify-center items-center shrink-0 touch-none"
-          aria-label="Open quick menu"
+          aria-label={translateSystemText("Open quick menu")}
         >
           <div className="w-8 h-0.5 rounded-full bg-zinc-600" />
         </button>

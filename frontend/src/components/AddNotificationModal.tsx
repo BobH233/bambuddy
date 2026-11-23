@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -289,20 +290,20 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
     switch (type) {
       case 'callmebot':
         return [
-          { key: 'phone', label: 'Phone Number', placeholder: '+1234567890', type: 'text', required: true },
-          { key: 'apikey', label: 'API Key', placeholder: 'Your CallMeBot API key', type: 'password', required: true },
+          { key: 'phone', label: translateSystemText("Phone Number"), placeholder: '+1234567890', type: 'text', required: true },
+          { key: 'apikey', label: translateSystemText("API Key"), placeholder: 'Your CallMeBot API key', type: 'password', required: true },
         ];
       case 'ntfy':
         return [
-          { key: 'server', label: 'Server URL', placeholder: 'https://ntfy.sh', type: 'text', required: false },
-          { key: 'topic', label: 'Topic', placeholder: 'my-bambuddy', type: 'text', required: true },
-          { key: 'auth_token', label: 'Auth Token', placeholder: 'Optional authentication', type: 'password', required: false },
+          { key: 'server', label: translateSystemText("Server URL"), placeholder: 'https://ntfy.sh', type: 'text', required: false },
+          { key: 'topic', label: translateSystemText("Topic"), placeholder: 'my-bambuddy', type: 'text', required: true },
+          { key: 'auth_token', label: translateSystemText("Auth Token"), placeholder: 'Optional authentication', type: 'password', required: false },
         ];
       case 'pushover':
         return [
-          { key: 'user_key', label: 'User Key', placeholder: 'Your Pushover user key', type: 'password', required: true },
-          { key: 'app_token', label: 'App Token', placeholder: 'Your Pushover app token', type: 'password', required: true },
-          { key: 'priority', label: 'Priority', placeholder: '0 (normal)', type: 'number', required: false },
+          { key: 'user_key', label: translateSystemText("User Key"), placeholder: 'Your Pushover user key', type: 'password', required: true },
+          { key: 'app_token', label: translateSystemText("App Token"), placeholder: 'Your Pushover app token', type: 'password', required: true },
+          { key: 'priority', label: translateSystemText("Priority"), placeholder: '0 (normal)', type: 'number', required: false },
           // Emergency priority (2) requires retry/expire — Pushover rejects the
           // message otherwise. Only shown when priority is set to 2.
           {
@@ -356,8 +357,8 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
         ];
       case 'telegram':
         return [
-          { key: 'bot_token', label: 'Bot Token', placeholder: 'Bot token from @BotFather', type: 'password', required: true },
-          { key: 'chat_id', label: 'Chat ID', placeholder: 'Your chat or group ID', type: 'text', required: true },
+          { key: 'bot_token', label: translateSystemText("Bot Token"), placeholder: 'Bot token from @BotFather', type: 'password', required: true },
+          { key: 'chat_id', label: translateSystemText("Chat ID"), placeholder: 'Your chat or group ID', type: 'text', required: true },
           // Optional forum topic (#1518). Left empty, Telegram posts to the
           // group's General topic exactly as before.
           {
@@ -371,21 +372,21 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
         ];
       case 'email':
         return [
-          { key: 'smtp_server', label: 'SMTP Server', placeholder: 'smtp.gmail.com', type: 'text', required: true },
-          { key: 'smtp_port', label: 'SMTP Port', placeholder: '587', type: 'number', required: false },
-          { key: 'security', label: 'Security', type: 'select', required: false, options: [
-            { value: 'starttls', label: 'STARTTLS (Port 587)' },
-            { value: 'ssl', label: 'SSL/TLS (Port 465)' },
-            { value: 'none', label: 'None (Port 25)' },
+          { key: 'smtp_server', label: translateSystemText("SMTP Server"), placeholder: 'smtp.gmail.com', type: 'text', required: true },
+          { key: 'smtp_port', label: translateSystemText("SMTP Port"), placeholder: '587', type: 'number', required: false },
+          { key: 'security', label: translateSystemText("Security"), type: 'select', required: false, options: [
+            { value: 'starttls', label: translateSystemText("STARTTLS (Port 587)") },
+            { value: 'ssl', label: translateSystemText("SSL/TLS (Port 465)") },
+            { value: 'none', label: translateSystemText("None (Port 25)") },
           ]},
-          { key: 'auth_enabled', label: 'Authentication', type: 'select', required: false, options: [
-            { value: 'true', label: 'Enabled' },
-            { value: 'false', label: 'Disabled' },
+          { key: 'auth_enabled', label: translateSystemText("Authentication"), type: 'select', required: false, options: [
+            { value: 'true', label: translateSystemText("Enabled") },
+            { value: 'false', label: translateSystemText("Disabled") },
           ]},
-          { key: 'username', label: 'Username', placeholder: 'your@email.com', type: 'text', required: false },
-          { key: 'password', label: 'Password', placeholder: 'App password', type: 'password', required: false },
-          { key: 'from_email', label: 'From Email', placeholder: 'your@email.com', type: 'text', required: true },
-          { key: 'to_email', label: 'To Email', placeholder: 'recipient@email.com', type: 'text', required: true },
+          { key: 'username', label: translateSystemText("Username"), placeholder: 'your@email.com', type: 'text', required: false },
+          { key: 'password', label: translateSystemText("Password"), placeholder: 'App password', type: 'password', required: false },
+          { key: 'from_email', label: translateSystemText("From Email"), placeholder: 'your@email.com', type: 'text', required: true },
+          { key: 'to_email', label: translateSystemText("To Email"), placeholder: 'recipient@email.com', type: 'text', required: true },
         ];
       case 'discord':
         return [
@@ -394,13 +395,13 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
       case 'webhook':
         return [
           { key: 'webhook_url', label: 'Webhook URL', placeholder: 'https://example.com/webhook', type: 'password', required: true },
-          { key: 'payload_format', label: 'Payload Format', type: 'select', required: false, options: [
+          { key: 'payload_format', label: translateSystemText("Payload Format"), type: 'select', required: false, options: [
             { value: 'generic', label: 'Generic JSON' },
             { value: 'slack', label: 'Slack / Mattermost' },
           ]},
-          { key: 'auth_header', label: 'Authorization', placeholder: 'Bearer token (optional)', type: 'password', required: false },
-          { key: 'field_title', label: 'Title Field Name', placeholder: 'title', type: 'text', required: false, showIf: (cfg: Record<string, string>) => cfg.payload_format !== 'slack' },
-          { key: 'field_message', label: 'Message Field Name', placeholder: 'message', type: 'text', required: false, showIf: (cfg: Record<string, string>) => cfg.payload_format !== 'slack' },
+          { key: 'auth_header', label: translateSystemText("Authorization"), placeholder: 'Bearer token (optional)', type: 'password', required: false },
+          { key: 'field_title', label: translateSystemText("Title Field Name"), placeholder: 'title', type: 'text', required: false, showIf: (cfg: Record<string, string>) => cfg.payload_format !== 'slack' },
+          { key: 'field_message', label: translateSystemText("Message Field Name"), placeholder: 'message', type: 'text', required: false, showIf: (cfg: Record<string, string>) => cfg.payload_format !== 'slack' },
         ];
       case 'homeassistant':
         return [
@@ -417,12 +418,12 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
       case 'bark':
         return [
           { key: 'device_key', label: 'Device Key', placeholder: 'Your Bark device key', type: 'password', required: true },
-          { key: 'server', label: 'Server URL', placeholder: 'https://api.day.app', type: 'text', required: false },
-          { key: 'group', label: 'Group', placeholder: 'Bambuddy', type: 'text', required: false },
+          { key: 'server', label: translateSystemText("Server URL"), placeholder: 'https://api.day.app', type: 'text', required: false },
+          { key: 'group', label: translateSystemText("Group"), placeholder: 'Bambuddy', type: 'text', required: false },
           { key: 'sound', label: 'Sound', placeholder: 'minuet', type: 'text', required: false },
           { key: 'level', label: 'Interruption Level', type: 'select', required: false, options: [
-            { value: '', label: 'Default' },
-            { value: 'active', label: 'Active' },
+            { value: '', label: translateSystemText("Default") },
+            { value: 'active', label: translateSystemText("Active") },
             { value: 'timeSensitive', label: 'Time Sensitive' },
             { value: 'critical', label: 'Critical (bypasses Silent/Focus)' },
             { value: 'passive', label: 'Passive (no sound)' },
@@ -430,8 +431,8 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
         ];
       case 'gotify':
         return [
-          { key: 'server', label: 'Server URL', placeholder: 'https://gotify.example.com', type: 'text', required: true },
-          { key: 'app_token', label: 'App Token', placeholder: 'Token of a Gotify application', type: 'password', required: true },
+          { key: 'server', label: translateSystemText("Server URL"), placeholder: 'https://gotify.example.com', type: 'text', required: true },
+          { key: 'app_token', label: translateSystemText("App Token"), placeholder: 'Token of a Gotify application', type: 'password', required: true },
         ];
       default:
         return [];
@@ -712,12 +713,12 @@ export function AddNotificationModal({ provider, onClose }: AddNotificationModal
               {testResult.success ? (
                 <>
                   <CheckCircle className="w-5 h-5" />
-                  <span>{testResult.message}</span>
+                  <span>{translateSystemText(testResult.message)}</span>
                 </>
               ) : (
                 <>
                   <XCircle className="w-5 h-5" />
-                  <span>{testResult.message}</span>
+                  <span>{translateSystemText(testResult.message)}</span>
                 </>
               )}
             </div>

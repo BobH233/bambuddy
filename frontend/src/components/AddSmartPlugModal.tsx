@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect, useRef } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { X, Save, Loader2, Wifi, WifiOff, CheckCircle, Bell, Clock, LayoutGrid, Search, Plug, Power, Home, Radio, Eye, Globe } from 'lucide-react';
@@ -1072,7 +1073,7 @@ export function AddSmartPlugModal({ plug, onClose }: AddSmartPlugModalProps) {
                         type="text"
                         value={mqttEnergyTopic}
                         onChange={(e) => setMqttEnergyTopic(e.target.value)}
-                        placeholder="Same as power topic, or different"
+                        placeholder={translateSystemText("Same as power topic, or different")}
                         className="w-full px-3 py-2 bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-lg text-white placeholder-bambu-gray focus:border-bambu-green focus:outline-none"
                       />
                     </div>
@@ -1112,7 +1113,7 @@ export function AddSmartPlugModal({ plug, onClose }: AddSmartPlugModalProps) {
                         type="text"
                         value={mqttStateTopic}
                         onChange={(e) => setMqttStateTopic(e.target.value)}
-                        placeholder="Same as power topic, or different"
+                        placeholder={translateSystemText("Same as power topic, or different")}
                         className="w-full px-3 py-2 bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-lg text-white placeholder-bambu-gray focus:border-bambu-green focus:outline-none"
                       />
                     </div>

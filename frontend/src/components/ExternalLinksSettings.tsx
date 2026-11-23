@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useMemo, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Eye, EyeOff, Link2, Plus, Pencil, Trash2, GripVertical, Loader2, ExternalLink as ExternalLinkIcon, RotateCcw } from 'lucide-react';
@@ -222,8 +223,7 @@ export function ExternalLinksSettings() {
               </Button>
               <Button size="sm" onClick={() => setShowAddModal(true)} className="whitespace-nowrap">
                 <Plus className="w-4 h-4" />
-                Add Link
-              </Button>
+                {translateSystemText("Add Link")}</Button>
             </div>
           </div>
         </CardHeader>
@@ -363,7 +363,7 @@ export function ExternalLinksSettings() {
 
       {deletingLink && (
         <ConfirmModal
-          title="Delete Link"
+          title={translateSystemText("Delete Link")}
           message={`Are you sure you want to delete "${deletingLink.name}"? This action cannot be undone.`}
           confirmText="Delete"
           cancelText="Cancel"

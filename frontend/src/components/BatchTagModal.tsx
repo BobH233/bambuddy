@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X, Tag, Plus, Loader2 } from 'lucide-react';
@@ -102,7 +103,7 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
             <div className="flex items-center gap-2">
               <Tag className="w-5 h-5 text-bambu-green" />
               <h2 className="text-xl font-semibold text-white">
-                {mode === 'add' ? 'Add Tags' : 'Remove Tags'}
+                {mode === 'add' ? translateSystemText("Add Tags") : translateSystemText("Remove Tags")}
               </h2>
             </div>
             <button
@@ -116,7 +117,7 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
           {/* Content */}
           <div className="p-4 space-y-4">
             <p className="text-sm text-bambu-gray">
-              {mode === 'add' ? 'Add' : 'Remove'} tags for {selectedIds.length} selected archive{selectedIds.length !== 1 ? 's' : ''}
+              {mode === 'add' ? translateSystemText("Add") : translateSystemText("Remove")} {translateSystemText(" tags for ")}{selectedIds.length} {translateSystemText(" selected archive")}{selectedIds.length !== 1 ? 's' : ''}
             </p>
 
             {/* Mode toggle */}
@@ -126,15 +127,13 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
                 variant={mode === 'add' ? 'primary' : 'secondary'}
                 onClick={() => setMode('add')}
               >
-                Add Tags
-              </Button>
+                {translateSystemText("Add Tags")}</Button>
               <Button
                 size="sm"
                 variant={mode === 'remove' ? 'primary' : 'secondary'}
                 onClick={() => setMode('remove')}
               >
-                Remove Tags
-              </Button>
+                {translateSystemText("Remove Tags")}</Button>
             </div>
 
             {/* New tag input (only for add mode) */}
@@ -142,7 +141,7 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Enter new tag..."
+                  placeholder={translateSystemText("Enter new tag...")}
                   className="flex-1 px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white text-sm focus:border-bambu-green focus:outline-none"
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
@@ -157,7 +156,7 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
             {/* Existing tags */}
             {existingTags.length > 0 && (
               <div>
-                <p className="text-xs text-bambu-gray mb-2">Existing tags:</p>
+                <p className="text-xs text-bambu-gray mb-2">{translateSystemText("Existing tags:")}</p>
                 <div className="flex flex-wrap gap-2">
                   {existingTags.map((tag) => (
                     <button
@@ -180,7 +179,7 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
             {selectedTags.size > 0 && (
               <div>
                 <p className="text-xs text-bambu-gray mb-2">
-                  Tags to {mode === 'add' ? 'add' : 'remove'}:
+                  {translateSystemText("Tags to ")}{mode === 'add' ? 'add' : 'remove'}:
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {Array.from(selectedTags).map((tag) => (
@@ -204,8 +203,7 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
           {/* Footer */}
           <div className="flex gap-3 p-4 border-t border-bambu-dark-tertiary">
             <Button variant="secondary" onClick={onClose} className="flex-1">
-              Cancel
-            </Button>
+              {translateSystemText("Cancel")}</Button>
             <Button
               onClick={() => batchTagMutation.mutate()}
               disabled={selectedTags.size === 0 || batchTagMutation.isPending}
@@ -214,12 +212,11 @@ export function BatchTagModal({ selectedIds, existingTags, onClose }: BatchTagMo
               {batchTagMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Processing...
-                </>
+                  {translateSystemText("Processing...")}</>
               ) : (
                 <>
                   <Tag className="w-4 h-4" />
-                  {mode === 'add' ? 'Add Tags' : 'Remove Tags'}
+                  {mode === 'add' ? translateSystemText("Add Tags") : translateSystemText("Remove Tags")}
                 </>
               )}
             </Button>

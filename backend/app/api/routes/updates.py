@@ -501,6 +501,10 @@ async def check_for_updates(
     """Check GitHub for available updates."""
     global _update_status
 
+    if settings.updates_disabled:
+        return {"update_available": False, "current_version": APP_VERSION, "latest_version": None,
+                "message": "Updates disabled for this managed deployment"}
+
     # Respect the check_updates setting
     result = await db.execute(select(Settings).where(Settings.key == "check_updates"))
     setting = result.scalar_one_or_none()
@@ -739,6 +743,9 @@ async def _perform_update(target_ref: str):
     to be on a moving branch.
     """
     global _update_status
+    if settings.updates_disabled:
+        return
+
 
     try:
         # Every git step runs against the working tree (app_dir), NOT base_dir.
@@ -1008,6 +1015,9 @@ async def apply_update(
 ):
     """Apply available update (git pull + rebuild)."""
     global _update_status
+
+    if settings.updates_disabled:
+        return {"success": False, "message": "Updates disabled to preserve local camera changes"}
 
     if _update_status["status"] in ["downloading", "installing"]:
         return {

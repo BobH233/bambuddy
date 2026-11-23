@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -423,7 +424,7 @@ function ScrollToTop() {
     <button
       onClick={scrollToTop}
       className="fixed bottom-24 right-6 p-3 bg-bambu-green hover:bg-bambu-green-light text-white rounded-full shadow-lg shadow-bambu-green/25 transition-all z-40"
-      aria-label="Scroll to top"
+      aria-label={translateSystemText("Scroll to top")}
     >
       <ArrowUp className="w-5 h-5" />
     </button>
@@ -956,11 +957,9 @@ function TemplatesModal({
                         <div className="flex gap-2">
                           <Button size="sm" onClick={handleSaveEdit} disabled={!editName.trim()}>
                             <Save className="w-4 h-4" />
-                            Save
-                          </Button>
+                            {translateSystemText("Save")}</Button>
                           <Button size="sm" variant="secondary" onClick={handleCancelEdit}>
-                            Cancel
-                          </Button>
+                            {translateSystemText("Cancel")}</Button>
                         </div>
                       </div>
                     );

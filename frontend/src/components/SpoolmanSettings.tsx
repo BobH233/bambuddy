@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -671,15 +672,14 @@ export function SpoolmanSettings() {
                         <div className="flex items-center gap-1.5">
                           <AlertTriangle className="w-3.5 h-3.5" />
                           <span className="font-medium">
-                            {syncResult.skipped_count} spool{syncResult.skipped_count !== 1 ? 's' : ''} skipped
-                          </span>
+                            {syncResult.skipped_count} {translateSystemText(" spool")}{syncResult.skipped_count !== 1 ? 's' : ''} {translateSystemText(" skipped")}</span>
                         </div>
                         {syncResult.skipped_count > 5 && (
                           <button
                             onClick={() => setShowAllSkipped(!showAllSkipped)}
                             className="text-xs text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 underline"
                           >
-                            {showAllSkipped ? 'Show less' : 'Show all'}
+                            {showAllSkipped ? translateSystemText("Show less") : translateSystemText("Show all")}
                           </button>
                         )}
                       </div>
@@ -698,8 +698,7 @@ export function SpoolmanSettings() {
                         ))}
                         {!showAllSkipped && syncResult.skipped_count > 5 && (
                           <li className="text-amber-700/70 dark:text-amber-300/60 italic">
-                            ...and {syncResult.skipped_count - 5} more
-                          </li>
+                            {translateSystemText("...and ")}{syncResult.skipped_count - 5} {translateSystemText(" more")}</li>
                         )}
                       </ul>
                     </div>
@@ -708,7 +707,7 @@ export function SpoolmanSettings() {
                   {/* Errors */}
                   {syncResult.errors.length > 0 && (
                     <div className="p-2 bg-red-50 dark:bg-red-500/10 border border-red-300 dark:border-red-500/30 rounded text-sm">
-                      <div className="text-red-700 dark:text-red-400 font-medium mb-1">Errors:</div>
+                      <div className="text-red-700 dark:text-red-400 font-medium mb-1">{translateSystemText("Errors:")}</div>
                       <ul className="text-xs text-red-700/90 dark:text-red-300/80 space-y-0.5">
                         {syncResult.errors.map((err, i) => (
                           <li key={i}>{err}</li>

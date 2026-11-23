@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2, Archive, Trash2, FileBox, Clock, Upload, ChevronDown, ChevronUp } from 'lucide-react';
@@ -66,7 +67,7 @@ function PendingUploadItem({
                 {upload.source_ip && (
                   <>
                     <span>·</span>
-                    <span>from {upload.source_ip}</span>
+                    <span>{translateSystemText("from ")}{upload.source_ip}</span>
                   </>
                 )}
               </div>
@@ -90,8 +91,7 @@ function PendingUploadItem({
               ) : (
                 <>
                   <Archive className="w-4 h-4" />
-                  Archive
-                </>
+                  {translateSystemText("Archive")}</>
               )}
             </Button>
             <Button
@@ -112,7 +112,7 @@ function PendingUploadItem({
         {/* Discard Confirmation Modal */}
         {showDiscardConfirm && (
           <ConfirmModal
-            title="Discard Upload"
+            title={translateSystemText("Discard Upload")}
             message={`Are you sure you want to discard "${upload.filename}"? This cannot be undone.`}
             confirmText="Discard"
             variant="danger"
@@ -128,33 +128,33 @@ function PendingUploadItem({
         {expanded && (
           <div className="mt-4 pt-4 border-t border-bambu-dark-tertiary space-y-3">
             <div>
-              <label className="block text-sm text-bambu-gray mb-1">Tags</label>
+              <label className="block text-sm text-bambu-gray mb-1">{translateSystemText("Tags")}</label>
               <input
                 type="text"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                placeholder="e.g., functional, prototype, gift"
+                placeholder={translateSystemText("e.g., functional, prototype, gift")}
                 className="w-full bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-md px-3 py-2 text-white placeholder-bambu-gray text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm text-bambu-gray mb-1">Notes</label>
+              <label className="block text-sm text-bambu-gray mb-1">{translateSystemText("Notes")}</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Add notes about this print..."
+                placeholder={translateSystemText("Add notes about this print...")}
                 rows={2}
                 className="w-full bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-md px-3 py-2 text-white placeholder-bambu-gray text-sm resize-none"
               />
             </div>
             <div>
-              <label className="block text-sm text-bambu-gray mb-1">Project</label>
+              <label className="block text-sm text-bambu-gray mb-1">{translateSystemText("Project")}</label>
               <select
                 value={projectId || ''}
                 onChange={(e) => setProjectId(e.target.value ? Number(e.target.value) : null)}
                 className="w-full bg-bambu-dark-secondary border border-bambu-dark-tertiary rounded-md px-3 py-2 text-white text-sm"
               >
-                <option value="">No project</option>
+                <option value="">{translateSystemText("No project")}</option>
                 {projects.map((project) => (
                   <option key={project.id} value={project.id}>
                     {project.name}
@@ -285,7 +285,7 @@ export function PendingUploadsPanel() {
             <div className="flex items-center gap-2">
               <Upload className="w-5 h-5 text-yellow-500" />
               <h2 className="text-lg font-semibold text-white">
-                Pending Uploads ({uploads.length})
+                {translateSystemText("Pending Uploads (")}{uploads.length})
               </h2>
             </div>
             <div className="flex items-center gap-2">
@@ -300,8 +300,7 @@ export function PendingUploadsPanel() {
                 ) : (
                   <>
                     <Archive className="w-4 h-4" />
-                    Archive All
-                  </>
+                    {translateSystemText("Archive All")}</>
                 )}
               </Button>
               <Button
@@ -315,8 +314,7 @@ export function PendingUploadsPanel() {
                 ) : (
                   <>
                     <Trash2 className="w-4 h-4" />
-                    Discard All
-                  </>
+                    {translateSystemText("Discard All")}</>
                 )}
               </Button>
             </div>
@@ -324,8 +322,7 @@ export function PendingUploadsPanel() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-bambu-gray mb-4">
-            These files were uploaded via the virtual printer. Review and archive them to add to your collection.
-          </p>
+            {translateSystemText("These files were uploaded via the virtual printer. Review and archive them to add to your collection.")}</p>
           <div className="space-y-3">
             {uploads.map((upload) => (
               <PendingUploadItem
@@ -345,7 +342,7 @@ export function PendingUploadsPanel() {
       {/* Archive All Confirmation */}
       {showArchiveAllConfirm && (
         <ConfirmModal
-          title="Archive All Uploads"
+          title={translateSystemText("Archive All Uploads")}
           message={`Are you sure you want to archive all ${uploads.length} pending uploads?`}
           confirmText="Archive All"
           onConfirm={() => {
@@ -359,7 +356,7 @@ export function PendingUploadsPanel() {
       {/* Discard All Confirmation */}
       {showDiscardAllConfirm && (
         <ConfirmModal
-          title="Discard All Uploads"
+          title={translateSystemText("Discard All Uploads")}
           message={`Are you sure you want to discard all ${uploads.length} pending uploads? This cannot be undone.`}
           confirmText="Discard All"
           variant="danger"

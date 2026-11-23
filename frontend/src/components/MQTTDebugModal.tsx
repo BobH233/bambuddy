@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { X, Play, Square, Trash2, RefreshCw, ArrowDown, ArrowUp, Search } from 'lucide-react';
@@ -180,8 +181,7 @@ export function MQTTDebugModal({ printerId, printerName, onClose }: MQTTDebugMod
                 onChange={(e) => setAutoScroll(e.target.checked)}
                 className="rounded border-bambu-dark-tertiary"
               />
-              Auto-scroll
-            </label>
+              {translateSystemText("Auto-scroll")}</label>
             <span className="text-sm text-bambu-gray">
               {filteredLogs.length}/{logs.length}
             </span>

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -77,7 +78,7 @@ export function UploadModal({ onClose, initialFiles }: UploadModalProps) {
       setFiles((prev) =>
         prev.map((f) => ({ ...f, status: 'error', error: 'Upload failed' }))
       );
-      showToast('Upload failed', 'error');
+      showToast(translateSystemText("Upload failed"), 'error');
     },
   });
 

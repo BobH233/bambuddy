@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2, Plus, Plug, AlertTriangle, RotateCcw, Bell, Download, RefreshCw, ExternalLink, Globe, Droplets, Thermometer, FileText, Edit2, Pencil, Send, CheckCircle, XCircle, History, Trash2, Zap, TrendingUp, Calendar, DollarSign, Power, PowerOff, Key, Copy, Database, X, Shield, Printer, Cylinder, Wifi, Home, Video, Users, Lock, Unlock, ChevronDown, Save, Mail, Flame, Layers, ListOrdered, Code, Search, Scale, Settings as SettingsIcon, ScanEye, Cog, QrCode, Heart, Briefcase, Workflow, UploadCloud, MonitorPlay, Info } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -1741,7 +1742,7 @@ export function SettingsPage() {
             <button
               onClick={() => setSettingsSearch('')}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-bambu-gray hover:text-white"
-              aria-label="Clear"
+              aria-label={translateSystemText("Clear")}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -2888,7 +2889,7 @@ export function SettingsPage() {
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="text-bambu-green font-medium">
-                          Update available: v{updateCheck.latest_version}
+                          {translateSystemText("Update available: v")}{updateCheck.latest_version}
                         </p>
                         {updateCheck.release_name && updateCheck.release_name !== updateCheck.latest_version && (
                           <p className="text-sm text-bambu-gray mt-1">{updateCheck.release_name}</p>
@@ -3407,7 +3408,7 @@ export function SettingsPage() {
                       type="text"
                       value={localSettings.mqtt_broker ?? ''}
                       onChange={(e) => updateSetting('mqtt_broker', e.target.value)}
-                      placeholder="mqtt.example.com or 192.168.1.100"
+                      placeholder={translateSystemText("mqtt.example.com or 192.168.1.100")}
                       className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none"
                     />
                   </div>
@@ -4294,7 +4295,7 @@ export function SettingsPage() {
                 <button
                   onClick={() => setTemplateFilter('')}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-bambu-gray hover:text-white"
-                  aria-label="Clear filter"
+                  aria-label={translateSystemText("Clear filter")}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -6759,7 +6760,7 @@ export function SettingsPage() {
       {/* Confirm Modal: Bulk Plug Action */}
       {showBulkPlugConfirm && (
         <ConfirmModal
-          title={`Turn All Plugs ${showBulkPlugConfirm === 'on' ? 'On' : 'Off'}`}
+          title={`Turn All Plugs ${showBulkPlugConfirm === 'on' ? translateSystemText("On") : translateSystemText("Off")}`}
           message={`This will turn ${showBulkPlugConfirm === 'on' ? 'ON' : 'OFF'} all ${smartPlugs?.filter(p => p.enabled).length || 0} enabled smart plugs. ${showBulkPlugConfirm === 'off' ? 'Any running printers may be affected!' : ''}`}
           confirmText={`Turn All ${showBulkPlugConfirm === 'on' ? 'On' : 'Off'}`}
           variant={showBulkPlugConfirm === 'off' ? 'danger' : 'warning'}
@@ -6782,7 +6783,7 @@ export function SettingsPage() {
             <CardHeader className="flex flex-row items-center justify-between shrink-0">
               <div>
                 <h2 className="text-lg font-semibold text-white">
-                  Release Notes - v{updateCheck.latest_version}
+                  {translateSystemText("Release Notes - v")}{updateCheck.latest_version}
                 </h2>
                 {updateCheck.release_name && updateCheck.release_name !== updateCheck.latest_version && (
                   <p className="text-sm text-bambu-gray">{updateCheck.release_name}</p>
@@ -6810,16 +6811,14 @@ export function SettingsPage() {
                 >
                   <Button variant="secondary" className="w-full">
                     <ExternalLink className="w-4 h-4" />
-                    View on GitHub
-                  </Button>
+                    {translateSystemText("View on GitHub")}</Button>
                 </a>
               )}
               <Button
                 onClick={() => setShowReleaseNotes(false)}
                 className="flex-1"
               >
-                Close
-              </Button>
+                {translateSystemText("Close")}</Button>
             </div>
           </Card>
         </div>
@@ -7818,13 +7817,13 @@ export function SettingsPage() {
                   <p className="text-white">{t('settings.userHasCreated')}</p>
                   <ul className="list-disc list-inside text-bambu-gray space-y-1">
                     {deleteUserItemCounts.archives > 0 && (
-                      <li>{deleteUserItemCounts.archives} archive{deleteUserItemCounts.archives !== 1 ? 's' : ''}</li>
+                      <li>{deleteUserItemCounts.archives} {translateSystemText(" archive")}{deleteUserItemCounts.archives !== 1 ? 's' : ''}</li>
                     )}
                     {deleteUserItemCounts.queue_items > 0 && (
-                      <li>{deleteUserItemCounts.queue_items} queue item{deleteUserItemCounts.queue_items !== 1 ? 's' : ''}</li>
+                      <li>{deleteUserItemCounts.queue_items} {translateSystemText(" queue item")}{deleteUserItemCounts.queue_items !== 1 ? 's' : ''}</li>
                     )}
                     {deleteUserItemCounts.library_files > 0 && (
-                      <li>{deleteUserItemCounts.library_files} library file{deleteUserItemCounts.library_files !== 1 ? 's' : ''}</li>
+                      <li>{deleteUserItemCounts.library_files} {translateSystemText(" library file")}{deleteUserItemCounts.library_files !== 1 ? 's' : ''}</li>
                     )}
                   </ul>
                   <p className="text-bambu-gray text-sm">{t('settings.userItemsQuestion')}</p>
@@ -7979,8 +7978,7 @@ export function SettingsPage() {
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
-                    Current Password
-                  </label>
+                    {translateSystemText("Current Password")}</label>
                   <input
                     type="password"
                     value={changePasswordData.currentPassword}
@@ -7992,8 +7990,7 @@ export function SettingsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
-                    New Password
-                  </label>
+                    {translateSystemText("New Password")}</label>
                   <input
                     type="password"
                     value={changePasswordData.newPassword}
@@ -8006,8 +8003,7 @@ export function SettingsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
-                    Confirm New Password
-                  </label>
+                    {translateSystemText("Confirm New Password")}</label>
                   <input
                     type="password"
                     value={changePasswordData.confirmPassword}

@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect, useRef } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { X, Save, Loader2, Upload, Trash2 } from 'lucide-react';
@@ -194,12 +195,12 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
 
           {/* Name */}
           <div>
-            <label className="block text-sm text-bambu-gray mb-1">Name *</label>
+            <label className="block text-sm text-bambu-gray mb-1">{translateSystemText("Name *")}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="My Link"
+              placeholder={translateSystemText("My Link")}
               maxLength={50}
               className="w-full px-3 py-2 bg-bambu-dark border border-bambu-dark-tertiary rounded-lg text-white focus:border-bambu-green focus:outline-none"
             />
@@ -207,7 +208,7 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
 
           {/* URL */}
           <div>
-            <label className="block text-sm text-bambu-gray mb-1">URL *</label>
+            <label className="block text-sm text-bambu-gray mb-1">{translateSystemText("URL *")}</label>
             <input
               type="text"
               value={url}
@@ -237,12 +238,12 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
 
           {/* Icon Section */}
           <div className="space-y-3">
-            <label className="block text-sm text-bambu-gray">Icon</label>
+            <label className="block text-sm text-bambu-gray">{translateSystemText("Icon")}</label>
 
             {/* Custom Icon Upload */}
             <div className="p-3 rounded-lg bg-bambu-dark border border-bambu-dark-tertiary">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-white">Custom Icon</span>
+                <span className="text-sm text-white">{translateSystemText("Custom Icon")}</span>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -252,12 +253,12 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
                 />
                 {useCustomIcon && customIconPreview ? (
                   <div className="flex items-center gap-2">
-                    <img src={customIconPreview} alt="Custom icon" className="w-8 h-8 rounded border border-bambu-dark-tertiary" />
+                    <img src={customIconPreview} alt={translateSystemText("Custom icon")} className="w-8 h-8 rounded border border-bambu-dark-tertiary" />
                     <button
                       type="button"
                       onClick={handleRemoveCustomIcon}
                       className="p-1 text-red-700 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors"
-                      title="Remove custom icon"
+                      title={translateSystemText("Remove custom icon")}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -270,19 +271,17 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <Upload className="w-4 h-4" />
-                    Upload
-                  </Button>
+                    {translateSystemText("Upload")}</Button>
                 )}
               </div>
               <p className="text-xs text-bambu-gray">
-                PNG, JPG, GIF, SVG, WebP, or ICO. Max 1MB.
-              </p>
+                {translateSystemText("PNG, JPG, GIF, SVG, WebP, or ICO. Max 1MB.")}</p>
             </div>
 
             {/* Preset Icon Picker */}
             {!useCustomIcon && (
               <div>
-                <span className="text-sm text-bambu-gray block mb-2">Or choose a preset icon</span>
+                <span className="text-sm text-bambu-gray block mb-2">{translateSystemText("Or choose a preset icon")}</span>
                 <IconPicker value={icon} onChange={setIcon} />
               </div>
             )}
@@ -296,8 +295,7 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
               onClick={onClose}
               className="flex-1"
             >
-              Cancel
-            </Button>
+              {translateSystemText("Cancel")}</Button>
             <Button
               type="submit"
               disabled={isPending}
@@ -308,7 +306,7 @@ export function AddExternalLinkModal({ link, onClose }: AddExternalLinkModalProp
               ) : (
                 <Save className="w-4 h-4" />
               )}
-              {isEditing ? 'Save' : 'Add'}
+              {isEditing ? translateSystemText("Save") : translateSystemText("Add")}
             </Button>
           </div>
         </form>

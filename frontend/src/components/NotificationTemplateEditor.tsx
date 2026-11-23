@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState, useEffect, useRef } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -123,7 +124,7 @@ export function NotificationTemplateEditor({ template, onClose }: NotificationTe
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-bambu-dark-tertiary shrink-0">
           <h2 className="text-lg font-semibold text-white">
-            {t('notifications.editTemplate', { name: template.name })}
+            {t('notifications.editTemplate', { name: translateSystemText(template.name) })}
           </h2>
           <button
             onClick={onClose}

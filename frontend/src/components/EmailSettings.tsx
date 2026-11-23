@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -381,7 +382,7 @@ export function EmailSettings() {
                     type="text"
                     value={smtpSettings.smtp_from_name}
                     onChange={(e) => setSMTPSettings({ ...smtpSettings, smtp_from_name: e.target.value })}
-                    placeholder="BamBuddy"
+                    placeholder={translateSystemText("BamBuddy")}
                     className={inputClasses}
                   />
                 </div>

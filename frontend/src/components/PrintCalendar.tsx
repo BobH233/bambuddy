@@ -1,3 +1,4 @@
+import { translateSystemText } from '../utils/displayText';
 import { useMemo, useRef, useState, useEffect } from 'react';
 
 import { localDateKey } from '../utils/date';
@@ -176,7 +177,7 @@ export function PrintCalendar({ printDates, months = 3 }: PrintCalendarProps) {
 
           {/* Legend */}
           <div className="flex items-center gap-2 mt-3 text-bambu-gray" style={{ fontSize }}>
-            <span>Less</span>
+            <span>{translateSystemText("Less")}</span>
             <div className="flex" style={{ gap }}>
               <div className="rounded-sm bg-bambu-dark" style={{ width: cellSize, height: cellSize }} />
               <div className="rounded-sm bg-bambu-green/30" style={{ width: cellSize, height: cellSize }} />
@@ -184,7 +185,7 @@ export function PrintCalendar({ printDates, months = 3 }: PrintCalendarProps) {
               <div className="rounded-sm bg-bambu-green/75" style={{ width: cellSize, height: cellSize }} />
               <div className="rounded-sm bg-bambu-green" style={{ width: cellSize, height: cellSize }} />
             </div>
-            <span>More</span>
+            <span>{translateSystemText("More")}</span>
           </div>
         </div>
       )}

@@ -68,7 +68,8 @@
   z-index: -1;
   overflow: hidden;
 }
-.updated-overlay__camera img {
+.updated-overlay__camera img,
+.updated-overlay__camera video {
   position: absolute;
   top: 50%;
   left: 50%;

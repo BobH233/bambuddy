@@ -1,3 +1,4 @@
+import { translateSystemText } from './displayText';
 // Map slicer bed-type strings to icon assets shipped under /bed-icons/.
 // Source values come straight from the 3MF (curr_bed_type in slice_info.config
 // or project_settings.config). BambuStudio and OrcaSlicer disagree on a few
@@ -12,8 +13,8 @@ interface BedTypeInfo {
 }
 
 const BED_TYPE_MAP: Record<string, BedTypeInfo> = {
-  'cool plate': { icon: `${ICON_BASE}/bed_cool.png`, label: 'Cool Plate' },
-  'pc plate': { icon: `${ICON_BASE}/bed_cool.png`, label: 'Cool Plate' },
+  'cool plate': { icon: `${ICON_BASE}/bed_cool.png`, label: translateSystemText("Cool Plate") },
+  'pc plate': { icon: `${ICON_BASE}/bed_cool.png`, label: translateSystemText("Cool Plate") },
   'cool plate (supertack)': { icon: `${ICON_BASE}/bed_cool_supertack.png`, label: 'Cool Plate SuperTack' },
   'supertack plate': { icon: `${ICON_BASE}/bed_cool_supertack.png`, label: 'Cool Plate SuperTack' },
   'bambu cool plate supertack': { icon: `${ICON_BASE}/bed_cool_supertack.png`, label: 'Cool Plate SuperTack' },

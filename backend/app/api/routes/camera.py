@@ -16,6 +16,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
 from fastapi.responses import Response, StreamingResponse
+from urllib.parse import urlencode
+
+from backend.app.core.config import settings
+from backend.app.services.camera_hls import hls_manager
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -170,7 +174,8 @@ def get_buffered_frame(printer_id: int) -> bytes | None:
 
     Returns the JPEG frame data if available, or None if no active stream.
     """
-    return _last_frames.get(printer_id)
+    hls = hls_manager.get(printer_id)
+    return hls.last_frame if hls else _last_frames.get(printer_id)
 
 
 def is_stream_active(printer_id: int) -> bool:
@@ -187,7 +192,7 @@ def is_stream_active(printer_id: int) -> bool:
     returns None (the stream may be running but the first frame hasn't landed
     in the buffer yet, or the upstream is mid-reconnect).
     """
-    return _stream_registered(printer_id) or printer_id in _external_live_readers
+    return hls_manager.get(printer_id) is not None or _stream_registered(printer_id) or printer_id in _external_live_readers
 
 
 def _stream_registered(printer_id: int) -> bool:
@@ -215,7 +220,8 @@ def try_get_active_buffered_frame(printer_id: int) -> bytes | None:
     """
     if not is_stream_active(printer_id):
         return None
-    return _last_frames.get(printer_id)
+    hls = hls_manager.get(printer_id)
+    return hls.last_frame if hls else _last_frames.get(printer_id)
 
 
 async def get_printer_or_404(printer_id: int, db: AsyncSession) -> Printer:
@@ -358,7 +364,7 @@ def live_frame_for_capture(printer_id: int) -> tuple[bool, bytes | None]:
     """
     if not is_stream_active(printer_id):
         return False, None
-    return True, _last_frames.get(printer_id)
+    return True, get_buffered_frame(printer_id)
 
 
 def _release_printer_frame_state(printer_id: int | None) -> None:
@@ -1212,6 +1218,58 @@ async def _external_upstream(
         logger.info("External camera stream ended for printer %s", printer_id)
 
 
+def _supports_hls(printer: Printer) -> bool:
+    return bool(
+        settings.camera_hls_enabled and get_ffmpeg_path()
+        and not is_chamber_image_model(printer.model)
+        and not (printer.external_camera_enabled and printer.external_camera_url)
+    )
+
+
+@router.get("/{printer_id}/camera/playback")
+async def camera_playback(printer_id: int, opener: StreamOpener = RequireCameraStreamTokenIfAuthEnabled):
+    async with database.async_session() as db:
+        printer = await get_printer_or_404(printer_id, db)
+    return {"transport": "hls" if _supports_hls(printer) else "mjpeg"}
+
+
+@router.get("/{printer_id}/camera/hls/{filename}")
+async def camera_hls(
+    printer_id: int, filename: str, request: Request,
+    opener: StreamOpener = RequireCameraStreamTokenIfAuthEnabled,
+):
+    if filename != "index.m3u8" and not re.fullmatch(r"[0-9a-f]{12}_[0-9]{9,16}\.ts", filename):
+        raise HTTPException(404, "Video fragment not found")
+    if not await stream_opener_still_allowed(opener, printer_id):
+        raise HTTPException(403, "Camera access is no longer allowed")
+    async with database.async_session() as db:
+        printer = await get_printer_or_404(printer_id, db)
+    if not _supports_hls(printer):
+        raise HTTPException(404, "HLS playback is not enabled for this camera")
+    headers = {"Cache-Control": "private, no-store", "X-Accel-Buffering": "no"}
+    if filename == "index.m3u8":
+        # Retire an older MJPEG viewer before acquiring the printer's one RTSP reader.
+        if hls_manager.get(printer_id) is None:
+            await _stop_printer_streams(printer_id)
+        session = await hls_manager.ensure(printer)
+        try:
+            playlist = await session.playlist()
+        except RuntimeError as exc:
+            raise HTTPException(503, str(exc), headers={"Retry-After": "2"}) from None
+        token = request.query_params.get("token")
+        suffix = "?" + urlencode({"token": token}) if token else ""
+        playlist = "\n".join(line + suffix if line and not line.startswith("#") else line for line in playlist.splitlines()) + "\n"
+        return Response(playlist, media_type="application/vnd.apple.mpegurl", headers=headers)
+    session = hls_manager.get(printer_id)
+    if session is None:
+        raise HTTPException(404, "Camera session ended")
+    try:
+        data = (session.directory / filename).read_bytes()
+    except FileNotFoundError:
+        raise HTTPException(404, "Video fragment expired") from None
+    return Response(data, media_type="video/mp2t", headers=headers)
+
+
 @router.get("/{printer_id}/camera/stream")
 async def camera_stream(
     printer_id: int,
@@ -1252,6 +1310,9 @@ async def camera_stream(
     # backend.app.core.database.async_session take effect here.
     async with database.async_session() as db:
         printer = await get_printer_or_404(printer_id, db)
+
+    if hls_manager.get(printer_id) is not None:
+        raise HTTPException(409, "H.264 playback is active; refresh the camera page")
 
     # Check for external camera first
     if printer.external_camera_enabled and printer.external_camera_url:
@@ -1498,6 +1559,7 @@ async def forget_printer(printer_id: int) -> None:
     reuses it) would otherwise join the old printer's feed, and snapshots read
     its last frame.
     """
+    await hls_manager.forget(printer_id)
     await _stop_printer_streams(printer_id)
     # External MJPEG and snapshot streams run no process the stop finds; they end
     # at their next frame once told to.
@@ -1735,7 +1797,8 @@ async def diagnose_camera_route(
     # Look up live-stream evidence so the diagnostic can short-circuit
     # instead of fighting a viewer for the printer's single camera slot.
     has_live = is_stream_active(printer_id)
-    last_ts = _last_frame_times.get(printer_id) if has_live else None
+    hls = hls_manager.get(printer_id)
+    last_ts = hls.frame_time if hls else (_last_frame_times.get(printer_id) if has_live else None)
     live_age = (time.time() - last_ts) if (has_live and last_ts) else None
 
     result = await diagnose_camera(
@@ -1760,6 +1823,9 @@ async def camera_status(
     Used by the frontend to detect stalled streams and auto-reconnect.
     """
     import time
+
+    if hls := hls_manager.get(printer_id):
+        return hls.status()
 
     # Check if there's an active stream for this printer
     has_active_stream = False
@@ -2333,6 +2399,8 @@ async def cleanup_orphaned_streams():
     from backend.app.services.camera import _active_capture_pids
 
     active_pids |= _active_capture_pids
+    active_pids |= hls_manager.active_pids()
+    await hls_manager.cleanup()
 
     # 1. /proc scan — catch ALL orphaned Bambu ffmpeg processes on the system.
     #    Any ffmpeg with rtsp(s)://bblp: that is NOT in an active stream is orphaned.

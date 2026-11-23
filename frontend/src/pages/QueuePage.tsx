@@ -1,3 +1,4 @@
+import { translateSystemText, queueReasonText } from '../utils/displayText';
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { bulkUpdateToast } from '../utils/queueBulkUpdate';
 import { useTranslation } from 'react-i18next';
@@ -878,7 +879,7 @@ function SortableQueueItem({
                 className="text-bambu-green font-medium"
                 title={t('queue.time.etaIfStartedNow')}
               >
-                ETA {queueItemEta}
+                {translateSystemText("ETA ")}{queueItemEta}
               </span>
             )}
             {item.filament_used_grams && (
@@ -1047,7 +1048,7 @@ function SortableQueueItem({
                         {formatDuration(remaining * 60)}
                       </span>
                       <span className="text-bambu-green font-medium" title={t('printers.estimatedCompletion')}>
-                        ETA {formatETA(remaining, timeFormat, t)}
+                        {translateSystemText("ETA ")}{formatETA(remaining, timeFormat, t)}
                       </span>
                     </>
                   )}
@@ -1066,7 +1067,7 @@ function SortableQueueItem({
           {item.waiting_reason && item.status === 'pending' && (
             <p className="text-[10px] sm:text-xs text-purple-700 dark:text-purple-400 mt-1.5 sm:mt-2 flex items-start gap-1">
               <AlertCircle className="w-3 h-3 mt-0.5 flex-shrink-0" />
-              <span>{item.waiting_reason}</span>
+              <span>{queueReasonText(item.waiting_reason)}</span>
             </p>
           )}
 
