@@ -104,6 +104,8 @@ security/
 /integrations/dingtalk/config.json.*
 /integrations/dingtalk/robot.json
 /deploy/lab/*.local.*
+webpush-vapid.pem
+.webpush-vapid-*
 *.tsbuildinfo
 
 test_pipeline_archive_source.3mf

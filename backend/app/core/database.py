@@ -677,6 +677,7 @@ async def init_db():
         user_otp_code,
         user_totp,
         virtual_printer,
+        web_push,
     )
 
     async with engine.begin() as conn:

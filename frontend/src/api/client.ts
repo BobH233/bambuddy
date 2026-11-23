@@ -5097,7 +5097,24 @@ const foldersByArchiveBatch = batched(
   async (ids) => byId(await request<Record<string, LibraryFolder[]>>(`/bulk/archive-folders?${idsParam(ids)}`)),
 );
 
+export interface WebPushConfig {
+  public_key: string;
+  default_categories: string[];
+  subscriptions: { endpoint_hash: string; categories: string[] }[];
+}
+
 export const api = {
+  getWebPushConfig: () => request<WebPushConfig>('/web-push/config'),
+  subscribeWebPush: (subscription: PushSubscriptionJSON, categories: string[]) =>
+    request<{ success: boolean }>('/web-push/subscribe', {
+      method: 'POST', body: JSON.stringify({ endpoint: subscription.endpoint, keys: subscription.keys, categories }),
+    }),
+  disableWebPush: (endpoint: string) => request<{ success: boolean }>('/web-push/unsubscribe', {
+    method: 'POST', body: JSON.stringify({ endpoint }),
+  }),
+  testWebPush: (endpoint: string) => request<{ success: boolean }>('/web-push/test', {
+    method: 'POST', body: JSON.stringify({ endpoint }),
+  }),
   // Overlay branding
   getOverlayLogo: async (token: string | null, signal?: AbortSignal): Promise<Blob | null> => {
     const endpoint = token ? `/overlay-branding/logo?token=${encodeURIComponent(token)}` : '/settings/overlay-logo';

@@ -126,6 +126,9 @@ multidict>=6.9.1
 # HTTP client (used for OIDC token exchange)
 httpx>=0.26.0
 
+# Browser notifications (including iOS Home Screen web apps)
+pywebpush>=2.5.0,<3
+
 # CA bundle. Already a transitive dep of httpx, but services/makerworld.py
 # imports it directly to pin the S3 presigned download's urllib opener to the
 # same trust store httpx uses — the Windows OS store lacks the Amazon root

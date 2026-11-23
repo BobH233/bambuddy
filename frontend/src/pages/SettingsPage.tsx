@@ -34,6 +34,7 @@ import { AddSmartPlugModal } from '../components/AddSmartPlugModal';
 import { HASensorModal } from '../components/HASensorModal';
 import { LocationHASensorModal } from '../components/LocationHASensorModal';
 import { LocationSensorOptionsModal } from '../components/LocationSensorOptionsModal';
+import { WebPushSettings } from '../components/WebPushSettings';
 import { NotificationProviderCard } from '../components/NotificationProviderCard';
 import { AddNotificationModal } from '../components/AddNotificationModal';
 import { NotificationTemplateEditor } from '../components/NotificationTemplateEditor';
@@ -129,6 +130,8 @@ registerSettingsSearch({ labelKey: 'settings.ldap.title', labelFallback: 'LDAP A
 registerSettingsSearch({ labelKey: 'settings.tabs.backup', tab: 'backup', keywords: 'backup github restore download cloud sync profiles archives', anchor: 'card-backup' });
 // Sidebar (system pages and external links settings is rendered in the General tab)
 registerSettingsSearch({ labelKey: 'externalLinks.sidebarLayout', labelFallback: 'Sidebar', tab: 'general', keywords: 'sidebar layout links pages hide show external custom navigation url add', anchor: 'card-sidebar-links' });
+registerSettingsSearch({ labelKey: 'webPush.title', labelFallback: '此设备的通知', tab: 'general', keywords: 'ios iphone ipad web push 推送 手机 通知 主屏幕', anchor: 'card-web-push' });
+
 // Filament tab — integrations
 registerSettingsSearch({ labelKey: 'settings.filamentTracking', tab: 'filament', keywords: 'spoolman filament tracking inventory sync remote integration', anchor: 'card-spoolman' });
 registerSettingsSearch({ labelKey: 'settings.catalog.spoolCatalog', labelFallback: 'Spool Catalog', tab: 'filament', keywords: 'spool catalog entries brand material reset import export', anchor: 'card-spool-catalog' });
@@ -1837,6 +1840,7 @@ export function SettingsPage() {
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
         {/* Left Column - General Settings */}
         <div className="space-y-3 flex-1 lg:max-w-xl">
+          {authEnabled && user && <WebPushSettings />}
           <Card id="card-general">
             <CardHeader>
               <h2 className="text-lg font-semibold text-white">{t('settings.general')}</h2>

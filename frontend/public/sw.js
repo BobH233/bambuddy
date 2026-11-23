@@ -1,5 +1,5 @@
 // Bambuddy Service Worker
-const CACHE_NAME = 'bambuddy-v31';
+const CACHE_NAME = 'bambuddy-v32';
 const STATIC_CACHE = 'bambuddy-static-v29';
 
 // Static assets to cache on install
@@ -247,4 +247,43 @@ self.addEventListener('fetch', (event) => {
         });
       })
   );
+});
+
+self.addEventListener('push', (event) => {
+  event.waitUntil((async () => {
+    let payload = {};
+    try {
+      const data = event.data?.json();
+      if (data && typeof data === 'object') payload = data;
+    } catch { /* Fall back to a visible notification. */ }
+    await self.registration.showNotification(
+      typeof payload.title === 'string' ? payload.title.slice(0, 160) : 'Bambuddy 通知',
+      {
+        body: typeof payload.body === 'string' ? payload.body.slice(0, 650) : '有新的打印通知，请打开 Bambuddy 查看。',
+        icon: '/img/android-chrome-192x192.png',
+        badge: '/img/favicon-32x32.png',
+        tag: typeof payload.tag === 'string' ? payload.tag : undefined,
+        data: { url: typeof payload.url === 'string' ? payload.url : '/' },
+      },
+    );
+  })());
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil((async () => {
+    let target = new URL('/', self.location.origin);
+    try {
+      const requested = new URL(event.notification.data?.url || '/', self.location.origin);
+      if (requested.origin === self.location.origin) target = requested;
+    } catch { /* Keep navigation within this application. */ }
+    const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const client of windows) {
+      if (new URL(client.url).origin !== self.location.origin) continue;
+      await client.navigate(target.href);
+      await client.focus();
+      return;
+    }
+    await self.clients.openWindow(target.href);
+  })());
 });

@@ -91,6 +91,7 @@ from backend.app.api.routes import (
     system,
     updates,
     user_notifications,
+    web_push,
     users,
     virtual_printers,
     webhook,
@@ -13125,6 +13126,7 @@ app.include_router(kprofiles.router, prefix=app_settings.api_prefix)
 app.include_router(notifications.router, prefix=app_settings.api_prefix)
 app.include_router(notification_templates.router, prefix=app_settings.api_prefix)
 app.include_router(user_notifications.router, prefix=app_settings.api_prefix)
+app.include_router(web_push.router, prefix=app_settings.api_prefix)
 app.include_router(spoolman.router, prefix=app_settings.api_prefix)
 app.include_router(spoolman_inventory.router, prefix=app_settings.api_prefix)
 app.include_router(updates.router, prefix=app_settings.api_prefix)

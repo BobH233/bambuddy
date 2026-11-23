@@ -61,6 +61,7 @@ class Settings(BaseSettings):
     debug: bool = False  # Default to production mode
     camera_hls_enabled: bool = False
     updates_disabled: bool = False
+    web_push_contact: str = "https://bambuddy.cool"
 
     # Paths
     base_dir: Path = _data_dir  # For backwards compatibility

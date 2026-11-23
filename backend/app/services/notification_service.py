@@ -27,6 +27,7 @@ from backend.app.models.notification import (
     TelegramPendingVerdict,
 )
 from backend.app.models.notification_template import NotificationTemplate
+from backend.app.services import web_push
 from backend.app.services.email_service import add_required_headers
 from backend.app.services.notify_client import NotifyClient, NotifyError, notify_credentials, notify_supports_photos
 from backend.app.services.print_confirmation import one_tap_url
@@ -1749,6 +1750,11 @@ class NotificationService:
                     printer_name=printer_name,
                 )
 
+        try:
+            await web_push.notify(event_type, title, message, printer_id)
+        except Exception as exc:
+            logger.warning("Web Push dispatch failed (%s)", type(exc).__name__)
+
     async def on_app_message(
         self,
         db: AsyncSession,
@@ -1796,7 +1802,7 @@ class NotificationService:
         """
         logger.info("on_print_start called for printer %s (%s)", printer_id, printer_name)
         providers = await self._get_providers_for_event(db, "on_print_start", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_print_start"):
             logger.info("No notification providers configured for print_start event on printer %s", printer_id)
             return
 
@@ -1889,7 +1895,7 @@ class NotificationService:
             event_type = "print_complete"
 
         providers = await self._get_providers_for_event(db, event_field, printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, event_field):
             logger.info("No notification providers configured for %s event on printer %s", event_field, printer_id)
             return
 
@@ -1996,7 +2002,7 @@ class NotificationService:
         and run_id to the run whose token the links carry.
         """
         providers = await self._get_providers_for_event(db, "on_print_confirm_request", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_print_confirm_request"):
             return
 
         subtask_name = data.get("subtask_name")
@@ -2048,7 +2054,7 @@ class NotificationService:
     ):
         """Handle print progress milestone (25%, 50%, 75%)."""
         providers = await self._get_providers_for_event(db, "on_print_progress", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_print_progress"):
             return
 
         eta_str = await self._format_eta(remaining_time, db)
@@ -2086,7 +2092,7 @@ class NotificationService:
             return
 
         providers = await self._get_providers_for_event(db, "on_print_missing_spool_assignment", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_print_missing_spool_assignment"):
             return
 
         missing_slot_names = ", ".join(slot.get("slot", "Unknown") for slot in missing_slots)
@@ -2126,7 +2132,7 @@ class NotificationService:
     ) -> None:
         """Notify providers that a terminal print could not be charged."""
         providers = await self._get_providers_for_event(db, "on_billing_charge_failed", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_billing_charge_failed"):
             return
 
         variables = {
@@ -2150,7 +2156,7 @@ class NotificationService:
     async def on_printer_offline(self, printer_id: int, printer_name: str, db: AsyncSession):
         """Handle printer offline event."""
         providers = await self._get_providers_for_event(db, "on_printer_offline", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_printer_offline"):
             return
 
         variables = {"printer": printer_name}
@@ -2171,7 +2177,7 @@ class NotificationService:
     ):
         """Handle printer error event (AMS issues, etc.)."""
         providers = await self._get_providers_for_event(db, "on_printer_error", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_printer_error"):
             return
 
         variables = {
@@ -2210,7 +2216,7 @@ class NotificationService:
         alerts without also being paged for every HMS hardware code.
         """
         providers = await self._get_providers_for_event(db, "on_ai_failure_detection", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ai_failure_detection"):
             return
 
         variables = {
@@ -2245,7 +2251,7 @@ class NotificationService:
     ):
         """Handle plate not empty event - objects detected on build plate before print."""
         providers = await self._get_providers_for_event(db, "on_plate_not_empty", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_plate_not_empty"):
             return
 
         variables = {
@@ -2282,7 +2288,7 @@ class NotificationService:
         print-complete notification, so opting in is a deliberate choice.
         """
         providers = await self._get_providers_for_event(db, "on_plate_clear_required", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_plate_clear_required"):
             return
 
         variables = {"printer": printer_name}
@@ -2310,7 +2316,7 @@ class NotificationService:
     ):
         """Handle low filament event."""
         providers = await self._get_providers_for_event(db, "on_filament_low", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_filament_low"):
             return
 
         variables = {
@@ -2337,7 +2343,7 @@ class NotificationService:
             return
 
         providers = await self._get_providers_for_event(db, "on_maintenance_due", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_maintenance_due"):
             logger.info("No notification providers configured for maintenance_due event on printer %s", printer_id)
             return
 
@@ -2370,7 +2376,7 @@ class NotificationService:
     ):
         """Handle AMS high humidity alarm event. Sent immediately, and also in the daily digest if enabled."""
         providers = await self._get_providers_for_event(db, "on_ams_humidity_high", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ams_humidity_high"):
             return
 
         variables = {
@@ -2403,7 +2409,7 @@ class NotificationService:
     ):
         """Handle AMS high temperature alarm event. Sent immediately, and also in the daily digest if enabled."""
         providers = await self._get_providers_for_event(db, "on_ams_temperature_high", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ams_temperature_high"):
             return
 
         variables = {
@@ -2443,7 +2449,7 @@ class NotificationService:
         arrives with tomorrow's summary has already cost the user a day.
         """
         providers = await self._get_providers_for_event(db, "on_ams_drying_suspended", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ams_drying_suspended"):
             return
 
         variables = {
@@ -2477,7 +2483,7 @@ class NotificationService:
     ):
         """Handle AMS-HT high humidity alarm event. Sent immediately, and also in the daily digest if enabled."""
         providers = await self._get_providers_for_event(db, "on_ams_ht_humidity_high", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ams_ht_humidity_high"):
             return
 
         variables = {
@@ -2511,7 +2517,7 @@ class NotificationService:
     ):
         """Handle AMS-HT high temperature alarm event. Sent immediately, and also in the daily digest if enabled."""
         providers = await self._get_providers_for_event(db, "on_ams_ht_temperature_high", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ams_ht_temperature_high"):
             return
 
         variables = {
@@ -2545,7 +2551,7 @@ class NotificationService:
     ):
         """Handle bed cooled event - bed temperature dropped below threshold after print."""
         providers = await self._get_providers_for_event(db, "on_bed_cooled", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_bed_cooled"):
             return
 
         variables = {
@@ -2576,7 +2582,7 @@ class NotificationService:
         about while they can still act on it.
         """
         providers = await self._get_providers_for_event(db, "on_ha_sensor_alert", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_ha_sensor_alert"):
             return
 
         variables = {
@@ -2645,7 +2651,7 @@ class NotificationService:
     ):
         """Handle first layer complete event."""
         providers = await self._get_providers_for_event(db, "on_first_layer_complete", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_first_layer_complete"):
             return
 
         variables = {
@@ -2680,7 +2686,7 @@ class NotificationService:
     ):
         """A pause the slicer put into the print is coming up (#2984)."""
         providers = await self._get_providers_for_event(db, "on_print_pause_upcoming", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_print_pause_upcoming"):
             return
 
         variables = {
@@ -2844,7 +2850,7 @@ class NotificationService:
     ):
         """Handle queue job added event."""
         providers = await self._get_providers_for_event(db, "on_queue_job_added", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_job_added"):
             return
 
         variables = {
@@ -2868,7 +2874,7 @@ class NotificationService:
     ):
         """Handle model-based job assigned to printer event."""
         providers = await self._get_providers_for_event(db, "on_queue_job_assigned", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_job_assigned"):
             return
 
         variables = {
@@ -2892,7 +2898,7 @@ class NotificationService:
     ):
         """Handle queue job started printing event."""
         providers = await self._get_providers_for_event(db, "on_queue_job_started", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_job_started"):
             return
 
         eta_str = await self._format_eta(estimated_time, db)
@@ -2923,7 +2929,7 @@ class NotificationService:
         "Any <model>" that no printer holds.
         """
         providers = await self._get_providers_for_event(db, "on_queue_job_waiting", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_job_waiting"):
             return
 
         variables = {
@@ -2945,7 +2951,7 @@ class NotificationService:
     ):
         """Handle job skipped event (e.g., previous print failed)."""
         providers = await self._get_providers_for_event(db, "on_queue_job_skipped", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_job_skipped"):
             return
 
         variables = {
@@ -2969,7 +2975,7 @@ class NotificationService:
     ):
         """Handle job failed to start event (upload error, etc.)."""
         providers = await self._get_providers_for_event(db, "on_queue_job_failed", printer_id)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_job_failed"):
             return
 
         variables = {
@@ -2990,7 +2996,7 @@ class NotificationService:
     ):
         """Handle all queue jobs completed event."""
         providers = await self._get_providers_for_event(db, "on_queue_completed", fleet_wide=True)
-        if not providers:
+        if not providers and not await web_push.has_subscribers(db, "on_queue_completed"):
             return
 
         variables = {

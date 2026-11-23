@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError, api, getAuthToken, setAuthToken } from '../api/client';
 import type { LoginResponse, Permission, TokenPersistence, UserResponse } from '../api/client';
+import { removeBrowserPush } from '../utils/webPush';
 
 interface AuthContextType {
   user: UserResponse | null;
@@ -289,12 +290,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    setAuthToken(null);
-    setUser(null);
-    api.logout().catch(() => {
-      // Ignore logout errors
-    });
-    window.location.href = '/login';
+    void (async () => {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        await Promise.race([
+          removeBrowserPush(),
+          new Promise<void>((resolve) => { timer = setTimeout(resolve, 2000); }),
+        ]);
+      } catch {
+        // Signing out must still work when the push service is unavailable.
+      } finally {
+        clearTimeout(timer);
+      }
+      void api.logout().catch(() => {});
+      setAuthToken(null);
+      setUser(null);
+      window.location.href = '/login';
+    })();
   };
 
   const refreshAuth = async () => {
