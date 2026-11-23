@@ -41,7 +41,7 @@ macOS 上运行服务的 Python 进程需要局域网访问权限，以便连接
 
 在 GitHub Fork `maziggy/bambuddy`，保留默认分支即可。定制分支基于历史标签 `v1.3.0`，Fork 操作本身不需要指定旧版本。
 
-本地 `upstream` 指向官方仓库，已将其推送地址设为 `DISABLED`。收到自己的 Fork 地址后再添加 `origin`，并推送 `codex/lab-customizations`；目前没有向任何远端推送。
+本地 `upstream` 指向官方仓库，已将其推送地址设为 `DISABLED`；`origin` 指向个人 Fork。定制源码发布到 `codex/lab-customizations` 分支，并保留官方基线与定制提交的历史。
 
 为了减少首次传输，本地上游历史使用浅克隆；官方基线提交、文件树和所需文件内容均已补齐并核对。后续需要合并上游新版本时，先补全历史：
 
