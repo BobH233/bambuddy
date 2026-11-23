@@ -1,0 +1,11 @@
+{
+  "mode": "webhook",
+  "adapter_token": "replace-with-a-generated-random-token",
+  "webhook_url": "",
+  "sign_secret": "",
+  "app_key": "",
+  "app_secret": "",
+  "robot_code": "",
+  "open_conversation_id": "",
+  "external_url": "https://printer.example.org"
+}

@@ -1,0 +1,634 @@
+{
+  "snapshot_date": "2026-11-23",
+  "upstream": "https://github.com/maziggy/bambuddy",
+  "base_tag": "v1.3.0",
+  "base_commit": "2f87192334f66bc4b27b84ba48c6a2d216dd8afc",
+  "original_snapshot_matched_files": 2308,
+  "application_files": [
+    {
+      "path": "backend/app/api/routes/camera.py",
+      "change": "modified",
+      "deployed_sha256": "7d5ba168fb1305b94966d9e11abf736c01c66c58d005444deaf4b42d4ba3badd",
+      "repository_sha256": "7d5ba168fb1305b94966d9e11abf736c01c66c58d005444deaf4b42d4ba3badd"
+    },
+    {
+      "path": "backend/app/api/routes/notification_templates.py",
+      "change": "modified",
+      "deployed_sha256": "38ad7fd5d7e12a052d3e9e6b911157943d615f6ddb067d01037059804b40fc35",
+      "repository_sha256": "38ad7fd5d7e12a052d3e9e6b911157943d615f6ddb067d01037059804b40fc35"
+    },
+    {
+      "path": "backend/app/api/routes/updates.py",
+      "change": "modified",
+      "deployed_sha256": "2c092f4c3c3426bf1b5bd240f766e95dba65712f5243ff31bba13e24b3841ab9",
+      "repository_sha256": "2c092f4c3c3426bf1b5bd240f766e95dba65712f5243ff31bba13e24b3841ab9"
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "change": "modified",
+      "deployed_sha256": "e50208ef959c230124bdc699ac44478876a357e71d56798e30b1768e4c423456",
+      "repository_sha256": "e50208ef959c230124bdc699ac44478876a357e71d56798e30b1768e4c423456"
+    },
+    {
+      "path": "backend/app/main.py",
+      "change": "modified",
+      "deployed_sha256": "80d78109b33dcb1bf04a7cb6397ebbdd2a8d1b3bacce46ee59cd06abe69ba9db",
+      "repository_sha256": "80d78109b33dcb1bf04a7cb6397ebbdd2a8d1b3bacce46ee59cd06abe69ba9db"
+    },
+    {
+      "path": "backend/app/models/notification_template.py",
+      "change": "modified",
+      "deployed_sha256": "2faa9a6817b9e88302ff0a61d08b3d8e0255741fc9a44a3fe153c2af5cf5d814",
+      "repository_sha256": "2faa9a6817b9e88302ff0a61d08b3d8e0255741fc9a44a3fe153c2af5cf5d814"
+    },
+    {
+      "path": "backend/app/services/camera.py",
+      "change": "modified",
+      "deployed_sha256": "05ecb40cf230f456771f8659802d47b163d71c51e643bed99b3aa67092f4a045",
+      "repository_sha256": "05ecb40cf230f456771f8659802d47b163d71c51e643bed99b3aa67092f4a045"
+    },
+    {
+      "path": "backend/app/services/hms_errors.py",
+      "change": "modified",
+      "deployed_sha256": "c717135f075b988f12c11d07639b9c3fc31904fdc97fdcddfcd7a5181cd97496",
+      "repository_sha256": "c717135f075b988f12c11d07639b9c3fc31904fdc97fdcddfcd7a5181cd97496"
+    },
+    {
+      "path": "backend/app/services/notification_service.py",
+      "change": "modified",
+      "deployed_sha256": "69085482b74d3be0dd52ebbc3c8f7192971c8f1c82ec793950a0f34893e105ea",
+      "repository_sha256": "69085482b74d3be0dd52ebbc3c8f7192971c8f1c82ec793950a0f34893e105ea"
+    },
+    {
+      "path": "frontend/index.html",
+      "change": "modified",
+      "deployed_sha256": "7959c555cd9c19cd6b47631f707f9ac4866ec8ea043851d87171afe8f2280ecc",
+      "repository_sha256": "7959c555cd9c19cd6b47631f707f9ac4866ec8ea043851d87171afe8f2280ecc"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "change": "modified",
+      "deployed_sha256": "58b7493ae46cdc02f9d20081f1568c1e4275b6a82ce8e78e11259041a1720f3d",
+      "repository_sha256": "58b7493ae46cdc02f9d20081f1568c1e4275b6a82ce8e78e11259041a1720f3d"
+    },
+    {
+      "path": "frontend/package.json",
+      "change": "modified",
+      "deployed_sha256": "93492bfdde8b10ef157068dea9f6648d18c9a2ad4a612a603974f2f290c205bf",
+      "repository_sha256": "93492bfdde8b10ef157068dea9f6648d18c9a2ad4a612a603974f2f290c205bf"
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "change": "modified",
+      "deployed_sha256": "6e58d651cdb23678a95ccce77a4ff8307b1a23b351e55735fe8cb16c725272b3",
+      "repository_sha256": "6e58d651cdb23678a95ccce77a4ff8307b1a23b351e55735fe8cb16c725272b3"
+    },
+    {
+      "path": "frontend/src/api/client.ts",
+      "change": "modified",
+      "deployed_sha256": "2d6d5bf3c2be797793c5e4bae2b3211217fdc25c367c3963a5a98a281bc3f9ba",
+      "repository_sha256": "2d6d5bf3c2be797793c5e4bae2b3211217fdc25c367c3963a5a98a281bc3f9ba"
+    },
+    {
+      "path": "frontend/src/components/APIBrowser.tsx",
+      "change": "modified",
+      "deployed_sha256": "8e5f61c1bdc1e62e86631e80ad5e2d5078545f627ea4ae9695edda3965173f64",
+      "repository_sha256": "8e5f61c1bdc1e62e86631e80ad5e2d5078545f627ea4ae9695edda3965173f64"
+    },
+    {
+      "path": "frontend/src/components/AddExternalLinkModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "6181489ad3f30f335e3e4299ad64992f6d89993b63754ec780fe97908a8bc525",
+      "repository_sha256": "6181489ad3f30f335e3e4299ad64992f6d89993b63754ec780fe97908a8bc525"
+    },
+    {
+      "path": "frontend/src/components/AddNotificationModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "a1a399e1b167ef386fa094a905bc2903d839a99d5e66d5d8e29e15217b1ab715",
+      "repository_sha256": "a1a399e1b167ef386fa094a905bc2903d839a99d5e66d5d8e29e15217b1ab715"
+    },
+    {
+      "path": "frontend/src/components/AddSmartPlugModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "68e6de40b35143b939e1a2b9efaaa42dfd9f5a052d18c84978cdad6f7ca4ea96",
+      "repository_sha256": "68e6de40b35143b939e1a2b9efaaa42dfd9f5a052d18c84978cdad6f7ca4ea96"
+    },
+    {
+      "path": "frontend/src/components/AssignSpoolModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "4e5bfac58e0087ba64ded408337c07559983b77ee926ab48cd3d207bd0ef06c1",
+      "repository_sha256": "4e5bfac58e0087ba64ded408337c07559983b77ee926ab48cd3d207bd0ef06c1"
+    },
+    {
+      "path": "frontend/src/components/BatchProjectModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "c9fe3e0660042d005552426017349b6a8830db3274219e1e00b3aa1d169e515e",
+      "repository_sha256": "c9fe3e0660042d005552426017349b6a8830db3274219e1e00b3aa1d169e515e"
+    },
+    {
+      "path": "frontend/src/components/BatchTagModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "0f9d5a05fa3380a8d8b7c4707fcdead16b17a6f692b1eaa5eea582872ad5e183",
+      "repository_sha256": "0f9d5a05fa3380a8d8b7c4707fcdead16b17a6f692b1eaa5eea582872ad5e183"
+    },
+    {
+      "path": "frontend/src/components/CameraTile.tsx",
+      "change": "modified",
+      "deployed_sha256": "75d88550b912e80226f0ab3a37a3e6101d37580721d3419b1f7193714512b577",
+      "repository_sha256": "75d88550b912e80226f0ab3a37a3e6101d37580721d3419b1f7193714512b577"
+    },
+    {
+      "path": "frontend/src/components/CompareArchivesModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "285083fe95801e1ba6c8a8e7f745b49ccafe6f24f48b8011dfa946e84ac7c73c",
+      "repository_sha256": "285083fe95801e1ba6c8a8e7f745b49ccafe6f24f48b8011dfa946e84ac7c73c"
+    },
+    {
+      "path": "frontend/src/components/Dashboard.tsx",
+      "change": "modified",
+      "deployed_sha256": "81a5c45be6587f8175ae0eb48f1441972ada9978d0923d08c4b5c1498f65042b",
+      "repository_sha256": "81a5c45be6587f8175ae0eb48f1441972ada9978d0923d08c4b5c1498f65042b"
+    },
+    {
+      "path": "frontend/src/components/EmailSettings.tsx",
+      "change": "modified",
+      "deployed_sha256": "bfe5bbb2955132240fbb5f64913a53ccbe6b6187bc1d175713ee2e55c273a50f",
+      "repository_sha256": "bfe5bbb2955132240fbb5f64913a53ccbe6b6187bc1d175713ee2e55c273a50f"
+    },
+    {
+      "path": "frontend/src/components/EmbeddedCameraViewer.tsx",
+      "change": "modified",
+      "deployed_sha256": "cf9880d5c0b063edcd1b52fb892a2114207d535a590bf603bcfa34a262507eae",
+      "repository_sha256": "cf9880d5c0b063edcd1b52fb892a2114207d535a590bf603bcfa34a262507eae"
+    },
+    {
+      "path": "frontend/src/components/ExternalLinksSettings.tsx",
+      "change": "modified",
+      "deployed_sha256": "03685c5f37fb031b079a38362f7563b72ff7e359945bbba0b9045a454e23a624",
+      "repository_sha256": "03685c5f37fb031b079a38362f7563b72ff7e359945bbba0b9045a454e23a624"
+    },
+    {
+      "path": "frontend/src/components/FilamentHoverCard.tsx",
+      "change": "modified",
+      "deployed_sha256": "fbc1ad29fc2dc650ea0ed920b510b247720e6dbc55a10a0b6b1139f2affefac5",
+      "repository_sha256": "fbc1ad29fc2dc650ea0ed920b510b247720e6dbc55a10a0b6b1139f2affefac5"
+    },
+    {
+      "path": "frontend/src/components/FilamentTrends.tsx",
+      "change": "modified",
+      "deployed_sha256": "59dee5e6d81e4320481089d8b320d190b6d683545bb871c9ef304d08f96473bd",
+      "repository_sha256": "59dee5e6d81e4320481089d8b320d190b6d683545bb871c9ef304d08f96473bd"
+    },
+    {
+      "path": "frontend/src/components/FileManagerModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "0be4b04ff3ba36a835bca1f4905c4080396a8595e86209983618a14f7df719f4",
+      "repository_sha256": "0be4b04ff3ba36a835bca1f4905c4080396a8595e86209983618a14f7df719f4"
+    },
+    {
+      "path": "frontend/src/components/ForecastPanel.tsx",
+      "change": "modified",
+      "deployed_sha256": "91b66ea784a5e9ba7b2f5e693c192fa19986abad0e3b7e002afeffd389d6c7e8",
+      "repository_sha256": "91b66ea784a5e9ba7b2f5e693c192fa19986abad0e3b7e002afeffd389d6c7e8"
+    },
+    {
+      "path": "frontend/src/components/KProfilesView.tsx",
+      "change": "modified",
+      "deployed_sha256": "4439a975a3c20cefe667beec5fd6212d4f10a88e07991bac7758ea028d259b92",
+      "repository_sha256": "4439a975a3c20cefe667beec5fd6212d4f10a88e07991bac7758ea028d259b92"
+    },
+    {
+      "path": "frontend/src/components/KeyboardShortcutsModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "da10ec3a6f216a2db43537c6af5e13ceb3460de32a1640135c3c671e9577ec49",
+      "repository_sha256": "da10ec3a6f216a2db43537c6af5e13ceb3460de32a1640135c3c671e9577ec49"
+    },
+    {
+      "path": "frontend/src/components/Layout.tsx",
+      "change": "modified",
+      "deployed_sha256": "129f6d334bf20aab34d7e263ab3dbd5c8864cffee24378b56d786f9374e5ce0f",
+      "repository_sha256": "129f6d334bf20aab34d7e263ab3dbd5c8864cffee24378b56d786f9374e5ce0f"
+    },
+    {
+      "path": "frontend/src/components/LinkSpoolModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "68ca223d2266024c61db11b8de4eeddeee5cc4f5371772112b5d8dfac6b95f81",
+      "repository_sha256": "68ca223d2266024c61db11b8de4eeddeee5cc4f5371772112b5d8dfac6b95f81"
+    },
+    {
+      "path": "frontend/src/components/LogViewer.tsx",
+      "change": "modified",
+      "deployed_sha256": "24b71183f1916a5130db9a8645fe4618b9d57838ed53d0de5be49916895270db",
+      "repository_sha256": "24b71183f1916a5130db9a8645fe4618b9d57838ed53d0de5be49916895270db"
+    },
+    {
+      "path": "frontend/src/components/MQTTDebugModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "458f7e63d6a8be66ce779b0d01845121670400ec8d270287d04c5ca4fb7952bb",
+      "repository_sha256": "458f7e63d6a8be66ce779b0d01845121670400ec8d270287d04c5ca4fb7952bb"
+    },
+    {
+      "path": "frontend/src/components/NotificationLogViewer.tsx",
+      "change": "modified",
+      "deployed_sha256": "2ae8f06a743189b739b535fa001583b173e208b41403677faaa2b2388af9c167",
+      "repository_sha256": "2ae8f06a743189b739b535fa001583b173e208b41403677faaa2b2388af9c167"
+    },
+    {
+      "path": "frontend/src/components/NotificationProviderCard.tsx",
+      "change": "modified",
+      "deployed_sha256": "213a41e9601e635e5560e437f4d646a0f493efcbe4f90b0e001eaf1ada59a521",
+      "repository_sha256": "213a41e9601e635e5560e437f4d646a0f493efcbe4f90b0e001eaf1ada59a521"
+    },
+    {
+      "path": "frontend/src/components/NotificationTemplateEditor.tsx",
+      "change": "modified",
+      "deployed_sha256": "7af2a2c8ffd4a5ba862c1387d35b9a1a32c8c435a428eae2cdd48e7a6b0a55ba",
+      "repository_sha256": "7af2a2c8ffd4a5ba862c1387d35b9a1a32c8c435a428eae2cdd48e7a6b0a55ba"
+    },
+    {
+      "path": "frontend/src/components/PendingUploadsPanel.tsx",
+      "change": "modified",
+      "deployed_sha256": "4c5220c6af32e3cd24194802f5876d41b6d3ce1b95525d3caf07682db96b6bcf",
+      "repository_sha256": "4c5220c6af32e3cd24194802f5876d41b6d3ce1b95525d3caf07682db96b6bcf"
+    },
+    {
+      "path": "frontend/src/components/PhotoGalleryModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "c2e363f4a94c5d4e917b845ed3ffd38169978303d9557fe458e563602ce1e5e4",
+      "repository_sha256": "c2e363f4a94c5d4e917b845ed3ffd38169978303d9557fe458e563602ce1e5e4"
+    },
+    {
+      "path": "frontend/src/components/PrintCalendar.tsx",
+      "change": "modified",
+      "deployed_sha256": "dfeb913af908472c49c117fdda67121dba95089ceb84479041441c42fe8b5160",
+      "repository_sha256": "dfeb913af908472c49c117fdda67121dba95089ceb84479041441c42fe8b5160"
+    },
+    {
+      "path": "frontend/src/components/PrintModal/FilamentMapping.tsx",
+      "change": "modified",
+      "deployed_sha256": "695336081586dc67fb2897e97b04b984a60745a6b2ae347c83d0245bffde38be",
+      "repository_sha256": "695336081586dc67fb2897e97b04b984a60745a6b2ae347c83d0245bffde38be"
+    },
+    {
+      "path": "frontend/src/components/PrintModal/PlateSelector.tsx",
+      "change": "modified",
+      "deployed_sha256": "3597fb5128f054783da85b8f78ed769463e2de8893d362abcd7789d3d744a00a",
+      "repository_sha256": "3597fb5128f054783da85b8f78ed769463e2de8893d362abcd7789d3d744a00a"
+    },
+    {
+      "path": "frontend/src/components/PrintModal/PrinterSelector.tsx",
+      "change": "modified",
+      "deployed_sha256": "283e1422013bbb7e2027bb5a1e809240aed319eb3f07d97f8cd92256e42ed87c",
+      "repository_sha256": "283e1422013bbb7e2027bb5a1e809240aed319eb3f07d97f8cd92256e42ed87c"
+    },
+    {
+      "path": "frontend/src/components/PrintModal/index.tsx",
+      "change": "modified",
+      "deployed_sha256": "24b9880fed4afad92482b52413a1ed7a4ff283f2811af46bbc2f2ad59d0310bf",
+      "repository_sha256": "24b9880fed4afad92482b52413a1ed7a4ff283f2811af46bbc2f2ad59d0310bf"
+    },
+    {
+      "path": "frontend/src/components/ProjectPageModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "4700aa2589b05ba8ab156db17cbf20f9a365dcac933b1bcbec3db5b1a210c008",
+      "repository_sha256": "4700aa2589b05ba8ab156db17cbf20f9a365dcac933b1bcbec3db5b1a210c008"
+    },
+    {
+      "path": "frontend/src/components/QRCodeModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "dc975ff2252ad85304b387b1982e281b41ffd32396313fd3fdaa48d82c3bdc15",
+      "repository_sha256": "dc975ff2252ad85304b387b1982e281b41ffd32396313fd3fdaa48d82c3bdc15"
+    },
+    {
+      "path": "frontend/src/components/SpoolmanSettings.tsx",
+      "change": "modified",
+      "deployed_sha256": "99090b568bb30bdb6c8be2cc70f7717966121742b2c3a41251138405194a4919",
+      "repository_sha256": "99090b568bb30bdb6c8be2cc70f7717966121742b2c3a41251138405194a4919"
+    },
+    {
+      "path": "frontend/src/components/SwitchbarPopover.tsx",
+      "change": "modified",
+      "deployed_sha256": "9c6d31d7a0802adfde617aa7a7ccceae34d17cef3dc66d0e9e03a649d019ec2c",
+      "repository_sha256": "9c6d31d7a0802adfde617aa7a7ccceae34d17cef3dc66d0e9e03a649d019ec2c"
+    },
+    {
+      "path": "frontend/src/components/TagManagementModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "8d5e46480c377664a8ec5471b7362f177545e57771fa81818e26ca87797f5124",
+      "repository_sha256": "8d5e46480c377664a8ec5471b7362f177545e57771fa81818e26ca87797f5124"
+    },
+    {
+      "path": "frontend/src/components/TimelapseEditorModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "f2e9af743b99c2b0a80b34a7966549e9d59dced8a482729c2008563bc7583553",
+      "repository_sha256": "f2e9af743b99c2b0a80b34a7966549e9d59dced8a482729c2008563bc7583553"
+    },
+    {
+      "path": "frontend/src/components/TwoFactorSettings.tsx",
+      "change": "modified",
+      "deployed_sha256": "a5d519648b628bd15a3537d738cb6b4b90aa196de425e16758167334df214b49",
+      "repository_sha256": "a5d519648b628bd15a3537d738cb6b4b90aa196de425e16758167334df214b49"
+    },
+    {
+      "path": "frontend/src/components/UpdatedStreamOverlay.css",
+      "change": "modified",
+      "deployed_sha256": "0832cc18fc1f12990ea98d71c715ad83fc54138c4c1c73efdbb7c428fa059ab9",
+      "repository_sha256": "0832cc18fc1f12990ea98d71c715ad83fc54138c4c1c73efdbb7c428fa059ab9"
+    },
+    {
+      "path": "frontend/src/components/UpdatedStreamOverlay.tsx",
+      "change": "modified",
+      "deployed_sha256": "a643476ae6889cac4eba64fb1082ca3c242d22afa46b6550a951e3faa948749f",
+      "repository_sha256": "a643476ae6889cac4eba64fb1082ca3c242d22afa46b6550a951e3faa948749f"
+    },
+    {
+      "path": "frontend/src/components/UploadModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "7bbf4cc8d755587648d0f4e26a5474249881eae0e359355f0b467be6fb14947e",
+      "repository_sha256": "7bbf4cc8d755587648d0f4e26a5474249881eae0e359355f0b467be6fb14947e"
+    },
+    {
+      "path": "frontend/src/components/spool-form/FilamentSection.tsx",
+      "change": "modified",
+      "deployed_sha256": "157a1d43de4b1380a0f48a3041628071577a17cf286fa65703aa9f2e42d76901",
+      "repository_sha256": "157a1d43de4b1380a0f48a3041628071577a17cf286fa65703aa9f2e42d76901"
+    },
+    {
+      "path": "frontend/src/components/spoolbuddy/AmsUnitCard.tsx",
+      "change": "modified",
+      "deployed_sha256": "533ce9dc430c004c4de1a7e4b18b5da7ca639f8a5862a39938daf8d7ab1da9e9",
+      "repository_sha256": "533ce9dc430c004c4de1a7e4b18b5da7ca639f8a5862a39938daf8d7ab1da9e9"
+    },
+    {
+      "path": "frontend/src/components/spoolbuddy/DiagnosticModal.tsx",
+      "change": "modified",
+      "deployed_sha256": "39589abc3b77b38833129fb5357164046554a9a993c2a205bf582acc019c7be3",
+      "repository_sha256": "39589abc3b77b38833129fb5357164046554a9a993c2a205bf582acc019c7be3"
+    },
+    {
+      "path": "frontend/src/components/spoolbuddy/SpoolBuddyLayout.tsx",
+      "change": "modified",
+      "deployed_sha256": "f2b653b633dc1e2cb0a4dc0144b0debf7fe970a813d074b5877f132ab362dee7",
+      "repository_sha256": "f2b653b633dc1e2cb0a4dc0144b0debf7fe970a813d074b5877f132ab362dee7"
+    },
+    {
+      "path": "frontend/src/components/spoolbuddy/SpoolInfoCard.tsx",
+      "change": "modified",
+      "deployed_sha256": "5fd36d057900204a2171dbfe8f1e7c7d390b5454338198785037b550bee6110e",
+      "repository_sha256": "5fd36d057900204a2171dbfe8f1e7c7d390b5454338198785037b550bee6110e"
+    },
+    {
+      "path": "frontend/src/contexts/ToastContext.tsx",
+      "change": "modified",
+      "deployed_sha256": "2c5d02c0d0b5d684de168a500fbda799d3ef80b877bf6be8eabc22400a869269",
+      "repository_sha256": "2c5d02c0d0b5d684de168a500fbda799d3ef80b877bf6be8eabc22400a869269"
+    },
+    {
+      "path": "frontend/src/hooks/useCameraStreamToken.ts",
+      "change": "modified",
+      "deployed_sha256": "d04c20a0dc543168843130e8fe413c95e91f6dc52c90d7fdabb5f604ee0474de",
+      "repository_sha256": "d04c20a0dc543168843130e8fe413c95e91f6dc52c90d7fdabb5f604ee0474de"
+    },
+    {
+      "path": "frontend/src/hooks/useOverlayCameraRecovery.ts",
+      "change": "modified",
+      "deployed_sha256": "435fe9e8735317fcae4340e2d319ba7a20950bc52de93077e2882f3248a234f3",
+      "repository_sha256": "435fe9e8735317fcae4340e2d319ba7a20950bc52de93077e2882f3248a234f3"
+    },
+    {
+      "path": "frontend/src/i18n/index.ts",
+      "change": "modified",
+      "deployed_sha256": "a32eb8d6cde15f3677c59db8edc22f7bffe781668133d105428e127aa6e65114",
+      "repository_sha256": "a32eb8d6cde15f3677c59db8edc22f7bffe781668133d105428e127aa6e65114"
+    },
+    {
+      "path": "frontend/src/pages/ArchivesPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "d49360b5be1adfa0034c3a718c80ff3a0226efa2f674739c91e3401ae049ba60",
+      "repository_sha256": "d49360b5be1adfa0034c3a718c80ff3a0226efa2f674739c91e3401ae049ba60"
+    },
+    {
+      "path": "frontend/src/pages/CameraPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "3d9804d978f0381265b8162e4dd1c50af45bd205d323b6a3735e8a95d822c8a7",
+      "repository_sha256": "3d9804d978f0381265b8162e4dd1c50af45bd205d323b6a3735e8a95d822c8a7"
+    },
+    {
+      "path": "frontend/src/pages/InventoryPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "914907326f2af2b6d229490edd09e670816a2d7483f99c728b7d80f17f24f831",
+      "repository_sha256": "914907326f2af2b6d229490edd09e670816a2d7483f99c728b7d80f17f24f831"
+    },
+    {
+      "path": "frontend/src/pages/MaintenancePage.tsx",
+      "change": "modified",
+      "deployed_sha256": "7f8d28f9e6809f042b41c9d917ba5f9eaeddbfb1828a93eb7bc5e373ae9782c7",
+      "repository_sha256": "7f8d28f9e6809f042b41c9d917ba5f9eaeddbfb1828a93eb7bc5e373ae9782c7"
+    },
+    {
+      "path": "frontend/src/pages/PrintersPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "a165a176f56aa0f1ae492ecfdd646d2103490daab50502f00837aa162a257ff4",
+      "repository_sha256": "a165a176f56aa0f1ae492ecfdd646d2103490daab50502f00837aa162a257ff4"
+    },
+    {
+      "path": "frontend/src/pages/ProfilesPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "a45d9ee657495776110a906a62627238ab36ea32efee887a56144ff67723197b",
+      "repository_sha256": "a45d9ee657495776110a906a62627238ab36ea32efee887a56144ff67723197b"
+    },
+    {
+      "path": "frontend/src/pages/ProjectDetailPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "f5bba53eaac6a100fe7c7bfe41cc8fae5448104614147ca4777f22f83c1e9619",
+      "repository_sha256": "f5bba53eaac6a100fe7c7bfe41cc8fae5448104614147ca4777f22f83c1e9619"
+    },
+    {
+      "path": "frontend/src/pages/QueuePage.tsx",
+      "change": "modified",
+      "deployed_sha256": "6407d4cd01acdee2bc3c28baa63da1403f3d4cc53efee5b9b69df371c905529d",
+      "repository_sha256": "6407d4cd01acdee2bc3c28baa63da1403f3d4cc53efee5b9b69df371c905529d"
+    },
+    {
+      "path": "frontend/src/pages/SettingsPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "18b6ec281fdb3b5a49c40c01180294a2239af2da086863901512adb1a83c3378",
+      "repository_sha256": "18b6ec281fdb3b5a49c40c01180294a2239af2da086863901512adb1a83c3378"
+    },
+    {
+      "path": "frontend/src/pages/StatsPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "b3253cba3f178e32ba1626aaccfeb25bed63f9cd4ce75ad2bd48e94f3854270c",
+      "repository_sha256": "b3253cba3f178e32ba1626aaccfeb25bed63f9cd4ce75ad2bd48e94f3854270c"
+    },
+    {
+      "path": "frontend/src/pages/StreamOverlayPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "d658f78de2e1403f79b85a3139e0be97df9a5daeac09f2ed38dda5a243a6ec27",
+      "repository_sha256": "d658f78de2e1403f79b85a3139e0be97df9a5daeac09f2ed38dda5a243a6ec27"
+    },
+    {
+      "path": "frontend/src/pages/spoolbuddy/SpoolBuddyAmsPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "2e31feedc2a65464ce86094e839bfda1581b0e0d3bdca19d7d6556ff599cf661",
+      "repository_sha256": "2e31feedc2a65464ce86094e839bfda1581b0e0d3bdca19d7d6556ff599cf661"
+    },
+    {
+      "path": "frontend/src/pages/spoolbuddy/SpoolBuddyDashboard.tsx",
+      "change": "modified",
+      "deployed_sha256": "8c9c6c3ea487ddcc803023874aa6e3d207f57d2a7af568064681aabd963714f2",
+      "repository_sha256": "8c9c6c3ea487ddcc803023874aa6e3d207f57d2a7af568064681aabd963714f2"
+    },
+    {
+      "path": "frontend/src/pages/spoolbuddy/SpoolBuddySettingsPage.tsx",
+      "change": "modified",
+      "deployed_sha256": "d7a31301bbe6c9ef68b438060b6374801eb926fc2003b66a3320816cefd97a44",
+      "repository_sha256": "d7a31301bbe6c9ef68b438060b6374801eb926fc2003b66a3320816cefd97a44"
+    },
+    {
+      "path": "frontend/src/utils/bedType.ts",
+      "change": "modified",
+      "deployed_sha256": "2e6dc2941ccc88efb0f74a8497e5ff16dacea5557025071e4221a1feca10b481",
+      "repository_sha256": "2e6dc2941ccc88efb0f74a8497e5ff16dacea5557025071e4221a1feca10b481"
+    },
+    {
+      "path": "frontend/src/utils/temperatureFanPresets.ts",
+      "change": "modified",
+      "deployed_sha256": "d5709c1152b342923698141ab6c7cfb72af72f552875c1022cb7df255b8b69fe",
+      "repository_sha256": "d5709c1152b342923698141ab6c7cfb72af72f552875c1022cb7df255b8b69fe"
+    },
+    {
+      "path": "backend/app/data/hms_catalog_zh_CN.json",
+      "change": "added",
+      "deployed_sha256": "96abd48ed8f2f80570efb1c4a69c069c8ee4710a17098b6e146d321a20667d57",
+      "repository_sha256": "96abd48ed8f2f80570efb1c4a69c069c8ee4710a17098b6e146d321a20667d57"
+    },
+    {
+      "path": "backend/app/data/lab_zh_CN.json",
+      "change": "added",
+      "deployed_sha256": "62467506793f557fa802d5b5849ebf273da8b346d4c5eac066410086062a9b9f",
+      "repository_sha256": "62467506793f557fa802d5b5849ebf273da8b346d4c5eac066410086062a9b9f"
+    },
+    {
+      "path": "backend/app/data/notification_templates_zh_CN.json",
+      "change": "added",
+      "deployed_sha256": "fa516563ee10546ea11e73702739ea4a01aac28594473a7197327c853227fc82",
+      "repository_sha256": "fa516563ee10546ea11e73702739ea4a01aac28594473a7197327c853227fc82"
+    },
+    {
+      "path": "backend/app/services/camera_hls.py",
+      "change": "added",
+      "deployed_sha256": "fbd44cdfc48ef04c7b87300c502b76524eeadaff12b02f7ecff9f7c51d95452c",
+      "repository_sha256": "fbd44cdfc48ef04c7b87300c502b76524eeadaff12b02f7ecff9f7c51d95452c"
+    },
+    {
+      "path": "backend/app/services/localization.py",
+      "change": "added",
+      "deployed_sha256": "8767c72b58b746318e2b5a64922ffca5185e761dab5ffdd2f9b3904a8a736cb8",
+      "repository_sha256": "8767c72b58b746318e2b5a64922ffca5185e761dab5ffdd2f9b3904a8a736cb8"
+    },
+    {
+      "path": "backend/tests/integration/test_camera_hls.py",
+      "change": "added",
+      "deployed_sha256": "7c5c7fb0cf31cd22d96de0887daa86e9fa65127f0b4f5c7c300c38893eccf55b",
+      "repository_sha256": "c298e6e19cadcb16a9766eccf766350a1af3e65129772e272686416e578c10ba",
+      "note": "Includes one additional HLS restart timeline regression test from the validated development copy."
+    },
+    {
+      "path": "backend/tests/unit/services/test_lab_chinese.py",
+      "change": "added",
+      "deployed_sha256": "3585dcef7f9df4bfe3e33e1037d41039118176189b7bf2a96e247db4b0c28bab",
+      "repository_sha256": "3585dcef7f9df4bfe3e33e1037d41039118176189b7bf2a96e247db4b0c28bab"
+    },
+    {
+      "path": "backend/tests/unit/test_notification_restart_baseline.py",
+      "change": "added",
+      "deployed_sha256": "bbb9f18777e7e9d0000ffc43e770aa2f5c68c68d8b245254795d5f4d0cae4ecc",
+      "repository_sha256": "bbb9f18777e7e9d0000ffc43e770aa2f5c68c68d8b245254795d5f4d0cae4ecc"
+    },
+    {
+      "path": "frontend/src/__tests__/components/CameraMedia.test.tsx",
+      "change": "added",
+      "deployed_sha256": "e836ced45637d878e7791f3d13341060424cfa48dc1bb52d6dc00b87e68f4362",
+      "repository_sha256": "e836ced45637d878e7791f3d13341060424cfa48dc1bb52d6dc00b87e68f4362"
+    },
+    {
+      "path": "frontend/src/__tests__/i18n/lab-chinese.test.ts",
+      "change": "added",
+      "deployed_sha256": "eabf544958cd63fef065683be9dd591bd03f8c5c81ac471bb9a17b113339af41",
+      "repository_sha256": "eabf544958cd63fef065683be9dd591bd03f8c5c81ac471bb9a17b113339af41"
+    },
+    {
+      "path": "frontend/src/components/CameraMedia.tsx",
+      "change": "added",
+      "deployed_sha256": "e42d5d4b5c16d3ab52cd39e5c6e44fb32946658b046d47b1cb1b976ef4b0caba",
+      "repository_sha256": "e42d5d4b5c16d3ab52cd39e5c6e44fb32946658b046d47b1cb1b976ef4b0caba"
+    },
+    {
+      "path": "frontend/src/i18n/lab-zh-CN.json",
+      "change": "added",
+      "deployed_sha256": "62467506793f557fa802d5b5849ebf273da8b346d4c5eac066410086062a9b9f",
+      "repository_sha256": "62467506793f557fa802d5b5849ebf273da8b346d4c5eac066410086062a9b9f"
+    },
+    {
+      "path": "frontend/src/i18n/labChinese.ts",
+      "change": "added",
+      "deployed_sha256": "3ce655e5c807108b69fab15ba73b98beed31e1b065812f94bef104a15d47d06b",
+      "repository_sha256": "3ce655e5c807108b69fab15ba73b98beed31e1b065812f94bef104a15d47d06b"
+    },
+    {
+      "path": "frontend/src/utils/displayText.ts",
+      "change": "added",
+      "deployed_sha256": "d82f3863aeb1358076573d08cf01bcf8e4da09ab8bd15bd3eae90914de71a896",
+      "repository_sha256": "d82f3863aeb1358076573d08cf01bcf8e4da09ab8bd15bd3eae90914de71a896"
+    }
+  ],
+  "integration_files": [
+    {
+      "path": "integrations/dingtalk/bridge.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "c53537ba9657355ebd096e5655714f47bd272792cb5c33288f04bd4e8782ef5f"
+    },
+    {
+      "path": "integrations/dingtalk/configure.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "406abf3b0327e363f47d1402b04a0bf2deca81030249af0b113fd0dbc6fb1dbf"
+    },
+    {
+      "path": "integrations/dingtalk/install.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "348860b41d3113e133e353bd860ff2a7830d3a4a4b8525dbbcb74f51b1665ad4"
+    },
+    {
+      "path": "integrations/dingtalk/lab_zh_CN.json",
+      "source_component": "dingtalk-bridge",
+      "sha256": "62467506793f557fa802d5b5849ebf273da8b346d4c5eac066410086062a9b9f"
+    },
+    {
+      "path": "integrations/dingtalk/notifications_zh.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "987fbf0f4b91f248cb81da6b834056ab518f608afa9a05433bc2dd045a890884"
+    },
+    {
+      "path": "integrations/dingtalk/test_bridge.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "88c2ca079fe6c02eccce6b98d07eeb9aad8c22b692867edd18c8b18a3f76d55e"
+    },
+    {
+      "path": "integrations/dingtalk/test_localization.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "0704dd238c0071a0d2170003e7f999b42fc375e10020af6be71a37b5b3cab5c9"
+    },
+    {
+      "path": "integrations/dingtalk/test_webhook_photos.py",
+      "source_component": "dingtalk-bridge",
+      "sha256": "e73ab9bccc97d52bd651c2f10d969746e9440385dcc9ac541fb5b0e74dd06f33"
+    }
+  ],
+  "excludes": [
+    "runtime configuration and credentials",
+    "databases",
+    "print files and photos",
+    "logs and caches"
+  ]
+}
